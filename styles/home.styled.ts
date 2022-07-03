@@ -185,6 +185,7 @@ export const HeroProjectMain = styled.main`
 export const HeroProjectMainRow = styled.div`
 	display: flex;
 	flex-wrap: wrap;
+	margin-bottom: 2.5rem;
 `;
 
 export const HeroProjectMainCol = styled.div<IHeroProjectsMainColProps>`
@@ -226,10 +227,18 @@ export const HeroProjectMainCol = styled.div<IHeroProjectsMainColProps>`
     return '';
   }}
 	}
+
+	margin-bottom: 2.2rem;
 	
-	&:not(&:last-child) {
-		margin-bottom: 2.2rem;
+	&:last-child {
+		margin-bottom: 0;
 	}
+
+	${({ count }) => `
+		&:nth-child(${count - 1}) {
+			margin-bottom: 0;
+		}
+	`}
 
 	@media (max-width: 600px) {
 		width: 100%;

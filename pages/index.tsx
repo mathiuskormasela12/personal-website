@@ -246,7 +246,7 @@ const Home: NextPage = () => {
                 ))}
               </Styled.HeroProjectMainRow>
               <Pagination
-                totalPages={5}
+                totalPages={15}
                 page={1}
               />
             </Styled.HeroProjectMain>

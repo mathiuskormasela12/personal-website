@@ -7,6 +7,7 @@ import { Colors } from '../../themes';
 export const Pagination = styled.div`
 	display: flex;
 	justify-content: center;
+	margin-bottom: 1rem;
 `;
 
 export const PaginationItems = styled.div<IPaginationProps>`
@@ -17,10 +18,17 @@ export const PaginationItems = styled.div<IPaginationProps>`
 	font-weight: bold;
 	color: ${Colors.dark};
 	border-radius: 50%;
+	margin-right: .5rem;
+
+	&:last-child {
+		margin-right: 0;
+	}
 
 	${({ disabled, active }) => {
+    let styles = '';
+
     if (!disabled) {
-      return `
+      styles += `
 				&:hover {
 					cursor: pointer;
 					background-color: ${Colors.shapeColor};
@@ -29,12 +37,12 @@ export const PaginationItems = styled.div<IPaginationProps>`
     }
 
     if (active) {
-      return `
+      styles += `
 					cursor: pointer;
 					background-color: ${Colors.shapeColor};
 			`;
     }
 
-    return '';
+    return styles;
   }}
 `;

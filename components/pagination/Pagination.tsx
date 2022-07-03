@@ -13,16 +13,45 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
       <Styled.PaginationItems {...props} disabled>
         <GrFormPrevious />
       </Styled.PaginationItems>
-      {[...Array(totalPages)].map((item, index) => (
-        <Styled.PaginationItems
-          // eslint-disable-next-line react/no-array-index-key
-          key={index.toString()}
-          active={((index + 1) === page || page === 1)}
-          {...props}
-        >
-          {index + 1}
-        </Styled.PaginationItems>
-      ))}
+      {[...Array(totalPages)].map((item, index) => {
+        const pageInLooping = index + 1;
+
+        if (pageInLooping === 6) {
+          return (
+            <>
+              <Styled.PaginationItems
+							// eslint-disable-next-line react/no-array-index-key
+                key={index.toString()}
+                active={(pageInLooping === page)}
+                {...props}
+              >
+                ...
+              </Styled.PaginationItems>
+              <Styled.PaginationItems
+							// eslint-disable-next-line react/no-array-index-key
+                key={index.toString()}
+                active={(pageInLooping === page)}
+                {...props}
+              >
+                {totalPages}
+              </Styled.PaginationItems>
+            </>
+          );
+        } if (pageInLooping < 6) {
+          return (
+            <Styled.PaginationItems
+								// eslint-disable-next-line react/no-array-index-key
+              key={index.toString()}
+              active={(pageInLooping === page)}
+              {...props}
+            >
+              {pageInLooping}
+            </Styled.PaginationItems>
+          );
+        }
+
+        return null;
+      })}
       <Styled.PaginationItems {...props} disabled>
         <GrFormNext />
       </Styled.PaginationItems>
