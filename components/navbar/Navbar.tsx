@@ -35,7 +35,7 @@ export const Navbar: NextPage = () => {
           <Styled.NavBrand>
             <Link href="/" passHref>
               <Styled.Brand>
-                AwsDev
+                Mathius
               </Styled.Brand>
             </Link>
           </Styled.NavBrand>
@@ -57,9 +57,9 @@ export const Navbar: NextPage = () => {
               type="button"
               size="md"
               rounded
-              onClick={() => handleMoveToOtherWebsite('https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw')}
+              onClick={() => handleMoveToOtherWebsite('https://www.linkedin.com/in/mathiuskormasela/')}
             >
-              My Videos
+              Hire Me
             </Button>
             {toggle ? (
               <GrClose

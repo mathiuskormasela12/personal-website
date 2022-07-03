@@ -3,4 +3,4 @@
 
 export * from './auth';
 export * from './authTemporary';
-export * from './articles';
+export * from './projects';

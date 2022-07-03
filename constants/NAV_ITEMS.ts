@@ -9,12 +9,12 @@ export const NAV_ITEMS = {
     },
     {
       id: 2,
-      text: 'Articles',
-      path: '#articles',
+      text: 'Projects',
+      path: '#projects',
     },
     {
       id: 3,
-      text: 'Material',
+      text: 'Skills',
       path: '#footer',
     },
     {
@@ -31,8 +31,8 @@ export const NAV_ITEMS = {
     },
     {
       id: 2,
-      text: 'Articles',
-      path: '#articles',
+      text: 'Projects',
+      path: '#projects',
     },
     {
       id: 3,

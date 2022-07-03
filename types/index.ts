@@ -3,4 +3,4 @@
 
 export * from './SetTokenFunc';
 export * from './SkillVariants';
-export * from './SetArticlesFunc';
+export * from './SetProjectsFunc';

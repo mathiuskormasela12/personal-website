@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from '../styles';
-import data from '../data/articles';
+import data from '../data/projects';
 
 // import all components
 import {
@@ -16,19 +16,20 @@ import {
   Button,
   Card,
   Footer,
+  Pagination,
 } from '../components';
-import { setArticles } from '../redux/actions';
-import { IGlobalStates, IPortofolios } from '../interfaces';
+import { setProjects } from '../redux/actions';
+import { IGlobalStates, IProjects } from '../interfaces';
 
 const Home: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const articles: IPortofolios[] = useSelector(
-    (current: IGlobalStates) => current.articles.articles,
+  const projects: IProjects[] = useSelector(
+    (current: IGlobalStates) => current.projects.projects,
   );
 
   useEffect(() => {
-    dispatch(setArticles(data));
+    dispatch(setProjects(data));
   }, [dispatch]);
 
   return (
@@ -86,26 +87,23 @@ const Home: NextPage = () => {
                 </Styled.BalloonContainer>
                 <Styled.HeroHomeWelcomeContent>
                   <Styled.HeroHomeTitle>
-                    Hi, Welcome to
+                    Hi, I&apos;m
                     {' '}
                     <Styled.PrimaryText>
-                      Awesome Developer
+                      a Fullstack Developer
                     </Styled.PrimaryText>
                     .
                   </Styled.HeroHomeTitle>
                   <Styled.HeroHomeSubtitle>
-                    We will share some articles about
-                    web programming and mobile programming.
+                    I&apos;m Mathius a fullstack developer
+                    with 1+ years working experiences.
                   </Styled.HeroHomeSubtitle>
                   <Button
                     type="button"
                     size="md"
                     rounded
-                    onClick={() => {
-                      window.location.href = '#articles';
-                    }}
                   >
-                    Let&apos;s Read
+                    Download CV
                   </Button>
                 </Styled.HeroHomeWelcomeContent>
               </Styled.HeroHomeCol>
@@ -122,9 +120,9 @@ const Home: NextPage = () => {
             </Styled.HeroHomeRow>
           </Container>
         </Styled.HeroWelcome>
-        <Styled.HeroPortofolio id="articles">
+        <Styled.HeroProject id="projects">
           <Container>
-            <Styled.HeroPortofolioHeader>
+            <Styled.HeroProjectHeader>
               <Styled.BalloonContainer
                 customPosition={{
                   top: -2.2,
@@ -172,7 +170,7 @@ const Home: NextPage = () => {
               </Styled.BalloonContainer>
               <Styled.HeroHomeTitle>
                 <Styled.PrimaryText>
-                  Our Articles
+                  Latest Projects
                 </Styled.PrimaryText>
                 {' '}
                 Updates
@@ -226,14 +224,14 @@ const Home: NextPage = () => {
                   alt="Balloon"
                 />
               </Styled.BalloonContainer>
-            </Styled.HeroPortofolioHeader>
-            <Styled.HeroPortofolioMain>
-              <Styled.HeroPortofolioMainRow>
-                {articles.map((item, index) => (
-                  <Styled.HeroPortofolioMainCol
+            </Styled.HeroProjectHeader>
+            <Styled.HeroProjectMain>
+              <Styled.HeroProjectMainRow>
+                {projects.map((item, index) => (
+                  <Styled.HeroProjectMainCol
                     // eslint-disable-next-line react/no-array-index-key
                     key={index.toString()}
-                    count={articles.length}
+                    count={projects.length}
                   >
                     <Card
                       title={item.title}
@@ -244,12 +242,16 @@ const Home: NextPage = () => {
                         router.push(`/detail/${String(item.id)}`);
                       }}
                     />
-                  </Styled.HeroPortofolioMainCol>
+                  </Styled.HeroProjectMainCol>
                 ))}
-              </Styled.HeroPortofolioMainRow>
-            </Styled.HeroPortofolioMain>
+              </Styled.HeroProjectMainRow>
+              <Pagination
+                totalPages={5}
+                page={1}
+              />
+            </Styled.HeroProjectMain>
           </Container>
-        </Styled.HeroPortofolio>
+        </Styled.HeroProject>
         <Footer />
       </Styled.HeroHome>
     </Fragment>

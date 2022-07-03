@@ -1,8 +1,7 @@
-// ========== IHomeStates
+// ========== IProjectsGlobalStates
 // import all modules
 import { IProjects } from './IProjects';
 
-export interface IHomeStates {
-	loading: boolean;
+export interface IProjectsGlobalStates {
 	projects: IProjects[];
 }

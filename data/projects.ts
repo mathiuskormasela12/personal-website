@@ -1,8 +1,8 @@
-// =========== Articles
+// =========== Projects
 
-import { IPortofolios } from '../interfaces';
+import { IProjects } from '../interfaces';
 
-const data: IPortofolios[] = [
+const data: IProjects[] = [
   {
     id: 1,
     title: 'Belajar Dasar Node Js',

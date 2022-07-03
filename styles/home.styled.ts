@@ -1,7 +1,7 @@
 // ========== Home Styles
 // import all modules
 import styled from 'styled-components';
-import { IBalloonProps, IHeroPortofolioMainColProps } from '../interfaces';
+import { IBalloonProps, IHeroProjectsMainColProps } from '../interfaces';
 import { Colors } from '../themes';
 
 export const HeroHome = styled.div`
@@ -158,11 +158,11 @@ export const ImageContainer = styled.span`
 	}
 `;
 
-export const HeroPortofolio = styled.div`
+export const HeroProject = styled.div`
 	padding: 0 0 2rem 0;
 `;
 
-export const HeroPortofolioHeader = styled.header`
+export const HeroProjectHeader = styled.header`
 	text-align: center;
 	display: flex;
 	align-items: center;
@@ -178,16 +178,16 @@ export const HeroPortofolioHeader = styled.header`
 	}
 `;
 
-export const HeroPortofolioMain = styled.main`
+export const HeroProjectMain = styled.main`
 	margin-top: 2rem;
 `;
 
-export const HeroPortofolioMainRow = styled.div`
+export const HeroProjectMainRow = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 `;
 
-export const HeroPortofolioMainCol = styled.div<IHeroPortofolioMainColProps>`
+export const HeroProjectMainCol = styled.div<IHeroProjectsMainColProps>`
 	width: 29%;
 	margin-right: auto;
 
@@ -237,5 +237,24 @@ export const HeroPortofolioMainCol = styled.div<IHeroPortofolioMainColProps>`
 
 	@media (min-width: 600px) and (max-width: 1024px) {
 		width: 48%;
+	}
+`;
+
+export const Pagination = styled.div`
+	display: flex;
+	justify-content: center;
+`;
+
+export const PaginationItems = styled.div`
+	width: 2.5em;
+	line-height: 2.5em;
+	text-align: center;
+	font-size: 1rem;
+	color: ${Colors.dark};
+	cursor: pointer;
+	border-radius: 50%;
+
+	&:hover {
+		background-color: ${Colors.shapeColor};
 	}
 `;

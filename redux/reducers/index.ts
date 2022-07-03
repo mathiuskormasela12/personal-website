@@ -8,7 +8,7 @@ import storage from '../storage';
 // import all reducers
 import authReducer from './auth';
 import authTemporaryReducer from './authTemporary';
-import articlesReducer from './articles';
+import projectsReducer from './projects';
 
 const rootPersistConfig = {
   key: 'root',
@@ -22,8 +22,8 @@ const authPersistConfig = {
   stateReconciler: hardSet,
 };
 
-const articlesPersistConfig = {
-  key: 'articles',
+const projectsPersistConfig = {
+  key: 'projects',
   storage,
   stateReconciler: hardSet,
 };
@@ -31,7 +31,7 @@ const articlesPersistConfig = {
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   authTemporary: authTemporaryReducer,
-  articles: persistReducer(articlesPersistConfig, articlesReducer),
+  projects: persistReducer(projectsPersistConfig, projectsReducer),
 });
 
 export default persistReducer(rootPersistConfig, rootReducer);
