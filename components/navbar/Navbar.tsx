@@ -19,10 +19,7 @@ export const Navbar: NextPage = () => {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
   const accessToken: string = useSelector((current: IGlobalStates) => current.auth.accessToken);
-  const accessTokenTemporary: string = useSelector((
-    current: IGlobalStates,
-  ) => current.authTemporary.accessToken);
-  const navItems = (accessToken !== '' || accessTokenTemporary !== '') ? NAV_ITEMS.ADMIN : NAV_ITEMS.USER;
+  const navItems = (accessToken !== '') ? NAV_ITEMS.ADMIN : NAV_ITEMS.USER;
 
   const handleMoveToOtherWebsite = (link: string) => {
     window.location.href = link;

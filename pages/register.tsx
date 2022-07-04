@@ -1,4 +1,4 @@
-// ========== Login
+// ========== Register
 // import all modules
 import React, { Fragment, useState } from 'react';
 import type { NextPage } from 'next';
@@ -15,10 +15,11 @@ import {
   Button,
 } from '../components';
 
-const Login: NextPage = () => {
+const Register: NextPage = () => {
   const [state, setState] = useState({
     email: '',
     password: '',
+    repeatPassword: '',
   });
 
   const handleChange = 	(
@@ -37,7 +38,7 @@ const Login: NextPage = () => {
 
   return (
     <Fragment>
-      <Head title="Sign In" />
+      <Head title="Sign Up" />
       <Styled.HeroCreateAuth>
         <Navbar />
         <Styled.HeroCreateAuthBody>
@@ -51,7 +52,7 @@ const Login: NextPage = () => {
               <Styled.HeroCreateAuthCol>
                 <Styled.HeroCreateAuthImageContainer>
                   <Image
-                    src="/icons/login.svg"
+                    src="/icons/register.svg"
                     width={250}
                     height={250}
                     layout="responsive"
@@ -61,7 +62,7 @@ const Login: NextPage = () => {
               </Styled.HeroCreateAuthCol>
               <Styled.HeroCreateAuthCol>
                 <Styled.HeroCreateAuthTitle>
-                  Sign In to Continue
+                  Create an Account
                 </Styled.HeroCreateAuthTitle>
                 <Styled.HeroCreateAuthForm onSubmit={handleSubmit}>
                   <Styled.HeroCreateAuthControl>
@@ -93,8 +94,22 @@ const Login: NextPage = () => {
                     </Styled.HeroCreateAuthField>
                   </Styled.HeroCreateAuthControl>
                   <Styled.HeroCreateAuthControl>
+                    <Styled.HeroCreateAuthLabel htmlFor="repeat-password">
+                      Repeat Password
+                    </Styled.HeroCreateAuthLabel>
+                    <Styled.HeroCreateAuthField>
+                      <TextField
+                        placeholder="Repeat Password..."
+                        type="password"
+                        id="repeat-password"
+                        value={state.repeatPassword}
+                        onChange={(event) => handleChange('repeatPassword', event)}
+                      />
+                    </Styled.HeroCreateAuthField>
+                  </Styled.HeroCreateAuthControl>
+                  <Styled.HeroCreateAuthControl>
                     <Button type="submit" size="md" fluid>
-                      Sign In
+                      Create
                     </Button>
                   </Styled.HeroCreateAuthControl>
                 </Styled.HeroCreateAuthForm>
@@ -108,4 +123,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default Register;
