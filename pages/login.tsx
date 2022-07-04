@@ -3,6 +3,7 @@
 import React, { Fragment, useState } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import * as Styled from '../styles';
 
 // import all components
@@ -20,6 +21,8 @@ const Login: NextPage = () => {
     email: '',
     password: '',
   });
+
+  const router = useRouter();
 
   const handleChange = 	(
     name: string,
@@ -91,6 +94,11 @@ const Login: NextPage = () => {
                         onChange={(event) => handleChange('password', event)}
                       />
                     </Styled.HeroCreateAuthField>
+                  </Styled.HeroCreateAuthControl>
+                  <Styled.HeroCreateAuthControl>
+                    <Styled.FormLink onClick={() => router.push('/forgot')}>
+                      Forgot Password ?
+                    </Styled.FormLink>
                   </Styled.HeroCreateAuthControl>
                   <Styled.HeroCreateAuthControl>
                     <Button type="submit" size="md" fluid>

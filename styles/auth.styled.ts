@@ -100,3 +100,10 @@ export const HeroCreateAuthControl = styled.div`
 export const HeroCreateAuthField = styled.div`
 	margin-top: .8rem;
 `;
+
+export const FormLink = styled.p`
+	cursor: pointer;
+	color: ${Colors.dark};
+	font-size: 1rem;
+	text-align: right;
+`;
