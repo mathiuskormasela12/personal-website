@@ -6,4 +6,7 @@ export interface IContainerProps {
 	children: React.ReactNode;
 	fluid?: boolean;
 	inheritHeight?: boolean;
+	customSize?: {
+		value: number;
+	};
 }

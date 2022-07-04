@@ -34,4 +34,14 @@ export const Button = styled.button<IButtonProps>`
 
     return '';
   }}
+
+	${({ fluid }) => {
+    if (fluid) {
+      return `
+				width: 100%;
+			`;
+    }
+
+    return '';
+  }}
 `;

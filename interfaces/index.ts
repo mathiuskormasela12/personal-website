@@ -21,3 +21,5 @@ export * from './IListItemsProps';
 export * from './IProjectsGlobalStates';
 export * from './IProjectsReduxAction';
 export * from './IPaginationProps';
+export * from './ITextFieldProps';
+export * from './ILongTextProps';
