@@ -36,8 +36,8 @@ export const NAV_ITEMS = {
     },
     {
       id: 3,
-      text: 'Write',
-      path: '/write',
+      text: 'Create',
+      path: '/project',
     },
     {
       id: 4,

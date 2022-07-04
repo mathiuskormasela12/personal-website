@@ -8,7 +8,7 @@ export const HeroCreateProject = styled.div`
 	height: 100vh;
 	width: 100%;
 
-	@media (max-width: 920px) {
+	@media (max-width: 1024px) {
 		height: auto;
 	}
 `;
@@ -16,7 +16,7 @@ export const HeroCreateProject = styled.div`
 export const HeroCreateProjectBody = styled.div`
 	height: 100%;
 
-	@media (max-width: 920px) {
+	@media (max-width: 1024px) {
 		height: auto;
 	}
 `;
@@ -28,6 +28,11 @@ export const HeroCreateProjectFlex = styled.div`
 	@media (max-width: 920px) {
 		height: auto;
 		padding: 18vmax 0;
+	}
+
+	@media (min-width: 920px) and (max-width: 1024px) {
+		height: auto;
+		padding: 10vmax 0;
 	}
 
 	align-items: center;
@@ -94,4 +99,8 @@ export const HeroCreateProjectControl = styled.div`
 
 export const HeroCreateProjectField = styled.div`
 	margin-top: .8rem;
+`;
+
+export const File = styled.input`
+	display: none;
 `;

@@ -1,6 +1,6 @@
 // ========== Pagination
 // import all modules
-import React from 'react';
+import React, { Fragment } from 'react';
 import type { NextPage } from 'next';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import * as Styled from './pagination.styled';
@@ -18,10 +18,9 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
 
         if (pageInLooping === 6) {
           return (
-            <>
+            // eslint-disable-next-line react/no-array-index-key
+            <Fragment key={index.toString()}>
               <Styled.PaginationItems
-							// eslint-disable-next-line react/no-array-index-key
-                key={index.toString()}
                 active={(pageInLooping === page)}
                 {...props}
               >
@@ -35,7 +34,7 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
               >
                 {totalPages}
               </Styled.PaginationItems>
-            </>
+            </Fragment>
           );
         } if (pageInLooping < 6) {
           return (
