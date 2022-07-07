@@ -3,6 +3,7 @@
 import React, { Fragment, useState } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import * as Styled from '../styles';
 
 // import all components
@@ -20,8 +21,8 @@ const Forgot: NextPage = () => {
     email: '',
     password: '',
     repeatPassword: '',
-    screen: 'FORGOT',
   });
+  const { query } = useRouter();
 
   const handleChange = 	(
     name: string,
@@ -36,19 +37,16 @@ const Forgot: NextPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    switch (state.screen) {
-      case 'FORGOT':
-        setState((current) => ({
-          ...current,
-          screen: 'RESET',
-        }));
-        break;
-
-      default:
-        setState((current) => ({
-          ...current,
-          screen: 'FORGOT',
-        }));
+    if (query.token) {
+      setState((current) => ({
+        ...current,
+        screen: 'RESET',
+      }));
+    } else {
+      setState((current) => ({
+        ...current,
+        screen: 'FORGOT',
+      }));
     }
   };
 
@@ -78,10 +76,10 @@ const Forgot: NextPage = () => {
               </Styled.HeroCreateForgotCol>
               <Styled.HeroCreateForgotCol>
                 <Styled.HeroCreateForgotTitle>
-                  {state.screen === 'FORGOT' ? 'Forgot Password' : 'Reset Password'}
+                  {!query.token ? 'Forgot Password' : 'Reset Password'}
                 </Styled.HeroCreateForgotTitle>
                 <Styled.HeroCreateForgotForm onSubmit={handleSubmit}>
-                  {state.screen === 'FORGOT' ? (
+                  {!query.token ? (
                     <Fragment>
                       <Styled.HeroCreateForgotControl>
                         <Styled.HeroCreateForgotLabel htmlFor="email">
