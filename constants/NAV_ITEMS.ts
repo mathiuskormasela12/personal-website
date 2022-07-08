@@ -42,7 +42,7 @@ export const NAV_ITEMS = {
     {
       id: 4,
       text: 'Logout',
-      path: '',
+      path: '/logout',
     },
     {
       id: 5,

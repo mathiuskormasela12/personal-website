@@ -12,7 +12,7 @@ import projectsReducer from './projects';
 const rootPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['authTemporary'],
+  blacklist: [],
 };
 
 const authPersistConfig = {

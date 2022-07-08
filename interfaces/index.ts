@@ -23,3 +23,7 @@ export * from './IProjectsReduxAction';
 export * from './IPaginationProps';
 export * from './ITextFieldProps';
 export * from './ILongTextProps';
+export * from './ILoginBody';
+export * from './IRegisterBody';
+export * from './IForgotPasswordBody';
+export * from './IResetPasswordBody';

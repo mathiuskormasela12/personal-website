@@ -4,6 +4,8 @@ import React, { Fragment, useState } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import * as Styled from '../styles';
 
 // import all components
@@ -15,6 +17,9 @@ import {
   TextField,
   Button,
 } from '../components';
+import Services from '../services';
+import { IGlobalStates, ILoginBody } from '../interfaces';
+import { setToken } from '../redux/actions';
 
 const Login: NextPage = () => {
   const [state, setState] = useState({
@@ -22,9 +27,21 @@ const Login: NextPage = () => {
     password: '',
     textFieldErrorMessageEmail: '',
     textFieldErrorMessagePassword: '',
+    loading: false,
   });
+  const accessToken: string = useSelector((
+    currentState: IGlobalStates,
+  ) => currentState.auth.accessToken);
+  const refreshToken: string = useSelector((
+    currentState: IGlobalStates,
+  ) => currentState.auth.refreshToken);
 
   const router = useRouter();
+  const dispatch = useDispatch();
+
+  if (accessToken !== '' && refreshToken !== '' && !state.loading) {
+    router.push('/');
+  }
 
   const handleChange = 	(
     name: string,
@@ -70,6 +87,52 @@ const Login: NextPage = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
+  const handleLogin = async () => {
+    setState((currentState) => ({
+      ...currentState,
+      loading: true,
+    }));
+
+    const body: ILoginBody = {
+      email: state.email,
+      password: state.password,
+    };
+
+    try {
+      const { data } = await Services.login(body);
+
+      dispatch(setToken(data.accessToken, data.refreshToken));
+
+      Swal.fire({
+        title: 'Success',
+        icon: 'success',
+        text: data.message,
+        didClose() {
+          setState((current) => ({
+            ...current,
+            loading: false,
+          }));
+          router.push('/');
+        },
+      });
+    } catch (err: any) {
+      dispatch(setToken('', ''));
+
+      setState((currentState) => ({
+        ...currentState,
+        loading: false,
+      }));
+
+      Swal.fire({
+        title: 'Failed',
+        icon: 'error',
+        text: err.message,
+      });
+    }
+  };
+
+  const buttonDisabled: boolean = state.loading || state.email === '' || state.password === '' || state.textFieldErrorMessageEmail !== '' || state.textFieldErrorMessagePassword !== '';
 
   return (
     <Fragment>
@@ -138,8 +201,14 @@ const Login: NextPage = () => {
                     </Styled.FormLink>
                   </Styled.HeroCreateAuthControl>
                   <Styled.HeroCreateAuthControl>
-                    <Button type="submit" size="md" fluid>
-                      Sign In
+                    <Button
+                      type="submit"
+                      size="md"
+                      disabled={buttonDisabled}
+                      fluid
+                      onClick={handleLogin}
+                    >
+                      {state.loading ? 'Loading...' : ' Sign In'}
                     </Button>
                   </Styled.HeroCreateAuthControl>
                 </Styled.HeroCreateAuthForm>

@@ -3,6 +3,8 @@
 import React, { Fragment, useState, useRef } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import * as Styled from '../styles';
 
 // import all components
@@ -15,6 +17,7 @@ import {
   LongText,
   Button,
 } from '../components';
+import { IGlobalStates } from '../interfaces';
 
 const Project: NextPage = () => {
   const [state, setState] = useState({
@@ -24,6 +27,9 @@ const Project: NextPage = () => {
   });
 
   const fileRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+  const accessToken: string = useSelector((states: IGlobalStates) => states.auth.accessToken);
+  const refreshToken: string = useSelector((states: IGlobalStates) => states.auth.refreshToken);
 
   const handleChange = 	(
     name: string,
@@ -39,6 +45,10 @@ const Project: NextPage = () => {
     e.preventDefault();
     fileRef.current?.click();
   };
+
+  if (accessToken === '' && refreshToken === '') {
+    router.push('/login');
+  }
 
   return (
     <Fragment>

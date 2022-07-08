@@ -4,6 +4,11 @@ import React, { Fragment, useState } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import jwtDecode from 'jwt-decode';
+import { IForgotPasswordBody, IGlobalStates, IResetPasswordBody } from '../interfaces';
+import Services from '../services';
 import * as Styled from '../styles';
 
 // import all components
@@ -24,8 +29,19 @@ const Forgot: NextPage = () => {
     textFieldErrorMessageEmail: '',
     textFieldErrorMessagePassword: '',
     textFieldErrorMessageRepeatPassword: '',
+    loading: false,
   });
-  const { query } = useRouter();
+  const { query, push } = useRouter();
+  const accessToken: string = useSelector((
+    currentState: IGlobalStates,
+  ) => currentState.auth.accessToken);
+  const refreshToken: string = useSelector((
+    currentState: IGlobalStates,
+  ) => currentState.auth.refreshToken);
+
+  if (accessToken !== '' && refreshToken !== '') {
+    push('/');
+  }
 
   const handleChange = 	(
     name: string,
@@ -71,6 +87,12 @@ const Forgot: NextPage = () => {
             textFieldErrorMessageRepeatPassword: 'Repeat password is too weak',
             [name]: e.target.value,
           }));
+        } else if (state.password !== e.target.value) {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessageRepeatPassword: 'The password does not match',
+            [name]: e.target.value,
+          }));
         } else {
           setState((currentState) => ({
             ...currentState,
@@ -84,21 +106,99 @@ const Forgot: NextPage = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSendForgotPasswordLink = async () => {
+    setState((currentState) => ({
+      ...currentState,
+      loading: true,
+    }));
+
+    const body: IForgotPasswordBody = {
+      email: state.email,
+    };
+
+    try {
+      const { data } = await Services.forgotPassword(body);
+
+      Swal.fire({
+        title: 'Success',
+        icon: 'success',
+        text: data.message,
+        didClose() {
+          setState((current) => ({
+            ...current,
+            loading: false,
+          }));
+        },
+      });
+    } catch (err: any) {
+      setState((currentState) => ({
+        ...currentState,
+        loading: false,
+      }));
+
+      Swal.fire({
+        title: 'Failed',
+        icon: 'error',
+        text: err.message,
+      });
+    }
+  };
+
+  const handleResetPassword = async () => {
+    const body: IResetPasswordBody = {
+      password: state.password,
+      repeatPassword: state.repeatPassword,
+    };
 
     if (query.token) {
       setState((current) => ({
         ...current,
-        screen: 'RESET',
+        loading: true,
       }));
-    } else {
-      setState((current) => ({
-        ...current,
-        screen: 'FORGOT',
-      }));
+      const decode: any = jwtDecode(String(query.token));
+
+      try {
+        const { data } = await Services.resetPassword(Number(decode.id), body);
+
+        Swal.fire({
+          title: 'Success',
+          icon: 'success',
+          text: data.message,
+          didClose() {
+            setState((current) => ({
+              ...current,
+              loading: false,
+            }));
+            push('/login');
+          },
+        });
+      } catch (err: any) {
+        setState((currentState) => ({
+          ...currentState,
+          loading: false,
+        }));
+
+        Swal.fire({
+          title: 'Failed',
+          icon: 'error',
+          text: err.message,
+        });
+      }
     }
   };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (query.token) {
+      handleResetPassword();
+    } else {
+      handleSendForgotPasswordLink();
+    }
+  };
+
+  const buttonDisabledForgotPassword: boolean = state.loading || state.email === '' || state.textFieldErrorMessageEmail !== '';
+  const buttonDisabledResetPassword: boolean = state.loading || state.password === '' || state.repeatPassword === '' || state.textFieldErrorMessagePassword !== '' || state.textFieldErrorMessageRepeatPassword !== '';
 
   return (
     <Fragment>
@@ -148,8 +248,13 @@ const Forgot: NextPage = () => {
                         </Styled.HeroCreateForgotField>
                       </Styled.HeroCreateForgotControl>
                       <Styled.HeroCreateForgotControl>
-                        <Button type="submit" size="md" fluid>
-                          Send
+                        <Button
+                          type="submit"
+                          size="md"
+                          fluid
+                          disabled={buttonDisabledForgotPassword}
+                        >
+                          {state.loading ? 'Loading...' : 'Send'}
                         </Button>
                       </Styled.HeroCreateForgotControl>
                     </Fragment>
@@ -188,8 +293,13 @@ const Forgot: NextPage = () => {
                         </Styled.HeroCreateForgotField>
                       </Styled.HeroCreateForgotControl>
                       <Styled.HeroCreateForgotControl>
-                        <Button type="submit" size="md" fluid>
-                          Reset
+                        <Button
+                          type="submit"
+                          size="md"
+                          fluid
+                          disabled={buttonDisabledResetPassword}
+                        >
+                          {state.loading ? 'Loading...' : 'Reset'}
                         </Button>
                       </Styled.HeroCreateForgotControl>
                     </Fragment>

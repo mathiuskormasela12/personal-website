@@ -4,6 +4,10 @@ import React, { Fragment, useState } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import { IGlobalStates, IRegisterBody } from '../interfaces';
+import Services from '../services';
 import * as Styled from '../styles';
 
 // import all components
@@ -24,9 +28,16 @@ const Register: NextPage = () => {
     textFieldErrorMessageEmail: '',
     textFieldErrorMessagePassword: '',
     textFieldErrorMessageRepeatPassword: '',
+    loading: false,
   });
 
   const router = useRouter();
+  const accessToken: string = useSelector((states: IGlobalStates) => states.auth.accessToken);
+  const refreshToken: string = useSelector((states: IGlobalStates) => states.auth.refreshToken);
+
+  if (accessToken === '' && refreshToken === '') {
+    router.push('/login');
+  }
 
   const handleChange = 	(
     name: string,
@@ -72,6 +83,12 @@ const Register: NextPage = () => {
             textFieldErrorMessageRepeatPassword: 'Repeat password is too weak',
             [name]: e.target.value,
           }));
+        } else if (state.password !== e.target.value) {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessageRepeatPassword: 'The password does not match',
+            [name]: e.target.value,
+          }));
         } else {
           setState((currentState) => ({
             ...currentState,
@@ -85,9 +102,49 @@ const Register: NextPage = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setState((currentState) => ({
+      ...currentState,
+      loading: true,
+    }));
+
+    const body: IRegisterBody = {
+      email: state.email,
+      password: state.password,
+      repeatPassword: state.repeatPassword,
+    };
+
+    try {
+      const { data } = await Services.register(body);
+
+      Swal.fire({
+        title: 'Success',
+        icon: 'success',
+        text: data.message,
+        didClose() {
+          setState((current) => ({
+            ...current,
+            loading: false,
+          }));
+          router.push('/');
+        },
+      });
+    } catch (err: any) {
+      setState((currentState) => ({
+        ...currentState,
+        loading: false,
+      }));
+
+      Swal.fire({
+        title: 'Failed',
+        icon: 'error',
+        text: err.message,
+      });
+    }
   };
+
+  const buttonDisabled: boolean = state.loading || state.email === '' || state.password === '' || state.repeatPassword === '' || state.textFieldErrorMessageEmail !== '' || state.textFieldErrorMessagePassword !== '' || state.textFieldErrorMessageRepeatPassword !== '';
 
   return (
     <Fragment>
@@ -172,8 +229,8 @@ const Register: NextPage = () => {
                     </Styled.FormLink>
                   </Styled.HeroCreateAuthControl>
                   <Styled.HeroCreateAuthControl>
-                    <Button type="submit" size="md" fluid>
-                      Create
+                    <Button type="submit" size="md" fluid disabled={buttonDisabled}>
+                      {state.loading ? 'Loading...' : 'Create'}
                     </Button>
                   </Styled.HeroCreateAuthControl>
                 </Styled.HeroCreateAuthForm>

@@ -22,6 +22,8 @@
 		"no-tabs": "off",
 		"default-param-last": "off",
 		"no-use-before-define": "off",
-		"import/no-cycle": "off"
+		"import/no-cycle": "off",
+		"no-param-reassign": "off",
+		"no-underscore-dangle": "off"
 	}
 }
