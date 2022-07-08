@@ -20,6 +20,8 @@ const Login: NextPage = () => {
   const [state, setState] = useState({
     email: '',
     password: '',
+    textFieldErrorMessageEmail: '',
+    textFieldErrorMessagePassword: '',
   });
 
   const router = useRouter();
@@ -28,10 +30,41 @@ const Login: NextPage = () => {
     name: string,
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setState((currentState) => ({
-      ...currentState,
-      [name]: e.target.value,
-    }));
+    switch (name) {
+      case 'email':
+        if (!e.target.value.match(/@/gi)) {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessageEmail: 'Invalid email',
+            [name]: e.target.value,
+          }));
+        } else {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessageEmail: '',
+            [name]: e.target.value,
+          }));
+        }
+        break;
+
+      case 'password':
+        if (!e.target.value.match(/[a-z]/g) || !e.target.value.match(/[A-Z]/g) || !e.target.value.match(/[0-9]/gi) || !e.target.value.match(/\W/gi)) {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessagePassword: 'Password is too weak',
+            [name]: e.target.value,
+          }));
+        } else {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessagePassword: '',
+            [name]: e.target.value,
+          }));
+        }
+        break;
+
+      default:
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -77,6 +110,8 @@ const Login: NextPage = () => {
                         type="email"
                         id="email"
                         value={state.email}
+                        invalidMessage={state.textFieldErrorMessageEmail.length > 0
+                          ? state.textFieldErrorMessageEmail : undefined}
                         onChange={(event) => handleChange('email', event)}
                       />
                     </Styled.HeroCreateAuthField>
@@ -91,6 +126,8 @@ const Login: NextPage = () => {
                         type="password"
                         id="password"
                         value={state.password}
+                        invalidMessage={state.textFieldErrorMessagePassword.length > 0
+                          ? state.textFieldErrorMessagePassword : undefined}
                         onChange={(event) => handleChange('password', event)}
                       />
                     </Styled.HeroCreateAuthField>

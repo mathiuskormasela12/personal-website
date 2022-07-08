@@ -3,5 +3,5 @@
 import React from 'react';
 
 export interface ITextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-
+	invalidMessage?: string;
 }

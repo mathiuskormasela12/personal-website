@@ -21,6 +21,9 @@ const Forgot: NextPage = () => {
     email: '',
     password: '',
     repeatPassword: '',
+    textFieldErrorMessageEmail: '',
+    textFieldErrorMessagePassword: '',
+    textFieldErrorMessageRepeatPassword: '',
   });
   const { query } = useRouter();
 
@@ -28,10 +31,57 @@ const Forgot: NextPage = () => {
     name: string,
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setState((currentState) => ({
-      ...currentState,
-      [name]: e.target.value,
-    }));
+    switch (name) {
+      case 'email':
+        if (!e.target.value.match(/@/gi)) {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessageEmail: 'Invalid email',
+            [name]: e.target.value,
+          }));
+        } else {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessageEmail: '',
+            [name]: e.target.value,
+          }));
+        }
+        break;
+
+      case 'password':
+        if (!e.target.value.match(/[a-z]/g) || !e.target.value.match(/[A-Z]/g) || !e.target.value.match(/[0-9]/gi) || !e.target.value.match(/\W/gi)) {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessagePassword: 'Password is too weak',
+            [name]: e.target.value,
+          }));
+        } else {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessagePassword: '',
+            [name]: e.target.value,
+          }));
+        }
+        break;
+
+      case 'repeatPassword':
+        if (!e.target.value.match(/[a-z]/g) || !e.target.value.match(/[A-Z]/g) || !e.target.value.match(/[0-9]/gi) || !e.target.value.match(/\W/gi)) {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessageRepeatPassword: 'Repeat password is too weak',
+            [name]: e.target.value,
+          }));
+        } else {
+          setState((currentState) => ({
+            ...currentState,
+            textFieldErrorMessageRepeatPassword: '',
+            [name]: e.target.value,
+          }));
+        }
+        break;
+
+      default:
+    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -91,6 +141,8 @@ const Forgot: NextPage = () => {
                             type="email"
                             id="email"
                             value={state.email}
+                            invalidMessage={state.textFieldErrorMessageEmail.length > 0
+                              ? state.textFieldErrorMessageEmail : undefined}
                             onChange={(event) => handleChange('email', event)}
                           />
                         </Styled.HeroCreateForgotField>
@@ -113,6 +165,8 @@ const Forgot: NextPage = () => {
                             type="password"
                             id="password"
                             value={state.password}
+                            invalidMessage={state.textFieldErrorMessagePassword.length > 0
+                              ? state.textFieldErrorMessagePassword : undefined}
                             onChange={(event) => handleChange('password', event)}
                           />
                         </Styled.HeroCreateForgotField>
@@ -127,6 +181,8 @@ const Forgot: NextPage = () => {
                             type="password"
                             id="repeat-password"
                             value={state.repeatPassword}
+                            invalidMessage={state.textFieldErrorMessageRepeatPassword.length > 0
+                              ? state.textFieldErrorMessageRepeatPassword : undefined}
                             onChange={(event) => handleChange('repeatPassword', event)}
                           />
                         </Styled.HeroCreateForgotField>

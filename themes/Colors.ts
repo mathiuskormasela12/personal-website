@@ -16,4 +16,5 @@ export const Colors = {
   light: '#586991',
   gray: '#575757',
   footerColor: '#F6F6F6',
+  danger: 'hsl(348, 100%, 61%)',
 };

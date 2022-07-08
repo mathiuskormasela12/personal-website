@@ -55,4 +55,9 @@ export const GlobalStyles = createGlobalStyle`
 	h6 {
 		font-size: 1.8rem;
 	}
+
+	input[type="password"]::-ms-reveal,
+	input[type="password"]::-ms-clear {
+		display: none;
+	}
 `;
