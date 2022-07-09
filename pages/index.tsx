@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from '../styles';
-import data from '../data/projects';
 
 // import all components
 import {
@@ -17,6 +16,7 @@ import {
   Card,
   Footer,
   Pagination,
+  Placeholder,
 } from '../components';
 import { setProjects } from '../redux/actions';
 import { IGlobalStates, IProjects } from '../interfaces';
@@ -27,10 +27,15 @@ const Home: NextPage = () => {
   const projects: IProjects[] = useSelector(
     (current: IGlobalStates) => current.projects.projects,
   );
+  const totalPages: number = useSelector(
+    (current: IGlobalStates) => current.projects.totalPages,
+  );
+
+  const { page = 1 } = router.query;
 
   useEffect(() => {
-    dispatch(setProjects(data));
-  }, [dispatch]);
+    dispatch(setProjects(Number(page)));
+  }, [dispatch, page]);
 
   return (
     <Fragment>
@@ -102,8 +107,11 @@ const Home: NextPage = () => {
                     type="button"
                     size="md"
                     rounded
+                    onClick={() => {
+                      router.push('https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw');
+                    }}
                   >
-                    Download CV
+                    My Youtube
                   </Button>
                 </Styled.HeroHomeWelcomeContent>
               </Styled.HeroHomeCol>
@@ -227,28 +235,33 @@ const Home: NextPage = () => {
             </Styled.HeroProjectHeader>
             <Styled.HeroProjectMain>
               <Styled.HeroProjectMainRow>
-                {projects.map((item, index) => (
-                  <Styled.HeroProjectMainCol
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={index.toString()}
-                    count={projects.length}
-                  >
-                    <Card
-                      title={item.title}
-                      description={item.description}
-                      img={item.img}
-                      technologies={item.technologies}
-                      onClick={() => {
-                        router.push(`/detail/${String(item.id)}`);
-                      }}
-                    />
-                  </Styled.HeroProjectMainCol>
-                ))}
+                <Placeholder>
+                  <Fragment>
+                    {projects.map((item) => (
+                      <Styled.HeroProjectMainCol
+                        key={item.id.toString()}
+                        count={projects.length}
+                      >
+                        <Card
+                          title={item.title}
+                          description={item.description}
+                          img={item.img}
+                          technologies={item.technologies}
+                          onClick={() => {
+                            router.push(`/detail/${String(item.id)}`);
+                          }}
+                        />
+                      </Styled.HeroProjectMainCol>
+                    ))}
+                  </Fragment>
+                </Placeholder>
               </Styled.HeroProjectMainRow>
+              {totalPages > 0 && (
               <Pagination
-                totalPages={15}
-                page={1}
+                totalPages={totalPages}
+                page={Number(page)}
               />
+              )}
             </Styled.HeroProjectMain>
           </Container>
         </Styled.HeroProject>

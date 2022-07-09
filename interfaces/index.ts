@@ -27,3 +27,8 @@ export * from './ILoginBody';
 export * from './IRegisterBody';
 export * from './IForgotPasswordBody';
 export * from './IResetPasswordBody';
+export * from './IPlaceholderProps';
+export * from './IGetAllProjectsQueries';
+export * from './ICreateProjectBody';
+export * from './IEvent';
+export * from './IUpdateProjectBody';

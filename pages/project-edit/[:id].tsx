@@ -1,13 +1,15 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
-// ========== Project
+// ========== Project Edit
 // import all modules
-import React, { Fragment, useState, useRef } from 'react';
+import React, {
+  Fragment, useState, useRef, useEffect,
+} from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
-import * as Styled from '../styles';
+import * as Styled from '../../styles';
 
 // import all components
 import {
@@ -18,13 +20,17 @@ import {
   TextField,
   LongText,
   Button,
-} from '../components';
-import { IEvent, IGlobalStates } from '../interfaces';
-import Services from '../services';
-import { generateFormData } from '../helpers';
+} from '../../components';
+import { IEvent, IGlobalStates, IProjects } from '../../interfaces';
+import Services from '../../services';
+import { generateFormData } from '../../helpers';
+import { setProject } from '../../redux/actions';
 
-const Project: NextPage = () => {
+const ProjectEdit: NextPage = () => {
   const fileRef = useRef<HTMLInputElement>(null);
+  const dispatch = useDispatch();
+  const project: IProjects = useSelector((current: IGlobalStates) => current.projects.project);
+  const router = useRouter();
 
 	interface State {
 		projectName: string;
@@ -42,7 +48,41 @@ const Project: NextPage = () => {
 	  loading: false,
 	});
 
-	const router = useRouter();
+	useEffect(() => {
+	  if (router.isReady) {
+	    dispatch(setProject(Number(router.query[':id'])));
+	  }
+
+	  return () => {
+	    dispatch({
+	      type: 'SET_PROJECT',
+	      payload: {
+	        data: {
+	          project: {
+	            id: 0,
+	            title: '',
+	            technologies: [],
+	            description: '',
+	            img: '',
+	          },
+	        },
+	      },
+	    });
+	  };
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [router.isReady]);
+
+	useEffect(() => {
+	  setState((current) => ({
+	    ...current,
+	    projectName: project.title,
+	    technologies: project.technologies.map((item) => item.name).join(', '),
+	    projectDescription: project.description,
+	    img: null,
+	    loading: false,
+	  }));
+	}, [project]);
+
 	const accessToken: string = useSelector((states: IGlobalStates) => states.auth.accessToken);
 	const refreshToken: string = useSelector((states: IGlobalStates) => states.auth.refreshToken);
 
@@ -75,9 +115,9 @@ const Project: NextPage = () => {
 	const handleCreate = async () => {
 	 if (state.img && state.img.length > 0) {
 	    setState((current) => ({
-	    ...current,
-	    loading: true,
-	  }));
+	      ...current,
+	      loading: true,
+	  	}));
 
 	  const body = {
 	    title: state.projectName,
@@ -89,15 +129,16 @@ const Project: NextPage = () => {
 	  const form = generateFormData(body);
 
 	  try {
-	    const { data } = await Services.createProject(form);
+	    const { data } = await Services.updateProject(project.id, form);
 	    Swal.fire({
 	      title: 'Success',
 	      icon: 'success',
 	      text: data.message,
-	        didClose() {
+	    }).then((confirm) => {
+	        if (confirm.isConfirmed) {
 	          router.push('/');
-	        },
-	    });
+	        }
+	      });
 	  } catch (err: any) {
 	    Swal.fire({
 	      title: 'Failed',
@@ -105,6 +146,38 @@ const Project: NextPage = () => {
 	      text: err.message,
 	    });
 	  }
+	 } else {
+	    setState((current) => ({
+	      ...current,
+	      loading: true,
+	    }));
+
+	    const body = {
+	      title: state.projectName,
+	      technologies: state.technologies,
+	      description: state.projectDescription,
+	    };
+
+	    const form = generateFormData(body);
+
+	    try {
+	      const { data } = await Services.updateProject(project.id, form);
+	      Swal.fire({
+	        title: 'Success',
+	        icon: 'success',
+	        text: data.message,
+	      }).then((confirm) => {
+	        if (confirm.isConfirmed) {
+	          router.push('/');
+	        }
+	      });
+	    } catch (err: any) {
+	      Swal.fire({
+	        title: 'Failed',
+	        icon: 'error',
+	        text: err.message,
+	      });
+	    }
 	 }
 	};
 
@@ -134,7 +207,7 @@ const Project: NextPage = () => {
             </Styled.HeroCreateProjectCol>
             <Styled.HeroCreateProjectCol>
               <Styled.HeroCreateProjectTitle>
-                Create a Project
+                Edit a Project
               </Styled.HeroCreateProjectTitle>
               <Styled.HeroCreateProjectForm onSubmit={handleSave}>
                 <Styled.HeroCreateProjectControl>
@@ -210,4 +283,4 @@ const Project: NextPage = () => {
 	);
 };
 
-export default Project;
+export default ProjectEdit;

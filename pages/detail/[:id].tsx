@@ -1,10 +1,10 @@
 // ========== Detail
 // import all modules
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from '../../styles';
 
 // import all components
@@ -13,26 +13,39 @@ import {
   Head,
   Navbar,
   Footer,
+  Placeholder,
 } from '../../components';
+import { setProject } from '../../redux/actions';
 import { IGlobalStates, IProjects } from '../../interfaces';
 
 const Detail: NextPage = () => {
   const router = useRouter();
-  const { id = 1 } = router.query;
-
-  const projectsRedux: IProjects[] = useSelector(
-    (current: IGlobalStates) => current.projects.projects,
-  );
-
-  const [projects, setProjects] = useState<IProjects[]>([]);
+  const dispatch = useDispatch();
+  const project: IProjects = useSelector((current: IGlobalStates) => current.projects.project);
 
   useEffect(() => {
-    const modified = projectsRedux.filter((item) => item.id === Number(id));
-    // window.alert(id);
-    // console.log()
-    setProjects(modified);
+    if (router.isReady) {
+      dispatch(setProject(Number(router.query[':id'])));
+    }
+
+    return () => {
+      dispatch({
+        type: 'SET_PROJECT',
+        payload: {
+          data: {
+            project: {
+              id: 0,
+              title: '',
+              technologies: [],
+              description: '',
+              img: '',
+            },
+          },
+        },
+      });
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router.isReady]);
 
   return (
     <Fragment>
@@ -41,27 +54,31 @@ const Detail: NextPage = () => {
         <Navbar />
         <Styled.HeroDetailBody>
           <Container>
-            <Styled.HeroDetailHeader>
-              <Styled.HeroDetailTitle>
-                Belajar Node Js
-              </Styled.HeroDetailTitle>
-            </Styled.HeroDetailHeader>
-            <Styled.HeroDetailMain>
-              <Styled.ImageContainerHeroDetailFlex>
-                <Styled.ImageContainerHeroDetail>
-                  <Image
-                    src={projects.length > 0 ? projects[0].img : '/aja'}
-                    alt={projects.length > 0 ? projects[0].title.slice(0, 5) : '-'}
-                    layout="responsive"
-                    width={550}
-                    height={320}
-                  />
-                </Styled.ImageContainerHeroDetail>
-              </Styled.ImageContainerHeroDetailFlex>
-              <Styled.HeroDetailText>
-                {projects.length > 0 ? projects[0].description : '-'}
-              </Styled.HeroDetailText>
-            </Styled.HeroDetailMain>
+            <Placeholder isProject>
+              <Fragment>
+                <Styled.HeroDetailHeader>
+                  <Styled.HeroDetailTitle>
+                    {project.title}
+                  </Styled.HeroDetailTitle>
+                </Styled.HeroDetailHeader>
+                <Styled.HeroDetailMain>
+                  <Styled.ImageContainerHeroDetailFlex>
+                    <Styled.ImageContainerHeroDetail>
+                      <Image
+                        src={project.img ? project.img : '/'}
+                        alt={project.title}
+                        layout="responsive"
+                        width={550}
+                        height={320}
+                      />
+                    </Styled.ImageContainerHeroDetail>
+                  </Styled.ImageContainerHeroDetailFlex>
+                  <Styled.HeroDetailText>
+                    {project.description}
+                  </Styled.HeroDetailText>
+                </Styled.HeroDetailMain>
+              </Fragment>
+            </Placeholder>
           </Container>
         </Styled.HeroDetailBody>
       </Styled.HeroDetail>

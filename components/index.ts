@@ -10,3 +10,4 @@ export * from './footer/Footer';
 export * from './pagination/Pagination';
 export * from './textfield/TextField';
 export * from './longtext/LongText';
+export * from './placeholder/Placeholder';

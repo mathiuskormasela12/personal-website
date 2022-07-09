@@ -102,7 +102,7 @@ const Login: NextPage = () => {
     try {
       const { data } = await Services.login(body);
 
-      dispatch(setToken(data.accessToken, data.refreshToken));
+      dispatch(setToken(data.results.accessToken, data.results.refreshToken));
 
       Swal.fire({
         title: 'Success',

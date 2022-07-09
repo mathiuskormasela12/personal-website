@@ -5,7 +5,7 @@ import { Colors } from '../themes';
 
 export const HeroCreateProject = styled.div`
 	background-color: white;
-	height: 100vh;
+	height: 125vh;
 	width: 100%;
 
 	@media (max-width: 1024px) {
@@ -103,4 +103,19 @@ export const HeroCreateProjectField = styled.div`
 
 export const File = styled.input`
 	display: none;
+`;
+
+export const FileContainer = styled.label`
+	display: flex;
+	cursor: pointer;
+	align-items: center;
+	color: ${Colors.light};
+	background-color: white;
+	font-size: 1rem;
+	outline: none;
+	border: .5px solid ${Colors.light};
+	height: 2.5em;
+	width: 100%;
+	padding-left: .8em;
+	border-radius: .3em;
 `;

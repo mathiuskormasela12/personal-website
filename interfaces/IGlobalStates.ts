@@ -8,6 +8,12 @@ export interface IGlobalStates {
 		refreshToken: string
 	},
 	projects: {
-		projects: IProjects[]
+		projects: IProjects[];
+		project: IProjects;
+		loading: boolean;
+		currentPage: number;
+		previousPage: number;
+		nextPage: number;
+		totalPages: number;
 	},
 }

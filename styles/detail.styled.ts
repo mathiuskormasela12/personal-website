@@ -27,6 +27,7 @@ export const HeroDetailTitle = styled.h1`
 	text-align: center;
 	color: ${Colors.dark};
 	font-size: 2.5rem;
+	text-transform: capitalize;
 `;
 
 export const HeroDetailText = styled.p`
