@@ -1,9 +1,12 @@
 // ========== Footer
 // import all modules
 import React from 'react';
+import { getCurrentYear } from '../../helpers';
 import * as Styled from './footer.styled';
 
 export const Footer: React.FC = () => {
+  const year = getCurrentYear();
+
   const handleMoveToOtherWebsite = (link: string) => {
     window.location.href = link;
   };
@@ -11,7 +14,7 @@ export const Footer: React.FC = () => {
   return (
     <Styled.Footer id="footer">
       <Styled.FooterContainer>
-        <Styled.FooterTitle>&copy; Mathius 2022</Styled.FooterTitle>
+        <Styled.FooterTitle>&copy; Mathius {year}</Styled.FooterTitle>
         <Styled.FooterTitle>My Personal Website</Styled.FooterTitle>
         <Styled.FooterTitle>
           let&apos;s writes our future with code
@@ -89,7 +92,7 @@ export const Footer: React.FC = () => {
           </Styled.FooterContentCol>
         </Styled.FooterContent>
         <Styled.FooterTitle>Created with love by Mathius</Styled.FooterTitle>
-        <Styled.FooterTitle>in Jakarta 2022</Styled.FooterTitle>
+        <Styled.FooterTitle>in Jakarta {year}</Styled.FooterTitle>
       </Styled.FooterContainer>
     </Styled.Footer>
   );
