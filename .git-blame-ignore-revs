@@ -1,0 +1,5 @@
+# Bulk formatting commits. Use with: git blame --ignore-revs-file .git-blame-ignore-revs
+# (or: git config blame.ignoreRevsFile .git-blame-ignore-revs)
+
+# style: format the whole codebase with Prettier
+a1d8e5955283db29f588226ee89872105e845294
