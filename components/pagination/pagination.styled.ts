@@ -5,26 +5,26 @@ import { IPaginationProps } from '../../interfaces';
 import { Colors } from '../../themes';
 
 export const Pagination = styled.div`
-	display: flex;
-	justify-content: center;
-	margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
 `;
 
 export const PaginationItems = styled.div<IPaginationProps>`
-	width: 2.5em;
-	line-height: 2.5em;
-	text-align: center;
-	font-size: 1rem;
-	font-weight: bold;
-	color: ${Colors.dark};
-	border-radius: 50%;
-	margin-right: .5rem;
+  width: 2.5em;
+  line-height: 2.5em;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: ${Colors.dark};
+  border-radius: 50%;
+  margin-right: 0.5rem;
 
-	&:last-child {
-		margin-right: 0;
-	}
+  &:last-child {
+    margin-right: 0;
+  }
 
-	${({ disabled, active }) => {
+  ${({ disabled, active }) => {
     let styles = '';
 
     if (!disabled) {

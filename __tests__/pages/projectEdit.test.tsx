@@ -19,7 +19,10 @@ const project = {
 
 beforeEach(() => {
   (useRouter as jest.Mock).mockReturnValue({
-    push: jest.fn(), pathname: '/project-edit/[:id]', query: {}, isReady: false,
+    push: jest.fn(),
+    pathname: '/project-edit/[:id]',
+    query: {},
+    isReady: false,
   });
 });
 
@@ -36,7 +39,9 @@ it('fills the form from the project and follows later project updates', async ()
   act(() => {
     store.dispatch({
       type: 'SET_PROJECT',
-      payload: { data: { project: { ...project, title: 'New title', technologies: [] } } },
+      payload: {
+        data: { project: { ...project, title: 'New title', technologies: [] } },
+      },
     });
   });
 

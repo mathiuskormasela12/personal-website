@@ -1,6 +1,6 @@
 // ========== IAuthGlobalStates
 
 export interface IAuthGlobalStates {
-	accessToken: string;
-	refreshToken: string
+  accessToken: string;
+  refreshToken: string;
 }

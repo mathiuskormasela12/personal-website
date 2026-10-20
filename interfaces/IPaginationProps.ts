@@ -1,8 +1,8 @@
 // ========== IPaginationProps
 
 export interface IPaginationProps {
-	active?: boolean;
-	disabled?: boolean;
-	totalPages: number;
-	page?: number;
+  active?: boolean;
+  disabled?: boolean;
+  totalPages: number;
+  page?: number;
 }

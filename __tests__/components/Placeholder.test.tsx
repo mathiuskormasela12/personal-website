@@ -6,7 +6,9 @@ const child = <p>content</p>;
 const project = { ...emptyProject, id: 1, title: 'P' };
 
 it('shows the loading state', () => {
-  renderWithStore(<Placeholder>{child}</Placeholder>, { projects: projectsState({ loading: true }) });
+  renderWithStore(<Placeholder>{child}</Placeholder>, {
+    projects: projectsState({ loading: true }),
+  });
   expect(screen.getByText('Please Wait...')).toBeInTheDocument();
 });
 it('shows the empty state when there are no projects', () => {
@@ -14,14 +16,20 @@ it('shows the empty state when there are no projects', () => {
   expect(screen.getByAltText('Empty')).toBeInTheDocument();
 });
 it('renders children when projects exist', () => {
-  renderWithStore(<Placeholder>{child}</Placeholder>, { projects: projectsState({ projects: [project] }) });
+  renderWithStore(<Placeholder>{child}</Placeholder>, {
+    projects: projectsState({ projects: [project] }),
+  });
   expect(screen.getByText('content')).toBeInTheDocument();
 });
 it('shows the empty state in detail mode without a project', () => {
-  renderWithStore(<Placeholder isProject>{child}</Placeholder>, { projects: projectsState({ projects: [project] }) });
+  renderWithStore(<Placeholder isProject>{child}</Placeholder>, {
+    projects: projectsState({ projects: [project] }),
+  });
   expect(screen.getByAltText('Empty')).toBeInTheDocument();
 });
 it('uses the single project in detail mode', () => {
-  renderWithStore(<Placeholder isProject>{child}</Placeholder>, { projects: projectsState({ project }) });
+  renderWithStore(<Placeholder isProject>{child}</Placeholder>, {
+    projects: projectsState({ project }),
+  });
   expect(screen.getByText('content')).toBeInTheDocument();
 });

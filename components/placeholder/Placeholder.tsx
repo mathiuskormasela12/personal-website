@@ -27,9 +27,7 @@ export const Placeholder: NextPage<IPlaceholderProps> = (props) => {
           alt="Loading"
           src="/icons/loading-icon.svg"
         />
-        <Styled.Text>
-          Please Wait...
-        </Styled.Text>
+        <Styled.Text>Please Wait...</Styled.Text>
       </Styled.ImageContainer>
     );
   }

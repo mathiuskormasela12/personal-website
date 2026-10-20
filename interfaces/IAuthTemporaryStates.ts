@@ -1,8 +1,8 @@
 // ========== IAuthTemporaryGlobalStates
 
 export interface IAuthTemporaryGlobalStates {
-	authTemporary: {
-		accessToken: string;
-		refreshToken: string
-	}
+  authTemporary: {
+    accessToken: string;
+    refreshToken: string;
+  };
 }

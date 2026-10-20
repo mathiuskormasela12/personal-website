@@ -10,7 +10,9 @@ function getListenTarget(env = process.env) {
 
   const port = Number(raw);
   if (!/^\d+$/.test(raw) || port < 1 || port > 65535) {
-    throw new Error(`Invalid PORT "${env.PORT}": expected an integer between 1 and 65535`);
+    throw new Error(
+      `Invalid PORT "${env.PORT}": expected an integer between 1 and 65535`,
+    );
   }
   return { host: HOST, port };
 }

@@ -6,51 +6,51 @@ import { ISkillBadgeProps } from '../../interfaces';
 import { Colors } from '../../themes';
 
 export const Card = styled.figure`
-	height: auto;
-	cursor: pointer;
+  height: auto;
+  cursor: pointer;
 `;
 
 export const ImageContainer = styled.span`
-	margin: 32px auto;
-	box-sizing: content-box;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  margin: 32px auto;
+  box-sizing: content-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-	& > span {
-		position: relative !important;
-		top: 0 !important;
-		height: 4rem !important;
-	}
+  & > span {
+    position: relative !important;
+    top: 0 !important;
+    height: 4rem !important;
+  }
 `;
 
 export const CardTitle = styled.figcaption`
-	font-weight: bold;
-	font-size: 1.3rem;
-	margin-bottom: .4rem;
+  font-weight: bold;
+  font-size: 1.3rem;
+  margin-bottom: 0.4rem;
 `;
 
 export const CardDescription = styled.p``;
 
 export const CardTechnology = styled.div`
-	margin-top: 1rem;
+  margin-top: 1rem;
 `;
 
 export const SkillBadge = styled.span<ISkillBadgeProps>`
-	display: inline-block;
-	font-size: .9rem;
-	padding: .4em .8em;
-	border-radius: 1.2em;
-	font-weight: bold;
-	margin-right: .4rem;
-	margin-bottom: .8rem;
+  display: inline-block;
+  font-size: 0.9rem;
+  padding: 0.4em 0.8em;
+  border-radius: 1.2em;
+  font-weight: bold;
+  margin-right: 0.4rem;
+  margin-bottom: 0.8rem;
 
-	&:last-child {
-		margin-right: 0;
-	}
+  &:last-child {
+    margin-right: 0;
+  }
 
-	${(props) => {
+  ${(props) => {
     if (props.variant === 'primary') {
       return `
 				background-color: ${Colors.lightBlue};
@@ -84,9 +84,9 @@ export const SkillBadge = styled.span<ISkillBadgeProps>`
 `;
 
 export const Image = styled(NextImage)`
-	display: block;
-	width: 100%;
-	height: auto;
-	aspect-ratio: 370 / 220;
-	border-radius: 1.8rem;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 370 / 220;
+  border-radius: 1.8rem;
 `;

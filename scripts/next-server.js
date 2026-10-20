@@ -18,7 +18,13 @@ try {
 }
 const { host, port } = target;
 const nextBin = require.resolve('next/dist/bin/next');
-const child = spawn(process.execPath, [nextBin, mode, '--hostname', host, '--port', String(port)], { stdio: 'inherit' });
+const child = spawn(
+  process.execPath,
+  [nextBin, mode, '--hostname', host, '--port', String(port)],
+  { stdio: 'inherit' },
+);
 
-['SIGINT', 'SIGTERM'].forEach((signal) => process.on(signal, () => child.kill(signal)));
+['SIGINT', 'SIGTERM'].forEach((signal) =>
+  process.on(signal, () => child.kill(signal)),
+);
 child.on('exit', (code, signal) => process.exit(code ?? (signal ? 1 : 0)));

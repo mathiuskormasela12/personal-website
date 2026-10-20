@@ -1,5 +1,5 @@
 // ========== IListItemsProps
 
 export interface IListItemsProps {
-	pointer?: boolean;
+  pointer?: boolean;
 }

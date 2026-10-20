@@ -3,7 +3,10 @@
 
 import { SetTokenFunc } from '../../types';
 
-export const setToken: SetTokenFunc = (accessToken: string, refreshToken: string) => ({
+export const setToken: SetTokenFunc = (
+  accessToken: string,
+  refreshToken: string,
+) => ({
   type: 'SET_TOKEN',
   payload: {
     data: {

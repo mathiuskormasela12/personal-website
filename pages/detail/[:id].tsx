@@ -8,20 +8,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from '../../styles';
 
 // import all components
-import {
-  Container,
-  Head,
-  Navbar,
-  Footer,
-  Placeholder,
-} from '../../components';
+import { Container, Head, Navbar, Footer, Placeholder } from '../../components';
 import { setProject } from '../../redux/actions';
 import { IGlobalStates, IProjects } from '../../interfaces';
 
 const Detail: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const project: IProjects = useSelector((current: IGlobalStates) => current.projects.project);
+  const project: IProjects = useSelector(
+    (current: IGlobalStates) => current.projects.project,
+  );
 
   useEffect(() => {
     if (router.isReady) {
@@ -44,7 +40,7 @@ const Detail: NextPage = () => {
         },
       });
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
   return (

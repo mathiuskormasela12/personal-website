@@ -37,6 +37,12 @@ yarn test            # Jest + Testing Library unit tests
 yarn test:coverage   # same, with a coverage report in coverage/
 yarn lint            # ESLint (eslint-config-next, flat config)
 yarn typecheck       # TypeScript, no emit
+yarn format          # format every file with Prettier
+yarn format:check    # fail if a file is not formatted
 ```
+
+Formatting is handled by Prettier (`.prettierrc.json`: 2 spaces, single quotes, 80 columns). ESLint only checks code quality; `eslint-config-prettier` switches off its style rules so the two never disagree. Most editors pick up `.editorconfig` and the Prettier config automatically.
+
+The one-off commit that reformatted everything is listed in `.git-blame-ignore-revs`. Run `git config blame.ignoreRevsFile .git-blame-ignore-revs` once so `git blame` skips it.
 
 Tests live in `__tests__/` (never under `pages/`, or Next would treat them as routes). `__tests__/test-utils.tsx` provides `renderWithStore`, which renders a component with a Redux store and the same styled-components prop filter the app uses.
