@@ -153,7 +153,6 @@ const Login: NextPage = () => {
                     src="/icons/login.svg"
                     width={250}
                     height={250}
-                    layout="responsive"
                     alt="Create Auth"
                   />
                 </Styled.HeroCreateAuthImageContainer>

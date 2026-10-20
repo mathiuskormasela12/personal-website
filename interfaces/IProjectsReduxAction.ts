@@ -2,7 +2,7 @@
 // import all modules
 import { IProjects } from './IProjects';
 
-export interface IProjectsReduxAction {
+export type IProjectsReduxAction = {
 	type: 'SET_PROJECTS' | 'SET_LOADING' | 'SET_PROJECT',
 	payload: {
 		data: {
@@ -13,4 +13,4 @@ export interface IProjectsReduxAction {
 			nextPage: number;
 		}
 	}
-}
+};

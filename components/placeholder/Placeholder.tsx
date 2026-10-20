@@ -24,7 +24,6 @@ export const Placeholder: NextPage<IPlaceholderProps> = (props) => {
         <Image
           width={100}
           height={100}
-          layout="responsive"
           alt="Loading"
           src="/icons/loading-icon.svg"
         />
@@ -41,7 +40,6 @@ export const Placeholder: NextPage<IPlaceholderProps> = (props) => {
         <Image
           width={100}
           height={100}
-          layout="responsive"
           alt="Empty"
           src="/icons/empty-icon.svg"
         />
@@ -55,7 +53,6 @@ export const Placeholder: NextPage<IPlaceholderProps> = (props) => {
         <Image
           width={100}
           height={100}
-          layout="responsive"
           alt="Empty"
           src="/icons/empty-icon.svg"
         />

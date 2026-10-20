@@ -2,6 +2,4 @@
 // import all modules
 import React from 'react';
 
-export interface ILongTextProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-
-}
+export type ILongTextProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;

@@ -18,7 +18,7 @@ export const ImageContainer = styled.span`
 	justify-content: center;
 	align-items: center;
 
-	& > span {
+	& > img {
 		width: 25rem !important;
 		height: 25rem !important;
 	}

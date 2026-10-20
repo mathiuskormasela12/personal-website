@@ -47,7 +47,8 @@ export const ImageContainerHeroDetail = styled.span`
 	box-sizing: content-box;
 	display: block;
 
-	& > span {
+	& > img {
+		display: block;
 		border-radius: 1.8rem;
 		width: 38rem !important;
 		height: 22rem !important;

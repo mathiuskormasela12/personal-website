@@ -1,6 +1,6 @@
 // ========== Auth Redux Action
 
-export interface IAuthReduxAction {
+export type IAuthReduxAction = {
 	type: 'SET_TOKEN' | 'SET_TOKEN_TEMPORARY',
 	payload: {
 		data: {
@@ -8,4 +8,4 @@ export interface IAuthReduxAction {
 			refreshToken: string;
 		}
 	}
-}
+};

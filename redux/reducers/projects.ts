@@ -1,5 +1,6 @@
 // ========== Projects Reducer
 // import all modules
+import type { UnknownAction } from '@reduxjs/toolkit';
 import { IProjectsGlobalStates, IProjectsReduxAction } from '../../interfaces';
 
 const initialStates: IProjectsGlobalStates = {
@@ -19,23 +20,24 @@ const initialStates: IProjectsGlobalStates = {
 
 const projectsReducer = (
   states: IProjectsGlobalStates = initialStates,
-  action: IProjectsReduxAction,
+  action: UnknownAction,
 ): IProjectsGlobalStates => {
   switch (action.type) {
     case 'SET_PROJECTS': {
+      const { data } = (action as IProjectsReduxAction).payload;
       return {
         ...states,
-        projects: action.payload.data.projects,
-        totalPages: action.payload.data.totalPages,
-        previousPage: action.payload.data.previousPage,
-        nextPage: action.payload.data.nextPage,
+        projects: data.projects,
+        totalPages: data.totalPages,
+        previousPage: data.previousPage,
+        nextPage: data.nextPage,
       };
     }
 
     case 'SET_PROJECT': {
       return {
         ...states,
-        project: action.payload.data.project,
+        project: (action as IProjectsReduxAction).payload.data.project,
       };
     }
 

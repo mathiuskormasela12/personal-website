@@ -40,13 +40,23 @@ const ProjectEdit: NextPage = () => {
 		loading: boolean;
 	}
 
-	const [state, setState] = useState<State>({
-	  projectName: '',
-	  technologies: '',
-	  projectDescription: '',
+	const toFormState = (current: IProjects): State => ({
+	  projectName: current.title,
+	  technologies: current.technologies.map((item) => item.name).join(', '),
+	  projectDescription: current.description,
 	  img: null,
 	  loading: false,
 	});
+
+	const [state, setState] = useState<State>(() => toFormState(project));
+	const [syncedProject, setSyncedProject] = useState<IProjects>(project);
+
+	// Reset the form whenever the project in the store changes (adjusting state during
+	// render instead of a setState-in-effect, per React 19 / react-hooks v7).
+	if (project !== syncedProject) {
+	  setSyncedProject(project);
+	  setState(toFormState(project));
+	}
 
 	useEffect(() => {
 	  if (router.isReady) {
@@ -71,17 +81,6 @@ const ProjectEdit: NextPage = () => {
 	  };
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.isReady]);
-
-	useEffect(() => {
-	  setState((current) => ({
-	    ...current,
-	    projectName: project.title,
-	    technologies: project.technologies.map((item) => item.name).join(', '),
-	    projectDescription: project.description,
-	    img: null,
-	    loading: false,
-	  }));
-	}, [project]);
 
 	const accessToken: string = useSelector((states: IGlobalStates) => states.auth.accessToken);
 	const refreshToken: string = useSelector((states: IGlobalStates) => states.auth.refreshToken);
@@ -200,7 +199,6 @@ const ProjectEdit: NextPage = () => {
                   src="/icons/create-project-img.svg"
                   width={250}
                   height={250}
-                  layout="responsive"
                   alt="Create Project"
                 />
               </Styled.HeroCreateProjectImageContainer>

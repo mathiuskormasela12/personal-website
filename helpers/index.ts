@@ -2,3 +2,4 @@
 // import all helpers
 
 export * from './generateFormData';
+export * from './getUserIdFromResetToken';

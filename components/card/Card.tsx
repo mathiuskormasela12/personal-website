@@ -19,7 +19,7 @@ export const Card: React.FC<ICardProps> = (props) => {
       <Styled.Image
         src={img}
         alt={title}
-        layout="responsive"
+        sizes="100vw"
         width={370}
         height={220}
         quality={5}

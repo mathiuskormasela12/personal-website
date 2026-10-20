@@ -70,23 +70,20 @@ export const Navbar: NextPage = () => {
       <Styled.Nav>
         <Styled.NavContainer>
           <Styled.NavBrand>
-            <Link href="/" passHref>
-              <Styled.Brand>
-                Mathius
-              </Styled.Brand>
-            </Link>
+            <Styled.Brand as={Link} href="/">
+              Mathius
+            </Styled.Brand>
           </Styled.NavBrand>
           <Styled.NavList toggle={toggle}>
             {navItems.map((item) => (
-              <Link
-                href={item.path}
-                passHref
+              <Styled.NavItems
                 key={item.id.toString()}
+                active={router.pathname === item.path}
               >
-                <Styled.NavItems active={router.pathname === item.path}>
+                <Styled.NavLink href={item.path}>
                   {item.text}
-                </Styled.NavItems>
-              </Link>
+                </Styled.NavLink>
+              </Styled.NavItems>
             ))}
           </Styled.NavList>
           <Styled.NavSide>
