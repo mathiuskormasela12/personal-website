@@ -3,5 +3,5 @@
 import { SkillVariants } from '../types';
 
 export interface ISkillBadgeProps {
-	variant: SkillVariants;
+  variant: SkillVariants;
 }

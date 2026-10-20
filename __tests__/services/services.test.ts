@@ -7,7 +7,12 @@ const mockDelete = jest.fn();
 
 jest.mock('../../services/http', () => ({
   __esModule: true,
-  default: () => ({ get: mockGet, post: mockPost, patch: mockPatch, delete: mockDelete }),
+  default: () => ({
+    get: mockGet,
+    post: mockPost,
+    patch: mockPatch,
+    delete: mockDelete,
+  }),
 }));
 
 describe('Services', () => {
@@ -20,8 +25,14 @@ describe('Services', () => {
     Services.resetPassword(7, { password: 'p', repeatPassword: 'p' });
     Services.deleteProject(3);
     Services.getDetailProject(5);
-    expect(mockPost).toHaveBeenCalledWith('/auth/login', { email: 'a@b.c', password: 'x' });
-    expect(mockPatch).toHaveBeenCalledWith('/user/password/7', { password: 'p', repeatPassword: 'p' });
+    expect(mockPost).toHaveBeenCalledWith('/auth/login', {
+      email: 'a@b.c',
+      password: 'x',
+    });
+    expect(mockPatch).toHaveBeenCalledWith('/user/password/7', {
+      password: 'p',
+      repeatPassword: 'p',
+    });
     expect(mockDelete).toHaveBeenCalledWith('/project/3');
     expect(mockGet).toHaveBeenCalledWith('/project/5');
   });

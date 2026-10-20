@@ -18,5 +18,11 @@ export default defineConfig([
   },
   // Last: turn off every rule that would fight Prettier's formatting.
   prettier,
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'coverage/**', 'next-env.d.ts']),
+  globalIgnores([
+    '.next/**',
+    'out/**',
+    'build/**',
+    'coverage/**',
+    'next-env.d.ts',
+  ]),
 ]);

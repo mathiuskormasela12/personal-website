@@ -1,5 +1,5 @@
 // ========== IHeroProjectsMainColProps
 
 export interface IHeroProjectsMainColProps {
-	count: number;
+  count: number;
 }

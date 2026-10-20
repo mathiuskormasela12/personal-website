@@ -92,23 +92,24 @@ const Home: NextPage = () => {
                 </Styled.BalloonContainer>
                 <Styled.HeroHomeWelcomeContent>
                   <Styled.HeroHomeTitle>
-                    Hi, I&apos;m
-                    {' '}
+                    Hi, I&apos;m{' '}
                     <Styled.PrimaryText>
                       a Fullstack Developer
                     </Styled.PrimaryText>
                     .
                   </Styled.HeroHomeTitle>
                   <Styled.HeroHomeSubtitle>
-                    I&apos;m Mathius a fullstack developer
-                    with 1+ years working experiences.
+                    I&apos;m Mathius a fullstack developer with 1+ years working
+                    experiences.
                   </Styled.HeroHomeSubtitle>
                   <Button
                     type="button"
                     size="md"
                     rounded
                     onClick={() => {
-                      router.push('https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw');
+                      router.push(
+                        'https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw',
+                      );
                     }}
                   >
                     My Youtube
@@ -177,15 +178,10 @@ const Home: NextPage = () => {
                 />
               </Styled.BalloonContainer>
               <Styled.HeroHomeTitle>
-                <Styled.PrimaryText>
-                  Latest Projects
-                </Styled.PrimaryText>
-                {' '}
-                Updates
+                <Styled.PrimaryText>Latest Projects</Styled.PrimaryText> Updates
               </Styled.HeroHomeTitle>
               <Styled.HeroHomeSubtitle>
-                Let&apos;s write our future
-                with code
+                Let&apos;s write our future with code
               </Styled.HeroHomeSubtitle>
               <Styled.BalloonContainer
                 customPosition={{
@@ -257,10 +253,7 @@ const Home: NextPage = () => {
                 </Placeholder>
               </Styled.HeroProjectMainRow>
               {totalPages > 0 && (
-              <Pagination
-                totalPages={totalPages}
-                page={Number(page)}
-              />
+                <Pagination totalPages={totalPages} page={Number(page)} />
               )}
             </Styled.HeroProjectMain>
           </Container>

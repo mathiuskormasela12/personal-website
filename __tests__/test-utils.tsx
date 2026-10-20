@@ -6,13 +6,23 @@ import { StyleSheetManager } from 'styled-components';
 import authReducer from '../redux/reducers/auth';
 import projectsReducer from '../redux/reducers/projects';
 import { shouldForwardProp } from '../styles/shouldForwardProp';
-import { IAuthGlobalStates, IProjects, IProjectsGlobalStates } from '../interfaces';
+import {
+  IAuthGlobalStates,
+  IProjects,
+  IProjectsGlobalStates,
+} from '../interfaces';
 
 export const emptyProject: IProjects = {
-  id: 0, title: '', technologies: [], description: '', img: '',
+  id: 0,
+  title: '',
+  technologies: [],
+  description: '',
+  img: '',
 };
 
-export const projectsState = (overrides: Partial<IProjectsGlobalStates> = {}): IProjectsGlobalStates => ({
+export const projectsState = (
+  overrides: Partial<IProjectsGlobalStates> = {},
+): IProjectsGlobalStates => ({
   projects: [],
   project: emptyProject,
   loading: false,
@@ -24,15 +34,19 @@ export const projectsState = (overrides: Partial<IProjectsGlobalStates> = {}): I
 
 type TestState = { auth?: IAuthGlobalStates; projects?: IProjectsGlobalStates };
 
-export const makeStore = (preloadedState: TestState = {}) => configureStore({
-  reducer: { auth: authReducer, projects: projectsReducer },
-  preloadedState: {
-    auth: preloadedState.auth ?? { accessToken: '', refreshToken: '' },
-    projects: preloadedState.projects ?? projectsState(),
-  },
-});
+export const makeStore = (preloadedState: TestState = {}) =>
+  configureStore({
+    reducer: { auth: authReducer, projects: projectsReducer },
+    preloadedState: {
+      auth: preloadedState.auth ?? { accessToken: '', refreshToken: '' },
+      projects: preloadedState.projects ?? projectsState(),
+    },
+  });
 
-export const renderWithStore = (ui: React.ReactElement, preloadedState: TestState = {}) => {
+export const renderWithStore = (
+  ui: React.ReactElement,
+  preloadedState: TestState = {},
+) => {
   const store = makeStore(preloadedState);
   return {
     store,

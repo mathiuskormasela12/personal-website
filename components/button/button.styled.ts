@@ -5,15 +5,15 @@ import { IButtonProps } from '../../interfaces';
 import { Colors } from '../../themes';
 
 export const Button = styled.button<IButtonProps>`
-	outline: none;
-	border: none;
-	cursor: pointer;
-	color: white;
-	background-color: ${Colors.primary};
-	border-radius: ${({ rounded }) => (rounded ? '2em' : '.6em')};
-	padding: .9em 2.4em;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background-color: ${Colors.primary};
+  border-radius: ${({ rounded }) => (rounded ? '2em' : '.6em')};
+  padding: 0.9em 2.4em;
 
-	${({ size }) => {
+  ${({ size }) => {
     if (size === 'lg') {
       return `
 				font-size: 1.2rem;
@@ -35,7 +35,7 @@ export const Button = styled.button<IButtonProps>`
     return '';
   }}
 
-	${({ fluid }) => {
+  ${({ fluid }) => {
     if (fluid) {
       return `
 				width: 100%;
