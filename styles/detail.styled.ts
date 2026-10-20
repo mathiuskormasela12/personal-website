@@ -48,6 +48,7 @@ export const ImageContainerHeroDetail = styled.span`
 	display: block;
 
 	& > img {
+		display: block;
 		border-radius: 1.8rem;
 		width: 38rem !important;
 		height: 22rem !important;

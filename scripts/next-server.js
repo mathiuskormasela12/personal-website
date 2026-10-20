@@ -9,7 +9,14 @@ if (mode !== 'dev' && mode !== 'start') {
   process.exit(1);
 }
 
-const { host, port } = getListenTarget();
+let target;
+try {
+  target = getListenTarget();
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}
+const { host, port } = target;
 const nextBin = require.resolve('next/dist/bin/next');
 const child = spawn(process.execPath, [nextBin, mode, '--hostname', host, '--port', String(port)], { stdio: 'inherit' });
 
