@@ -9,7 +9,7 @@ import * as Styled from './pagination.styled';
 import { IGlobalStates, IPaginationProps } from '../../interfaces';
 
 export const Pagination: NextPage<IPaginationProps> = (props) => {
-  const { totalPages, page } = props;
+  const { totalPages, page = 1 } = props;
   const router = useRouter();
   const nextPage: number = useSelector((current: IGlobalStates) => current.projects.nextPage);
   const previousPage: number = useSelector(
@@ -32,6 +32,7 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
     <Styled.Pagination>
       <Styled.PaginationItems
         {...props}
+        aria-label="Previous page"
         disabled={previousPage === 0}
         onClick={previousPage !== 0 ? handlePreviousPage : () => {}}
       >
@@ -78,6 +79,7 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
       })}
       <Styled.PaginationItems
         {...props}
+        aria-label="Next page"
         onClick={nextPage > 0 ? handleNextPage : () => {}}
         disabled={nextPage < 1}
       >
@@ -85,8 +87,4 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
       </Styled.PaginationItems>
     </Styled.Pagination>
   );
-};
-
-Pagination.defaultProps = {
-  page: 1,
 };

@@ -152,7 +152,7 @@ export const ImageContainer = styled.span`
 	justify-content: center;
 	align-items: center;
 
-	& > span {
+	& > img {
 		position: absolute !important;
 		right: 3.5rem !important;
 	}

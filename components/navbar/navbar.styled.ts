@@ -1,5 +1,6 @@
 // ========== Navbar Styles
 // import all modules
+import Link from 'next/link';
 import styled from 'styled-components';
 import { INavbarCollapesProps, INavItemsProps } from '../../interfaces';
 import { Colors } from '../../themes';
@@ -92,7 +93,6 @@ export const NavItems = styled.li<INavItemsProps>`
 	text-decoration: none;
 	cursor: pointer;
 	font-size: 1rem;
-	padding: 1rem 1.35rem;
 	
 	@media (min-width: 1200px) {
 		border-radius: 1.2rem;
@@ -124,6 +124,13 @@ export const NavItems = styled.li<INavItemsProps>`
 		text-align: center;
 		margin-right: 0 !important;
 	}
+`;
+
+export const NavLink = styled(Link)`
+	display: block;
+	padding: 1rem 1.35rem;
+	color: inherit;
+	text-decoration: none;
 `;
 
 export const NavSide = styled.div`

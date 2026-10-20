@@ -27,7 +27,7 @@ const http = () => {
   );
 
   instances.interceptors.response.use(
-    (res: unknown) => res,
+    (res) => res,
     async (err: any) => {
       const originalConfig = err.config;
       const { refreshToken } = getState().auth;

@@ -84,6 +84,9 @@ export const SkillBadge = styled.span<ISkillBadgeProps>`
 `;
 
 export const Image = styled(NextImage)`
-	height: 15rem;
+	display: block;
+	width: 100%;
+	height: auto;
+	aspect-ratio: 370 / 220;
 	border-radius: 1.8rem;
 `;

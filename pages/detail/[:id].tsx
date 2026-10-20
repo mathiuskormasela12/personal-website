@@ -67,7 +67,6 @@ const Detail: NextPage = () => {
                       <Image
                         src={project.img ? project.img : '/'}
                         alt={project.title}
-                        layout="responsive"
                         width={550}
                         height={320}
                       />

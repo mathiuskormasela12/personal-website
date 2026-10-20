@@ -165,7 +165,6 @@ const Register: NextPage = () => {
                     src="/icons/register.svg"
                     width={250}
                     height={250}
-                    layout="responsive"
                     alt="Create Auth"
                   />
                 </Styled.HeroCreateAuthImageContainer>

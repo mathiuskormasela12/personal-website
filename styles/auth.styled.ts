@@ -64,10 +64,10 @@ export const HeroCreateAuthImageContainer = styled.span`
 	align-items: center;
 	position: relative;
 
-	& > span {
+	& > img {
 		position: absolute;
 		width: 30rem !important;
-		height 30rem !important;
+		height: 30rem !important;
 	}
 `;
 
