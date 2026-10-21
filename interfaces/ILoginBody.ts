@@ -1,6 +1,6 @@
 // ========== ILoginBody
 
 export interface ILoginBody {
-	email: string;
-	password: string;
+  email: string;
+  password: string;
 }

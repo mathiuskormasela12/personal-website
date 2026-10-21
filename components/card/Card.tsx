@@ -6,27 +6,26 @@ import { SkillVariants } from '../../types';
 import * as Styled from './card.styled';
 
 export const Card: React.FC<ICardProps> = (props) => {
-  const {
-    title,
-    description,
-    technologies,
-    img,
-    onClick,
-  } = props;
+  const { title, description, technologies, img, onClick } = props;
 
   return (
     <Styled.Card onClick={onClick}>
       <Styled.Image
         src={img}
         alt={title}
-        layout="responsive"
+        sizes="100vw"
         width={370}
         height={220}
         quality={5}
       />
       <Styled.CardTechnology>
         {technologies.map((item) => {
-          const skillsVariant = ['primary', 'secondary', 'tertiary', 'quaternary'];
+          const skillsVariant = [
+            'primary',
+            'secondary',
+            'tertiary',
+            'quaternary',
+          ];
           let selectedVariant: SkillVariants = 'primary';
 
           skillsVariant.forEach(() => {
@@ -52,9 +51,7 @@ export const Card: React.FC<ICardProps> = (props) => {
           );
         })}
       </Styled.CardTechnology>
-      <Styled.CardTitle>
-        {title}
-      </Styled.CardTitle>
+      <Styled.CardTitle>{title}</Styled.CardTitle>
       <Styled.CardDescription>
         {description.slice(0, 100)}
         ...

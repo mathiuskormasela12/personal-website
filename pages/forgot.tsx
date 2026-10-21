@@ -6,9 +6,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import jwtDecode from 'jwt-decode';
-import { IForgotPasswordBody, IGlobalStates, IResetPasswordBody } from '../interfaces';
+import {
+  IForgotPasswordBody,
+  IGlobalStates,
+  IResetPasswordBody,
+} from '../interfaces';
 import Services from '../services';
+import { getUserIdFromResetToken } from '../helpers/getUserIdFromResetToken';
 import * as Styled from '../styles';
 
 // import all components
@@ -32,18 +36,18 @@ const Forgot: NextPage = () => {
     loading: false,
   });
   const { query, push } = useRouter();
-  const accessToken: string = useSelector((
-    currentState: IGlobalStates,
-  ) => currentState.auth.accessToken);
-  const refreshToken: string = useSelector((
-    currentState: IGlobalStates,
-  ) => currentState.auth.refreshToken);
+  const accessToken: string = useSelector(
+    (currentState: IGlobalStates) => currentState.auth.accessToken,
+  );
+  const refreshToken: string = useSelector(
+    (currentState: IGlobalStates) => currentState.auth.refreshToken,
+  );
 
   if (accessToken !== '' && refreshToken !== '') {
     push('/');
   }
 
-  const handleChange = 	(
+  const handleChange = (
     name: string,
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -65,7 +69,12 @@ const Forgot: NextPage = () => {
         break;
 
       case 'password':
-        if (!e.target.value.match(/[a-z]/g) || !e.target.value.match(/[A-Z]/g) || !e.target.value.match(/[0-9]/gi) || !e.target.value.match(/\W/gi)) {
+        if (
+          !e.target.value.match(/[a-z]/g) ||
+          !e.target.value.match(/[A-Z]/g) ||
+          !e.target.value.match(/[0-9]/gi) ||
+          !e.target.value.match(/\W/gi)
+        ) {
           setState((currentState) => ({
             ...currentState,
             textFieldErrorMessagePassword: 'Password is too weak',
@@ -81,7 +90,12 @@ const Forgot: NextPage = () => {
         break;
 
       case 'repeatPassword':
-        if (!e.target.value.match(/[a-z]/g) || !e.target.value.match(/[A-Z]/g) || !e.target.value.match(/[0-9]/gi) || !e.target.value.match(/\W/gi)) {
+        if (
+          !e.target.value.match(/[a-z]/g) ||
+          !e.target.value.match(/[A-Z]/g) ||
+          !e.target.value.match(/[0-9]/gi) ||
+          !e.target.value.match(/\W/gi)
+        ) {
           setState((currentState) => ({
             ...currentState,
             textFieldErrorMessageRepeatPassword: 'Repeat password is too weak',
@@ -155,10 +169,9 @@ const Forgot: NextPage = () => {
         ...current,
         loading: true,
       }));
-      const decode: any = jwtDecode(String(query.token));
-
       try {
-        const { data } = await Services.resetPassword(Number(decode.id), body);
+        const userId = getUserIdFromResetToken(String(query.token));
+        const { data } = await Services.resetPassword(userId, body);
 
         Swal.fire({
           title: 'Success',
@@ -197,8 +210,16 @@ const Forgot: NextPage = () => {
     }
   };
 
-  const buttonDisabledForgotPassword: boolean = state.loading || state.email === '' || state.textFieldErrorMessageEmail !== '';
-  const buttonDisabledResetPassword: boolean = state.loading || state.password === '' || state.repeatPassword === '' || state.textFieldErrorMessagePassword !== '' || state.textFieldErrorMessageRepeatPassword !== '';
+  const buttonDisabledForgotPassword: boolean =
+    state.loading ||
+    state.email === '' ||
+    state.textFieldErrorMessageEmail !== '';
+  const buttonDisabledResetPassword: boolean =
+    state.loading ||
+    state.password === '' ||
+    state.repeatPassword === '' ||
+    state.textFieldErrorMessagePassword !== '' ||
+    state.textFieldErrorMessageRepeatPassword !== '';
 
   return (
     <Fragment>
@@ -216,10 +237,9 @@ const Forgot: NextPage = () => {
               <Styled.HeroCreateForgotCol>
                 <Styled.HeroCreateForgotImageContainer>
                   <Image
-                    src="/icons/Forgot.svg"
+                    src="/icons/forgot.svg"
                     width={250}
                     height={250}
-                    layout="responsive"
                     alt="Create Forgot"
                   />
                 </Styled.HeroCreateForgotImageContainer>
@@ -241,8 +261,11 @@ const Forgot: NextPage = () => {
                             type="email"
                             id="email"
                             value={state.email}
-                            invalidMessage={state.textFieldErrorMessageEmail.length > 0
-                              ? state.textFieldErrorMessageEmail : undefined}
+                            invalidMessage={
+                              state.textFieldErrorMessageEmail.length > 0
+                                ? state.textFieldErrorMessageEmail
+                                : undefined
+                            }
                             onChange={(event) => handleChange('email', event)}
                           />
                         </Styled.HeroCreateForgotField>
@@ -270,9 +293,14 @@ const Forgot: NextPage = () => {
                             type="password"
                             id="password"
                             value={state.password}
-                            invalidMessage={state.textFieldErrorMessagePassword.length > 0
-                              ? state.textFieldErrorMessagePassword : undefined}
-                            onChange={(event) => handleChange('password', event)}
+                            invalidMessage={
+                              state.textFieldErrorMessagePassword.length > 0
+                                ? state.textFieldErrorMessagePassword
+                                : undefined
+                            }
+                            onChange={(event) =>
+                              handleChange('password', event)
+                            }
                           />
                         </Styled.HeroCreateForgotField>
                       </Styled.HeroCreateForgotControl>
@@ -286,9 +314,15 @@ const Forgot: NextPage = () => {
                             type="password"
                             id="repeat-password"
                             value={state.repeatPassword}
-                            invalidMessage={state.textFieldErrorMessageRepeatPassword.length > 0
-                              ? state.textFieldErrorMessageRepeatPassword : undefined}
-                            onChange={(event) => handleChange('repeatPassword', event)}
+                            invalidMessage={
+                              state.textFieldErrorMessageRepeatPassword.length >
+                              0
+                                ? state.textFieldErrorMessageRepeatPassword
+                                : undefined
+                            }
+                            onChange={(event) =>
+                              handleChange('repeatPassword', event)
+                            }
                           />
                         </Styled.HeroCreateForgotField>
                       </Styled.HeroCreateForgotControl>

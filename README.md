@@ -1,34 +1,48 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# My Personal Website
 
-## Getting Started
+Portfolio frontend built with [Next.js](https://nextjs.org/) 16 (Pages Router), React 19, TypeScript, styled-components and Redux Toolkit. Project data comes from the separate [personal-website-api](http://192.168.8.6:3000/mathius.kormasela.dev/personal-website-api) backend.
 
-First, run the development server:
+## Requirements
+
+- Node.js 22 or newer
+- Yarn 1 (`yarn.lock` is committed)
+
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
+yarn install
+cp .env.example .env.local
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Set `NEXT_PUBLIC_API_URL` in `.env.local` to the backend URL, e.g. `http://localhost:9000`.
+The value is inlined into the browser bundle at build time, so rebuild after changing it. Project images served from that host are optimized by `next/image`.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Run
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+yarn dev                  # development server
+yarn build && yarn start  # production
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Both commands listen on `0.0.0.0` and read the port from `PORT`. If `PORT` is not set they use `8081`:
 
-## Learn More
+```bash
+PORT=3000 yarn start
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Quality checks
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+yarn test            # Jest + Testing Library unit tests
+yarn test:coverage   # same, with a coverage report in coverage/
+yarn lint            # ESLint (eslint-config-next, flat config)
+yarn typecheck       # TypeScript, no emit
+yarn format          # format every file with Prettier
+yarn format:check    # fail if a file is not formatted
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Formatting is handled by Prettier (`.prettierrc.json`: 2 spaces, single quotes, 80 columns). ESLint only checks code quality; `eslint-config-prettier` switches off its style rules so the two never disagree. Most editors pick up `.editorconfig` and the Prettier config automatically.
 
-## Deploy on Vercel
+The one-off commit that reformatted everything is listed in `.git-blame-ignore-revs`. Run `git config blame.ignoreRevsFile .git-blame-ignore-revs` once so `git blame` skips it.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Tests live in `__tests__/` (never under `pages/`, or Next would treat them as routes). `__tests__/test-utils.tsx` provides `renderWithStore`, which renders a component with a Redux store and the same styled-components prop filter the app uses.

@@ -6,17 +6,11 @@ import NextHead from 'next/head';
 import { IHeadComponentProps } from '../../interfaces';
 
 export const Head: NextPage<IHeadComponentProps> = (props) => {
-  const {
-    title,
-  } = props;
+  const { title } = props;
 
   return (
     <NextHead>
-      <title>
-        {title}
-        {' '}
-        | My Personal Website
-      </title>
+      <title>{title} | My Personal Website</title>
       <link rel="icon" type="image/x-icon" href="/icons/favicon.ico" />
     </NextHead>
   );

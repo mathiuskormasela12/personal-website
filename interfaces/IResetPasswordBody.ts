@@ -1,6 +1,6 @@
 // ========== IResetPasswordBody
 
 export interface IResetPasswordBody {
-	password: string;
-	repeatPassword: string;
+  password: string;
+  repeatPassword: string;
 }

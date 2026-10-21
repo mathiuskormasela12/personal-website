@@ -27,7 +27,9 @@ class Services {
   }
 
   public static getAllProjects(data: IGetProjectsQueries) {
-    const queries: string = `${Object.keys(data).map((item, index) => `${item}=${Object.values(data)[index]}`).join('&')}`;
+    const queries: string = `${Object.keys(data)
+      .map((item, index) => `${item}=${Object.values(data)[index]}`)
+      .join('&')}`;
     return http().get(`/projects?${queries}`);
   }
 
