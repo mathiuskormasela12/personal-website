@@ -20,10 +20,16 @@ import Services from '../../services';
 export const Navbar: NextPage = () => {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
-  const accessToken: string = useSelector((current: IGlobalStates) => current.auth.accessToken);
-  const refreshToken: string = useSelector((current: IGlobalStates) => current.auth.refreshToken);
-  const id: number = useSelector((current: IGlobalStates) => current.projects.project.id);
-  const navItems = (accessToken !== '') ? NAV_ITEMS.ADMIN : NAV_ITEMS.USER;
+  const accessToken: string = useSelector(
+    (current: IGlobalStates) => current.auth.accessToken,
+  );
+  const refreshToken: string = useSelector(
+    (current: IGlobalStates) => current.auth.refreshToken,
+  );
+  const id: number = useSelector(
+    (current: IGlobalStates) => current.projects.project.id,
+  );
+  const navItems = accessToken !== '' ? NAV_ITEMS.ADMIN : NAV_ITEMS.USER;
 
   const handleMoveToOtherWebsite = (link: string) => {
     window.location.href = link;
@@ -70,45 +76,41 @@ export const Navbar: NextPage = () => {
       <Styled.Nav>
         <Styled.NavContainer>
           <Styled.NavBrand>
-            <Link href="/" passHref>
-              <Styled.Brand>
-                Mathius
-              </Styled.Brand>
-            </Link>
+            <Styled.Brand as={Link} href="/">
+              Mathius
+            </Styled.Brand>
           </Styled.NavBrand>
           <Styled.NavList toggle={toggle}>
             {navItems.map((item) => (
-              <Link
-                href={item.path}
-                passHref
+              <Styled.NavItems
                 key={item.id.toString()}
+                active={router.pathname === item.path}
               >
-                <Styled.NavItems active={router.pathname === item.path}>
-                  {item.text}
-                </Styled.NavItems>
-              </Link>
+                <Styled.NavLink href={item.path}>{item.text}</Styled.NavLink>
+              </Styled.NavItems>
             ))}
           </Styled.NavList>
           <Styled.NavSide>
-            <Button
-              type="button"
-              size="md"
-              rounded
-              onClick={handleButton}
-            >
-              {(accessToken !== '' && refreshToken !== '' && id > 0) ? 'Action' : 'Hire Me'}
+            <Button type="button" size="md" rounded onClick={handleButton}>
+              {accessToken !== '' && refreshToken !== '' && id > 0
+                ? 'Action'
+                : 'Hire Me'}
             </Button>
             {toggle ? (
               <GrClose
                 size={20}
                 color={Colors.dark}
-                onClick={() => setToggle((currentToggle: boolean) => !currentToggle)}
+                onClick={() =>
+                  setToggle((currentToggle: boolean) => !currentToggle)
+                }
               />
             ) : (
               <HiOutlineMenu
                 size={25}
                 color={Colors.dark}
-                onClick={() => setToggle((currentToggle: boolean) => !currentToggle)}
+                onClick={() =>
+                  setToggle((currentToggle: boolean) => !currentToggle)
+                }
               />
             )}
           </Styled.NavSide>

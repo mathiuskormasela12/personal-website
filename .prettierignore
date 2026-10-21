@@ -1,0 +1,9 @@
+# generated / vendored
+.next/
+out/
+build/
+coverage/
+node_modules/
+next-env.d.ts
+yarn.lock
+public/

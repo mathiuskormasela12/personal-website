@@ -4,7 +4,9 @@ import axios from 'axios';
 import { setToken } from '../redux/actions/auth';
 import persistedStore from '../redux/store';
 
-const { NEXT_PUBLIC_API_URL } = process.env;
+// Next inlines NEXT_PUBLIC_* only for direct `process.env.X` reads; destructuring
+// stays undefined in the browser bundle (Turbopack), so keep this a direct read.
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const { store } = persistedStore;
 
@@ -27,7 +29,7 @@ const http = () => {
   );
 
   instances.interceptors.response.use(
-    (res: unknown) => res,
+    (res) => res,
     async (err: any) => {
       const originalConfig = err.config;
       const { refreshToken } = getState().auth;

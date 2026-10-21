@@ -6,7 +6,8 @@ const data: IProjects[] = [
   {
     id: 1,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -29,7 +30,8 @@ const data: IProjects[] = [
   {
     id: 2,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -52,7 +54,8 @@ const data: IProjects[] = [
   {
     id: 3,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -75,7 +78,8 @@ const data: IProjects[] = [
   {
     id: 4,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -98,7 +102,8 @@ const data: IProjects[] = [
   {
     id: 5,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -121,7 +126,8 @@ const data: IProjects[] = [
   {
     id: 6,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -144,7 +150,8 @@ const data: IProjects[] = [
   {
     id: 7,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -167,7 +174,8 @@ const data: IProjects[] = [
   {
     id: 8,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -190,7 +198,8 @@ const data: IProjects[] = [
   {
     id: 9,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -213,7 +222,8 @@ const data: IProjects[] = [
   {
     id: 10,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {
@@ -236,7 +246,8 @@ const data: IProjects[] = [
   {
     id: 11,
     title: 'Belajar Dasar Node Js',
-    description: 'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
+    description:
+      'Belajar  membuat aplikasi crud sederhana dengan menggunakan Node Js (Express) dan MySQL. Membuat login & register serta input, ubah dan hapus data.',
     img: '/images/wkw.jpg',
     technologies: [
       {

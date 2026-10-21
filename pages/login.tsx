@@ -29,12 +29,12 @@ const Login: NextPage = () => {
     textFieldErrorMessagePassword: '',
     loading: false,
   });
-  const accessToken: string = useSelector((
-    currentState: IGlobalStates,
-  ) => currentState.auth.accessToken);
-  const refreshToken: string = useSelector((
-    currentState: IGlobalStates,
-  ) => currentState.auth.refreshToken);
+  const accessToken: string = useSelector(
+    (currentState: IGlobalStates) => currentState.auth.accessToken,
+  );
+  const refreshToken: string = useSelector(
+    (currentState: IGlobalStates) => currentState.auth.refreshToken,
+  );
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const Login: NextPage = () => {
     router.push('/');
   }
 
-  const handleChange = 	(
+  const handleChange = (
     name: string,
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -65,7 +65,12 @@ const Login: NextPage = () => {
         break;
 
       case 'password':
-        if (!e.target.value.match(/[a-z]/g) || !e.target.value.match(/[A-Z]/g) || !e.target.value.match(/[0-9]/gi) || !e.target.value.match(/\W/gi)) {
+        if (
+          !e.target.value.match(/[a-z]/g) ||
+          !e.target.value.match(/[A-Z]/g) ||
+          !e.target.value.match(/[0-9]/gi) ||
+          !e.target.value.match(/\W/gi)
+        ) {
           setState((currentState) => ({
             ...currentState,
             textFieldErrorMessagePassword: 'Password is too weak',
@@ -132,7 +137,12 @@ const Login: NextPage = () => {
     }
   };
 
-  const buttonDisabled: boolean = state.loading || state.email === '' || state.password === '' || state.textFieldErrorMessageEmail !== '' || state.textFieldErrorMessagePassword !== '';
+  const buttonDisabled: boolean =
+    state.loading ||
+    state.email === '' ||
+    state.password === '' ||
+    state.textFieldErrorMessageEmail !== '' ||
+    state.textFieldErrorMessagePassword !== '';
 
   return (
     <Fragment>
@@ -153,7 +163,6 @@ const Login: NextPage = () => {
                     src="/icons/login.svg"
                     width={250}
                     height={250}
-                    layout="responsive"
                     alt="Create Auth"
                   />
                 </Styled.HeroCreateAuthImageContainer>
@@ -173,8 +182,11 @@ const Login: NextPage = () => {
                         type="email"
                         id="email"
                         value={state.email}
-                        invalidMessage={state.textFieldErrorMessageEmail.length > 0
-                          ? state.textFieldErrorMessageEmail : undefined}
+                        invalidMessage={
+                          state.textFieldErrorMessageEmail.length > 0
+                            ? state.textFieldErrorMessageEmail
+                            : undefined
+                        }
                         onChange={(event) => handleChange('email', event)}
                       />
                     </Styled.HeroCreateAuthField>
@@ -189,8 +201,11 @@ const Login: NextPage = () => {
                         type="password"
                         id="password"
                         value={state.password}
-                        invalidMessage={state.textFieldErrorMessagePassword.length > 0
-                          ? state.textFieldErrorMessagePassword : undefined}
+                        invalidMessage={
+                          state.textFieldErrorMessagePassword.length > 0
+                            ? state.textFieldErrorMessagePassword
+                            : undefined
+                        }
                         onChange={(event) => handleChange('password', event)}
                       />
                     </Styled.HeroCreateAuthField>

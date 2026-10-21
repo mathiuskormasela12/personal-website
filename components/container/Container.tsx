@@ -7,9 +7,5 @@ import { ContainerStyle } from './container.styled';
 export const Container: React.FC<IContainerProps> = (props) => {
   const { children, ...rest } = props;
 
-  return (
-    <ContainerStyle {...rest}>
-      {children}
-    </ContainerStyle>
-  );
+  return <ContainerStyle {...rest}>{children}</ContainerStyle>;
 };

@@ -8,9 +8,5 @@ import * as Styled from './button.styled';
 export const Button: NextPage<IButtonProps> = (props) => {
   const { children, ...rest } = props;
 
-  return (
-    <Styled.Button {...rest}>
-      {children}
-    </Styled.Button>
-  );
+  return <Styled.Button {...rest}>{children}</Styled.Button>;
 };

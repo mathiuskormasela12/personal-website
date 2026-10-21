@@ -11,9 +11,7 @@ export const TextField: NextPage<ITextFieldProps> = (props) => {
   return (
     <Fragment>
       <Styled.Input {...props} />
-      <Styled.ErrorMessage>
-        {invalidMessage}
-      </Styled.ErrorMessage>
+      <Styled.ErrorMessage>{invalidMessage}</Styled.ErrorMessage>
     </Fragment>
   );
 };
