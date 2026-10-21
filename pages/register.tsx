@@ -32,14 +32,18 @@ const Register: NextPage = () => {
   });
 
   const router = useRouter();
-  const accessToken: string = useSelector((states: IGlobalStates) => states.auth.accessToken);
-  const refreshToken: string = useSelector((states: IGlobalStates) => states.auth.refreshToken);
+  const accessToken: string = useSelector(
+    (states: IGlobalStates) => states.auth.accessToken,
+  );
+  const refreshToken: string = useSelector(
+    (states: IGlobalStates) => states.auth.refreshToken,
+  );
 
   if (accessToken === '' && refreshToken === '') {
     router.push('/login');
   }
 
-  const handleChange = 	(
+  const handleChange = (
     name: string,
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -61,7 +65,12 @@ const Register: NextPage = () => {
         break;
 
       case 'password':
-        if (!e.target.value.match(/[a-z]/g) || !e.target.value.match(/[A-Z]/g) || !e.target.value.match(/[0-9]/gi) || !e.target.value.match(/\W/gi)) {
+        if (
+          !e.target.value.match(/[a-z]/g) ||
+          !e.target.value.match(/[A-Z]/g) ||
+          !e.target.value.match(/[0-9]/gi) ||
+          !e.target.value.match(/\W/gi)
+        ) {
           setState((currentState) => ({
             ...currentState,
             textFieldErrorMessagePassword: 'Password is too weak',
@@ -77,7 +86,12 @@ const Register: NextPage = () => {
         break;
 
       case 'repeatPassword':
-        if (!e.target.value.match(/[a-z]/g) || !e.target.value.match(/[A-Z]/g) || !e.target.value.match(/[0-9]/gi) || !e.target.value.match(/\W/gi)) {
+        if (
+          !e.target.value.match(/[a-z]/g) ||
+          !e.target.value.match(/[A-Z]/g) ||
+          !e.target.value.match(/[0-9]/gi) ||
+          !e.target.value.match(/\W/gi)
+        ) {
           setState((currentState) => ({
             ...currentState,
             textFieldErrorMessageRepeatPassword: 'Repeat password is too weak',
@@ -144,7 +158,14 @@ const Register: NextPage = () => {
     }
   };
 
-  const buttonDisabled: boolean = state.loading || state.email === '' || state.password === '' || state.repeatPassword === '' || state.textFieldErrorMessageEmail !== '' || state.textFieldErrorMessagePassword !== '' || state.textFieldErrorMessageRepeatPassword !== '';
+  const buttonDisabled: boolean =
+    state.loading ||
+    state.email === '' ||
+    state.password === '' ||
+    state.repeatPassword === '' ||
+    state.textFieldErrorMessageEmail !== '' ||
+    state.textFieldErrorMessagePassword !== '' ||
+    state.textFieldErrorMessageRepeatPassword !== '';
 
   return (
     <Fragment>
@@ -165,7 +186,6 @@ const Register: NextPage = () => {
                     src="/icons/register.svg"
                     width={250}
                     height={250}
-                    layout="responsive"
                     alt="Create Auth"
                   />
                 </Styled.HeroCreateAuthImageContainer>
@@ -185,8 +205,11 @@ const Register: NextPage = () => {
                         type="email"
                         id="email"
                         value={state.email}
-                        invalidMessage={state.textFieldErrorMessageEmail.length > 0
-                          ? state.textFieldErrorMessageEmail : undefined}
+                        invalidMessage={
+                          state.textFieldErrorMessageEmail.length > 0
+                            ? state.textFieldErrorMessageEmail
+                            : undefined
+                        }
                         onChange={(event) => handleChange('email', event)}
                       />
                     </Styled.HeroCreateAuthField>
@@ -201,8 +224,11 @@ const Register: NextPage = () => {
                         type="password"
                         id="password"
                         value={state.password}
-                        invalidMessage={state.textFieldErrorMessagePassword.length > 0
-                          ? state.textFieldErrorMessagePassword : undefined}
+                        invalidMessage={
+                          state.textFieldErrorMessagePassword.length > 0
+                            ? state.textFieldErrorMessagePassword
+                            : undefined
+                        }
                         onChange={(event) => handleChange('password', event)}
                       />
                     </Styled.HeroCreateAuthField>
@@ -217,9 +243,14 @@ const Register: NextPage = () => {
                         type="password"
                         id="repeat-password"
                         value={state.repeatPassword}
-                        invalidMessage={state.textFieldErrorMessageRepeatPassword.length > 0
-                          ? state.textFieldErrorMessageRepeatPassword : undefined}
-                        onChange={(event) => handleChange('repeatPassword', event)}
+                        invalidMessage={
+                          state.textFieldErrorMessageRepeatPassword.length > 0
+                            ? state.textFieldErrorMessageRepeatPassword
+                            : undefined
+                        }
+                        onChange={(event) =>
+                          handleChange('repeatPassword', event)
+                        }
                       />
                     </Styled.HeroCreateAuthField>
                   </Styled.HeroCreateAuthControl>
@@ -229,7 +260,12 @@ const Register: NextPage = () => {
                     </Styled.FormLink>
                   </Styled.HeroCreateAuthControl>
                   <Styled.HeroCreateAuthControl>
-                    <Button type="submit" size="md" fluid disabled={buttonDisabled}>
+                    <Button
+                      type="submit"
+                      size="md"
+                      fluid
+                      disabled={buttonDisabled}
+                    >
                       {state.loading ? 'Loading...' : 'Create'}
                     </Button>
                   </Styled.HeroCreateAuthControl>

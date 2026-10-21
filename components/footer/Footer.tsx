@@ -1,9 +1,12 @@
 // ========== Footer
 // import all modules
 import React from 'react';
+import { getCurrentYear } from '../../helpers';
 import * as Styled from './footer.styled';
 
 export const Footer: React.FC = () => {
+  const year = getCurrentYear();
+
   const handleMoveToOtherWebsite = (link: string) => {
     window.location.href = link;
   };
@@ -11,93 +14,73 @@ export const Footer: React.FC = () => {
   return (
     <Styled.Footer id="footer">
       <Styled.FooterContainer>
-        <Styled.FooterTitle>
-          &copy; Mathius 2022
-        </Styled.FooterTitle>
-        <Styled.FooterTitle>
-          My Personal Website
-        </Styled.FooterTitle>
+        <Styled.FooterTitle>&copy; Mathius {year}</Styled.FooterTitle>
+        <Styled.FooterTitle>My Personal Website</Styled.FooterTitle>
         <Styled.FooterTitle>
           let&apos;s writes our future with code
         </Styled.FooterTitle>
         <Styled.FooterContent>
           <Styled.FooterContentCol>
-            <Styled.ListTitle>
-              Frontend Skills
-            </Styled.ListTitle>
+            <Styled.ListTitle>Frontend Skills</Styled.ListTitle>
             <Styled.ListContent>
-              <Styled.ListItems>
-                HTML
-              </Styled.ListItems>
-              <Styled.ListItems>
-                CSS
-              </Styled.ListItems>
-              <Styled.ListItems>
-                Javascript
-              </Styled.ListItems>
-              <Styled.ListItems>
-                Typescript
-              </Styled.ListItems>
+              <Styled.ListItems>HTML</Styled.ListItems>
+              <Styled.ListItems>CSS</Styled.ListItems>
+              <Styled.ListItems>Javascript</Styled.ListItems>
+              <Styled.ListItems>Typescript</Styled.ListItems>
             </Styled.ListContent>
           </Styled.FooterContentCol>
           <Styled.FooterContentCol>
-            <Styled.ListTitle>
-              Backend Skills
-            </Styled.ListTitle>
+            <Styled.ListTitle>Backend Skills</Styled.ListTitle>
             <Styled.ListContent>
-              <Styled.ListItems>
-                Node Js
-              </Styled.ListItems>
-              <Styled.ListItems>
-                Express Js
-              </Styled.ListItems>
-              <Styled.ListItems>
-                Nest Js
-              </Styled.ListItems>
-              <Styled.ListItems>
-                MySQL
-              </Styled.ListItems>
-              <Styled.ListItems>
-                Mongodb
-              </Styled.ListItems>
+              <Styled.ListItems>Node Js</Styled.ListItems>
+              <Styled.ListItems>Express Js</Styled.ListItems>
+              <Styled.ListItems>Nest Js</Styled.ListItems>
+              <Styled.ListItems>MySQL</Styled.ListItems>
+              <Styled.ListItems>Mongodb</Styled.ListItems>
             </Styled.ListContent>
           </Styled.FooterContentCol>
           <Styled.FooterContentCol>
-            <Styled.ListTitle>
-              Social Media
-            </Styled.ListTitle>
+            <Styled.ListTitle>Social Media</Styled.ListTitle>
             <Styled.ListContent>
               <Styled.ListItems
                 pointer
-                onClick={() => handleMoveToOtherWebsite('https://www.facebook.com/mathiuskormasela/')}
+                onClick={() =>
+                  handleMoveToOtherWebsite(
+                    'https://www.facebook.com/mathiuskormasela/',
+                  )
+                }
               >
                 Facebook
               </Styled.ListItems>
               <Styled.ListItems
                 pointer
-                onClick={() => handleMoveToOtherWebsite('https://twitter.com/Mathius87248424')}
+                onClick={() =>
+                  handleMoveToOtherWebsite(
+                    'https://twitter.com/Mathius87248424',
+                  )
+                }
               >
                 Twitter
               </Styled.ListItems>
             </Styled.ListContent>
           </Styled.FooterContentCol>
           <Styled.FooterContentCol>
-            <Styled.ListTitle>
-              Youtube
-            </Styled.ListTitle>
+            <Styled.ListTitle>Youtube</Styled.ListTitle>
             <Styled.ListContent>
               <Styled.ListItems
                 pointer
-                onClick={() => handleMoveToOtherWebsite('https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw/videos')}
+                onClick={() =>
+                  handleMoveToOtherWebsite(
+                    'https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw/videos',
+                  )
+                }
               >
                 @mathius
               </Styled.ListItems>
             </Styled.ListContent>
           </Styled.FooterContentCol>
           <Styled.FooterContentCol>
-            <Styled.ListTitle>
-              Contact
-            </Styled.ListTitle>
+            <Styled.ListTitle>Contact</Styled.ListTitle>
             <Styled.ListContent>
               <Styled.ListItems title="mathiuskormasela12@gmail.com">
                 Email
@@ -108,12 +91,8 @@ export const Footer: React.FC = () => {
             </Styled.ListContent>
           </Styled.FooterContentCol>
         </Styled.FooterContent>
-        <Styled.FooterTitle>
-          Created with love by Mathius
-        </Styled.FooterTitle>
-        <Styled.FooterTitle>
-          in Jakarta 2022
-        </Styled.FooterTitle>
+        <Styled.FooterTitle>Created with love by Mathius</Styled.FooterTitle>
+        <Styled.FooterTitle>in Jakarta {year}</Styled.FooterTitle>
       </Styled.FooterContainer>
     </Styled.Footer>
   );

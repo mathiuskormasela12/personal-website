@@ -3,6 +3,6 @@
 import React from 'react';
 
 export interface IPlaceholderProps {
-	children: React.ReactElement;
-	isProject?: boolean;
+  children: React.ReactElement;
+  isProject?: boolean;
 }

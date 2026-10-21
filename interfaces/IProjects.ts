@@ -3,9 +3,9 @@
 import { ITechnology } from './ITechnology';
 
 export interface IProjects {
-	id: number;
-	title: string;
-	description: string;
-	img: string;
-	technologies: ITechnology[];
+  id: number;
+  title: string;
+  description: string;
+  img: string;
+  technologies: ITechnology[];
 }

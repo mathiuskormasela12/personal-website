@@ -1,5 +1,6 @@
 // ========== Auth Reducer
 // import all modules
+import type { UnknownAction } from '@reduxjs/toolkit';
 import { IAuthGlobalStates, IAuthReduxAction } from '../../interfaces';
 
 const initialStates: IAuthGlobalStates = {
@@ -9,14 +10,15 @@ const initialStates: IAuthGlobalStates = {
 
 const authReducer = (
   states: IAuthGlobalStates = initialStates,
-  action: IAuthReduxAction,
+  action: UnknownAction,
 ): IAuthGlobalStates => {
   switch (action.type) {
     case 'SET_TOKEN': {
+      const { data } = (action as IAuthReduxAction).payload;
       return {
         ...states,
-        accessToken: action.payload.data.accessToken,
-        refreshToken: action.payload.data.refreshToken,
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
       };
     }
 

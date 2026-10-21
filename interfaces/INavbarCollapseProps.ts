@@ -1,5 +1,5 @@
 // =========== INavbarCollapesProps
 
 export interface INavbarCollapesProps {
-	toggle: boolean;
+  toggle: boolean;
 }

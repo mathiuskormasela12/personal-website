@@ -9,9 +9,11 @@ import * as Styled from './pagination.styled';
 import { IGlobalStates, IPaginationProps } from '../../interfaces';
 
 export const Pagination: NextPage<IPaginationProps> = (props) => {
-  const { totalPages, page } = props;
+  const { totalPages, page = 1 } = props;
   const router = useRouter();
-  const nextPage: number = useSelector((current: IGlobalStates) => current.projects.nextPage);
+  const nextPage: number = useSelector(
+    (current: IGlobalStates) => current.projects.nextPage,
+  );
   const previousPage: number = useSelector(
     (current: IGlobalStates) => current.projects.previousPage,
   );
@@ -32,6 +34,7 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
     <Styled.Pagination>
       <Styled.PaginationItems
         {...props}
+        aria-label="Previous page"
         disabled={previousPage === 0}
         onClick={previousPage !== 0 ? handlePreviousPage : () => {}}
       >
@@ -45,27 +48,28 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
             // eslint-disable-next-line react/no-array-index-key
             <Fragment key={index.toString()}>
               <Styled.PaginationItems
-                active={(pageInLooping === page)}
+                active={pageInLooping === page}
                 {...props}
               >
                 ...
               </Styled.PaginationItems>
               <Styled.PaginationItems
-							// eslint-disable-next-line react/no-array-index-key
+                // eslint-disable-next-line react/no-array-index-key
                 key={index.toString()}
-                active={(pageInLooping === page)}
+                active={pageInLooping === page}
                 {...props}
               >
                 {totalPages}
               </Styled.PaginationItems>
             </Fragment>
           );
-        } if (pageInLooping < 6) {
+        }
+        if (pageInLooping < 6) {
           return (
             <Styled.PaginationItems
-								// eslint-disable-next-line react/no-array-index-key
+              // eslint-disable-next-line react/no-array-index-key
               key={index.toString()}
-              active={(pageInLooping === page)}
+              active={pageInLooping === page}
               {...props}
               onClick={() => moveToThePage(pageInLooping)}
             >
@@ -78,6 +82,7 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
       })}
       <Styled.PaginationItems
         {...props}
+        aria-label="Next page"
         onClick={nextPage > 0 ? handleNextPage : () => {}}
         disabled={nextPage < 1}
       >
@@ -85,8 +90,4 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
       </Styled.PaginationItems>
     </Styled.Pagination>
   );
-};
-
-Pagination.defaultProps = {
-  page: 1,
 };

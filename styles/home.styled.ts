@@ -5,86 +5,86 @@ import { IBalloonProps, IHeroProjectsMainColProps } from '../interfaces';
 import { Colors } from '../themes';
 
 export const HeroHome = styled.div`
-	height: auto;
-	background-color: white;
+  height: auto;
+  background-color: white;
 `;
 
 export const HeroWelcome = styled.div`
-	height: calc(100vh - 6.4rem);
+  height: calc(100vh - 6.4rem);
 
-	@media (max-width: 768px) and (orientation: landscape) {
-		height: 100vh;
-	}
+  @media (max-width: 768px) and (orientation: landscape) {
+    height: 100vh;
+  }
 `;
 
 export const HeroHomeRow = styled.div`
-	display: flex;
-	height: 100%;
-	align-items: center;
+  display: flex;
+  height: 100%;
+  align-items: center;
 `;
 
 export const HeroHomeCol = styled.div`
-	flex: 2;
-	position: relative;
+  flex: 2;
+  position: relative;
 
-	@media (max-width: 1200px) {
-		text-align: center;
-	}
+  @media (max-width: 1200px) {
+    text-align: center;
+  }
 
-	&:last-child {
-		flex: 3;
+  &:last-child {
+    flex: 3;
 
-		@media (max-width: 1200px) {
-			display: none;
-		}
-	}
+    @media (max-width: 1200px) {
+      display: none;
+    }
+  }
 `;
 
 export const HeroHomeTitle = styled.h1`
-	color: ${Colors.dark};
-	font-size: 2.4rem;
-	font-weight: normal;
-	word-wrap: break-word;
+  color: ${Colors.dark};
+  font-size: 2.4rem;
+  font-weight: normal;
+  word-wrap: break-word;
 `;
 
 export const HeroHomeSubtitle = styled.p`
-	color: ${Colors.dark};
-	font-size: 1rem;
-	word-wrap: break-word;
-	margin: 1rem 0 1.2rem 0;
-	line-height: 1.5em;
+  color: ${Colors.dark};
+  font-size: 1rem;
+  word-wrap: break-word;
+  margin: 1rem 0 1.2rem 0;
+  line-height: 1.5em;
 `;
 
 export const PrimaryText = styled.span`
-	color: ${Colors.primary};
+  color: ${Colors.primary};
 `;
 
 export const HeroHomeWelcomeContent = styled.div`
-	margin-left: 3.6rem;
+  margin-left: 3.6rem;
 
-	@media (min-width: 1200px) {
-		width: 24rem;
-	}
+  @media (min-width: 1200px) {
+    width: 24rem;
+  }
 
-	@media (max-width: 1200px) {
-		margin-left: 0;
-	}
+  @media (max-width: 1200px) {
+    margin-left: 0;
+  }
 `;
 
 export const BalloonContainer = styled.span<IBalloonProps>`
-	margin: 32px auto;
-	box-sizing: content-box;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
+  margin: 32px auto;
+  box-sizing: content-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
 
-	@media (max-width: 1300px) {
-		display: none;
-	}
+  @media (max-width: 1300px) {
+    display: none;
+  }
 
-	${(props) => {
+  ${(props) => {
     let styles = '';
 
     if (!props.customPosition && props.top) {
@@ -131,12 +131,14 @@ export const BalloonContainer = styled.span<IBalloonProps>`
 
     if (props.customPosition) {
       styles += `
-				${Object.keys(props.customPosition).map((item, index) => {
-    if (props.customPosition) {
-      return `${item}: ${Object.values(props.customPosition)[index]}rem`;
-    }
-    return '';
-  }).join(' !important;')}
+				${Object.keys(props.customPosition)
+          .map((item, index) => {
+            if (props.customPosition) {
+              return `${item}: ${Object.values(props.customPosition)[index]}rem`;
+            }
+            return '';
+          })
+          .join(' !important;')}
 			`;
     }
 
@@ -145,125 +147,125 @@ export const BalloonContainer = styled.span<IBalloonProps>`
 `;
 
 export const ImageContainer = styled.span`
-	margin: 32px auto;
-	box-sizing: content-box;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  margin: 32px auto;
+  box-sizing: content-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-	& > span {
-		position: absolute !important;
-		right: 3.5rem !important;
-	}
+  & > img {
+    position: absolute !important;
+    right: 3.5rem !important;
+  }
 `;
 
 export const HeroProject = styled.div`
-	padding: 0 0 2rem 0;
+  padding: 0 0 2rem 0;
 `;
 
 export const HeroProjectHeader = styled.header`
-	text-align: center;
-	display: flex;
-	align-items: center;
-	flex-direction: column;
-	position: relative;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
 
-	& > h1 {
-		width: 20rem;
-	}
+  & > h1 {
+    width: 20rem;
+  }
 
-	& > p {
-		width: 10rem;
-	}
+  & > p {
+    width: 10rem;
+  }
 `;
 
 export const HeroProjectMain = styled.main`
-	margin-top: 2rem;
+  margin-top: 2rem;
 `;
 
 export const HeroProjectMainRow = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	margin-bottom: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
 `;
 
 export const HeroProjectMainCol = styled.div<IHeroProjectsMainColProps>`
-	width: 29%;
-	margin-right: auto;
+  width: 29%;
+  margin-right: auto;
 
-	@media (min-width: 1200px) {
-		&:nth-child(3n + 0) {
-			margin-right: 0 !important;
-		}
-	
-		${({ count }) => {
-    if (count % 3 === 2) {
-      return `
+  @media (min-width: 1200px) {
+    &:nth-child(3n + 0) {
+      margin-right: 0 !important;
+    }
+
+    ${({ count }) => {
+      if (count % 3 === 2) {
+        return `
 					&:nth-child(${count - 1}) {
 						margin-right: 6% !important;
 					}
 				`;
+      }
+
+      return '';
+    }}
+  }
+
+  @media (min-width: 600px) and (max-width: 1024px) {
+    &:nth-child(2n + 0) {
+      margin-right: 0 !important;
     }
 
-    return '';
-  }}
-	}
-
-	@media (min-width: 600px) and (max-width: 1024px) {
-		&:nth-child(2n + 0) {
-			margin-right: 0 !important;
-		}
-	
-		${({ count }) => {
-    if (count % 2 === 2) {
-      return `
+    ${({ count }) => {
+      if (count % 2 === 2) {
+        return `
 						&:nth-child(${count - 1}) {
 							margin-right: 2% !important;
 						}
 					`;
-    }
+      }
 
-    return '';
-  }}
-	}
+      return '';
+    }}
+  }
 
-	margin-bottom: 2.2rem;
-	
-	&:last-child {
-		margin-bottom: 0;
-	}
+  margin-bottom: 2.2rem;
 
-	${({ count }) => `
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  ${({ count }) => `
 		&:nth-child(${count - 1}) {
 			margin-bottom: 0;
 		}
 	`}
 
-	@media (max-width: 600px) {
-		width: 100%;
-	}
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 
-	@media (min-width: 600px) and (max-width: 1024px) {
-		width: 48%;
-	}
+  @media (min-width: 600px) and (max-width: 1024px) {
+    width: 48%;
+  }
 `;
 
 export const Pagination = styled.div`
-	display: flex;
-	justify-content: center;
+  display: flex;
+  justify-content: center;
 `;
 
 export const PaginationItems = styled.div`
-	width: 2.5em;
-	line-height: 2.5em;
-	text-align: center;
-	font-size: 1rem;
-	color: ${Colors.dark};
-	cursor: pointer;
-	border-radius: 50%;
+  width: 2.5em;
+  line-height: 2.5em;
+  text-align: center;
+  font-size: 1rem;
+  color: ${Colors.dark};
+  cursor: pointer;
+  border-radius: 50%;
 
-	&:hover {
-		background-color: ${Colors.shapeColor};
-	}
+  &:hover {
+    background-color: ${Colors.shapeColor};
+  }
 `;
