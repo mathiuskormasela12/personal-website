@@ -269,3 +269,11 @@ export const PaginationItems = styled.div`
     background-color: ${Colors.shapeColor};
   }
 `;
+
+export const HomeSkills = styled.section`
+  padding: 4rem 0;
+
+  @media (min-width: 1201px) {
+    padding: 6rem 0;
+  }
+`;

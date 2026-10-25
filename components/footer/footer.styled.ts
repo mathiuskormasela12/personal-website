@@ -1,77 +1,135 @@
-// =========== Footer Styles
-// import al modules
+import NextLink from 'next/link';
 import styled from 'styled-components';
-import { IListItemsProps } from '../../interfaces';
 import { Colors } from '../../themes';
 
 export const Footer = styled.footer`
   background-color: ${Colors.footerColor};
-  padding: 4rem 0 2.5rem 0;
+  padding: 2.8rem 0 1.4rem;
 `;
 
-export const FooterContainer = styled.footer`
+export const Container = styled.div`
   margin: 0 auto;
-  width: 80%;
+  width: 100%;
+  padding: 0 1.5rem;
+
+  @media (min-width: 1201px) {
+    width: 80%;
+    padding: 0;
+  }
 `;
 
-export const FooterTitle = styled.p`
-  color: ${Colors.thinPrimary};
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
+export const Top = styled.div`
+  display: grid;
+  gap: 2rem;
   text-align: center;
+
+  @media (min-width: 1201px) {
+    grid-template-columns: 1.4fr 1fr 1.1fr;
+    gap: 3rem;
+    text-align: left;
+  }
 `;
 
-export const FooterContent = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  margin: 4rem 0;
+export const Brand = styled.p`
+  color: ${Colors.primary};
+  font-size: 1.8rem;
+`;
 
-  @media (max-width: 600px) {
-    justify-content: space-between;
+export const Tagline = styled.p`
+  color: ${Colors.light};
+  margin-top: 0.5rem;
+  line-height: 1.5;
+`;
+
+export const ColumnTitle = styled.p`
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: ${Colors.light};
+  margin-bottom: 0.8rem;
+`;
+
+export const QuickLinks = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 1.2rem;
+
+  @media (min-width: 1201px) {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0.6rem;
+  }
+`;
+
+export const QuickLink = styled(NextLink)`
+  color: ${Colors.thinPrimary};
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: ${Colors.primary};
+  }
+`;
+
+export const Contacts = styled.ul`
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 1201px) {
+    align-items: flex-start;
+  }
+`;
+
+export const Contact = styled.a`
+  color: ${Colors.thinPrimary};
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  overflow-wrap: anywhere;
+
+  & > svg {
+    color: ${Colors.primary};
+    flex: none;
   }
 
-  @media (min-width: 600px) and (max-width: 920px) {
+  &:hover,
+  &:focus-visible {
+    color: ${Colors.primary};
+  }
+`;
+
+export const Social = styled.div`
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: 1201px) {
     justify-content: flex-start;
   }
 `;
 
-export const FooterContentCol = styled.div`
-  @media (max-width: 600px) {
-    width: 45%;
-    margin-bottom: 2rem;
+export const Bottom = styled.div`
+  border-top: 1px solid #e3e6ee;
+  margin-top: 2rem;
+  padding-top: 1.1rem;
+  text-align: center;
+  color: ${Colors.light};
+  font-size: 0.9rem;
+  line-height: 1.6;
+
+  & > p {
+    display: block;
   }
 
-  @media (min-width: 600px) and (max-width: 920px) {
-    width: 25%;
-    margin-bottom: 2rem;
+  @media (min-width: 1201px) {
+    display: flex;
+    justify-content: space-between;
+    text-align: left;
   }
-`;
-
-export const ListTitle = styled.p`
-  color: ${Colors.thinPrimary};
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-`;
-
-export const ListContent = styled.ul`
-  list-style: none;
-  line-height: 1.7rem;
-`;
-
-export const ListItems = styled.li<IListItemsProps>`
-  list-style: none;
-  color: ${Colors.thinPrimary};
-  font-size: 1rem;
-
-  ${(props) => {
-    if (props.pointer) {
-      return `
-				cursor: pointer;
-			`;
-    }
-
-    return '';
-  }}
 `;

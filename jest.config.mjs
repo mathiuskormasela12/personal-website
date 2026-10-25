@@ -11,6 +11,7 @@ const config = {
     'components/**/*.tsx',
     'config/**/*.js',
     'helpers/**/*.ts',
+    'hooks/**/*.ts',
     'pages/**/*.tsx',
     'redux/**/*.ts',
     'services/**/*.ts',

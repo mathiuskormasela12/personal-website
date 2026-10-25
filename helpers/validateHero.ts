@@ -1,4 +1,5 @@
 import { IHero, IHeroErrors } from '../interfaces';
+import { isHttpUrl } from './isHttpUrl';
 
 interface IHeroFieldRule {
   label: string;
@@ -13,15 +14,6 @@ const HERO_FIELD_RULES: Record<keyof IHero, IHeroFieldRule> = {
   subtitle: { label: 'subtitle', max: 300, required: true },
   buttonText: { label: 'button text', max: 30, required: true },
   buttonUrl: { label: 'button link', max: 255, required: false },
-};
-
-const isHttpUrl = (value: string): boolean => {
-  try {
-    const { protocol, hostname } = new URL(value);
-    return ['http:', 'https:'].includes(protocol) && hostname.includes('.');
-  } catch {
-    return false;
-  }
 };
 
 const getFieldError = (field: keyof IHero, rawValue: string) => {

@@ -7,6 +7,7 @@ import {
   IHero,
   ILoginBody,
   IRegisterBody,
+  IProfile,
   IResetPasswordBody,
 } from '../interfaces';
 
@@ -19,6 +20,14 @@ class Services {
 
   public static updateHero(data: IHero) {
     return http().patch('/hero', data);
+  }
+
+  public static getProfile() {
+    return http().get('/profile');
+  }
+
+  public static updateProfile(data: IProfile) {
+    return http().patch('/profile', data);
   }
 
   public static login(data: ILoginBody) {

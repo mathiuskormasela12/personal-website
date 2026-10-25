@@ -15,7 +15,7 @@ export const NAV_ITEMS = {
     {
       id: 3,
       text: 'Skills',
-      path: '#footer',
+      path: '#skills',
     },
     {
       id: 4,
@@ -46,11 +46,16 @@ export const NAV_ITEMS = {
     },
     {
       id: 5,
+      text: 'Edit Profile',
+      path: '/profile-edit',
+    },
+    {
+      id: 6,
       text: 'Logout',
       path: '/logout',
     },
     {
-      id: 6,
+      id: 7,
       text: 'Contact',
       path: '#footer',
     },
