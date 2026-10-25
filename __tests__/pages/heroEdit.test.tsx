@@ -211,12 +211,12 @@ describe('live preview', () => {
     ).toBeInTheDocument();
   });
 
-  it('comes before the form so it sits above it on mobile', () => {
+  it('comes after the form so it sits below it on mobile', () => {
     renderPage();
     const form = screen.getByLabelText('Greeting').closest('form') as Node;
     expect(
       preview().compareDocumentPosition(form) &
-        Node.DOCUMENT_POSITION_FOLLOWING,
+        Node.DOCUMENT_POSITION_PRECEDING,
     ).toBeTruthy();
   });
 

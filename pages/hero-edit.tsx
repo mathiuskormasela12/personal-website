@@ -136,12 +136,6 @@ const HeroEdit: NextPage<IHeroPageProps> = ({ hero }) => {
           }}
         >
           <Styled.HeroEditFlex>
-            <Styled.HeroEditPreview aria-labelledby="hero-preview-label">
-              <Styled.HeroEditPreviewLabel id="hero-preview-label">
-                Preview
-              </Styled.HeroEditPreviewLabel>
-              <HeroContent hero={values} preview />
-            </Styled.HeroEditPreview>
             <Styled.HeroEditFormCol>
               <Styled.HeroCreateAuthTitle>Edit Hero</Styled.HeroCreateAuthTitle>
               <Styled.HeroCreateAuthForm onSubmit={handleSubmit}>
@@ -179,6 +173,12 @@ const HeroEdit: NextPage<IHeroPageProps> = ({ hero }) => {
                 </Styled.HeroCreateAuthControl>
               </Styled.HeroCreateAuthForm>
             </Styled.HeroEditFormCol>
+            <Styled.HeroEditPreview aria-labelledby="hero-preview-label">
+              <Styled.HeroEditPreviewLabel id="hero-preview-label">
+                Preview
+              </Styled.HeroEditPreviewLabel>
+              <HeroContent hero={values} preview />
+            </Styled.HeroEditPreview>
           </Styled.HeroEditFlex>
         </Container>
       </Styled.HeroEdit>
