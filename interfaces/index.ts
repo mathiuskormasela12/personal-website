@@ -36,3 +36,4 @@ export * from './IPasswordFieldProps';
 export * from './IHero';
 export * from './IHeroPageProps';
 export * from './IHeroErrors';
+export * from './IHeroContentProps';

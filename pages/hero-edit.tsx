@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -13,6 +12,7 @@ import {
   TextField,
   LongText,
   Button,
+  HeroContent,
 } from '../components';
 import Services from '../services';
 import {
@@ -128,69 +128,60 @@ const HeroEdit: NextPage<IHeroPageProps> = ({ hero }) => {
   return (
     <Fragment>
       <Head title="Edit Hero" />
-      <Styled.HeroCreateAuth>
+      <Styled.HeroEdit>
         <Navbar />
-        <Styled.HeroCreateAuthBody>
-          <Container
-            inheritHeight
-            customSize={{
-              value: 80,
-            }}
-          >
-            <Styled.HeroCreateAuthFlex>
-              <Styled.HeroCreateAuthCol>
-                <Styled.HeroCreateAuthImageContainer>
-                  <Image
-                    src="/icons/create-project-img.svg"
-                    width={250}
-                    height={250}
-                    alt="Edit Hero"
-                  />
-                </Styled.HeroCreateAuthImageContainer>
-              </Styled.HeroCreateAuthCol>
-              <Styled.HeroCreateAuthCol>
-                <Styled.HeroCreateAuthTitle>
-                  Edit Hero
-                </Styled.HeroCreateAuthTitle>
-                <Styled.HeroCreateAuthForm onSubmit={handleSubmit}>
-                  {HERO_FORM_FIELDS.map(
-                    ({ name, id, label, placeholder, multiline }) => {
-                      const FieldComponent = multiline ? LongText : TextField;
+        <Container
+          customSize={{
+            value: 80,
+          }}
+        >
+          <Styled.HeroEditFlex>
+            <Styled.HeroEditPreview aria-labelledby="hero-preview-label">
+              <Styled.HeroEditPreviewLabel id="hero-preview-label">
+                Preview
+              </Styled.HeroEditPreviewLabel>
+              <HeroContent hero={values} preview />
+            </Styled.HeroEditPreview>
+            <Styled.HeroEditFormCol>
+              <Styled.HeroCreateAuthTitle>Edit Hero</Styled.HeroCreateAuthTitle>
+              <Styled.HeroCreateAuthForm onSubmit={handleSubmit}>
+                {HERO_FORM_FIELDS.map(
+                  ({ name, id, label, placeholder, multiline }) => {
+                    const FieldComponent = multiline ? LongText : TextField;
 
-                      return (
-                        <Styled.HeroCreateAuthControl key={name}>
-                          <Styled.HeroCreateAuthLabel htmlFor={id}>
-                            {label}
-                          </Styled.HeroCreateAuthLabel>
-                          <Styled.HeroCreateAuthField>
-                            <FieldComponent
-                              id={id}
-                              placeholder={placeholder}
-                              value={values[name]}
-                              invalidMessage={errors[name]}
-                              onChange={handleChange(name)}
-                            />
-                          </Styled.HeroCreateAuthField>
-                        </Styled.HeroCreateAuthControl>
-                      );
-                    },
-                  )}
-                  <Styled.HeroCreateAuthControl>
-                    <Button
-                      type="submit"
-                      size="md"
-                      disabled={buttonDisabled}
-                      fluid
-                    >
-                      {loading ? 'Saving...' : 'Save'}
-                    </Button>
-                  </Styled.HeroCreateAuthControl>
-                </Styled.HeroCreateAuthForm>
-              </Styled.HeroCreateAuthCol>
-            </Styled.HeroCreateAuthFlex>
-          </Container>
-        </Styled.HeroCreateAuthBody>
-      </Styled.HeroCreateAuth>
+                    return (
+                      <Styled.HeroCreateAuthControl key={name}>
+                        <Styled.HeroCreateAuthLabel htmlFor={id}>
+                          {label}
+                        </Styled.HeroCreateAuthLabel>
+                        <Styled.HeroCreateAuthField>
+                          <FieldComponent
+                            id={id}
+                            placeholder={placeholder}
+                            value={values[name]}
+                            invalidMessage={errors[name]}
+                            onChange={handleChange(name)}
+                          />
+                        </Styled.HeroCreateAuthField>
+                      </Styled.HeroCreateAuthControl>
+                    );
+                  },
+                )}
+                <Styled.HeroCreateAuthControl>
+                  <Button
+                    type="submit"
+                    size="md"
+                    disabled={buttonDisabled}
+                    fluid
+                  >
+                    {loading ? 'Saving...' : 'Save'}
+                  </Button>
+                </Styled.HeroCreateAuthControl>
+              </Styled.HeroCreateAuthForm>
+            </Styled.HeroEditFormCol>
+          </Styled.HeroEditFlex>
+        </Container>
+      </Styled.HeroEdit>
       <Footer />
     </Fragment>
   );

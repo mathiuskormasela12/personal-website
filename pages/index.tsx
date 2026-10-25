@@ -12,8 +12,8 @@ import {
   Head,
   Navbar,
   Container,
-  Button,
   Card,
+  HeroContent,
   Footer,
   Pagination,
   Placeholder,
@@ -92,26 +92,7 @@ const Home: NextPage<IHeroPageProps> = ({ hero }) => {
                   />
                 </Styled.BalloonContainer>
                 <Styled.HeroHomeWelcomeContent>
-                  <Styled.HeroHomeTitle>
-                    {hero.titlePrefix}{' '}
-                    <Styled.PrimaryText>
-                      {hero.titleHighlight}
-                    </Styled.PrimaryText>
-                    {hero.titleSuffix}
-                  </Styled.HeroHomeTitle>
-                  <Styled.HeroHomeSubtitle>
-                    {hero.subtitle}
-                  </Styled.HeroHomeSubtitle>
-                  <Button
-                    type="button"
-                    size="md"
-                    rounded
-                    onClick={() => {
-                      router.push(hero.buttonUrl);
-                    }}
-                  >
-                    {hero.buttonText}
-                  </Button>
+                  <HeroContent hero={hero} />
                 </Styled.HeroHomeWelcomeContent>
               </Styled.HeroHomeCol>
               <Styled.HeroHomeCol>
