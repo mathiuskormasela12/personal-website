@@ -250,3 +250,51 @@ it('draws the phone menu list, with its top line, from edge to edge', () => {
   );
   expect(phone?.getPropertyValue('padding-left')).toBe('var(--safe-left)');
 });
+
+const navHeroRules = (): string =>
+  Array.from(document.styleSheets)
+    .flatMap((sheet) => Array.from(sheet.cssRules))
+    .flatMap((rule) =>
+      rule instanceof CSSMediaRule ? Array.from(rule.cssRules) : [rule],
+    )
+    .map((rule) => rule.cssText.replace(/\s/g, ''))
+    .join('\n');
+
+describe('the dark layer behind the open phone menu', () => {
+  const openMenu = async () => {
+    renderWithStore(<Navbar />);
+    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    const hero = screen.getByRole('navigation').parentElement as HTMLElement;
+    return hero.classList[hero.classList.length - 1];
+  };
+
+  it('is not the background of the fixed box that holds the menu', async () => {
+    const name = await openMenu();
+    const own = navHeroRules()
+      .split('\n')
+      .filter((rule) => rule.startsWith(`.${name}{`));
+    expect(own.join('')).toContain('position:fixed');
+    expect(own.join('')).not.toContain('background');
+  });
+
+  it('is a separate layer that ignores taps and covers the whole screen', async () => {
+    const name = await openMenu();
+    const layer = navHeroRules()
+      .split('\n')
+      .find((rule) => rule.startsWith(`.${name}::before{`));
+    expect(layer).toContain('background:rgba(0,0,0,0.5)');
+    expect(layer).toContain('pointer-events:none');
+    expect(layer).toContain('position:fixed');
+    expect(layer).toMatch(/top:0;/);
+    expect(layer).toMatch(/bottom:0;/);
+    expect(layer).toMatch(/left:0;/);
+    expect(layer).toMatch(/right:0;/);
+  });
+
+  it('is not drawn when the menu is closed', () => {
+    renderWithStore(<Navbar />);
+    const hero = screen.getByRole('navigation').parentElement as HTMLElement;
+    const name = hero.classList[hero.classList.length - 1];
+    expect(navHeroRules()).not.toContain(`.${name}::before{`);
+  });
+});
