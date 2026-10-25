@@ -4,12 +4,23 @@ import http from './http';
 import {
   IForgotPasswordBody,
   IGetProjectsQueries,
+  IHero,
   ILoginBody,
   IRegisterBody,
   IResetPasswordBody,
 } from '../interfaces';
 
+const HERO_REQUEST_TIMEOUT_MS = 5000;
+
 class Services {
+  public static getHero() {
+    return http().get('/hero', { timeout: HERO_REQUEST_TIMEOUT_MS });
+  }
+
+  public static updateHero(data: IHero) {
+    return http().patch('/hero', data);
+  }
+
   public static login(data: ILoginBody) {
     return http().post('/auth/login', data);
   }

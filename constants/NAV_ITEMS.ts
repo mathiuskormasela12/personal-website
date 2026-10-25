@@ -41,11 +41,16 @@ export const NAV_ITEMS = {
     },
     {
       id: 4,
+      text: 'Edit Hero',
+      path: '/hero-edit',
+    },
+    {
+      id: 5,
       text: 'Logout',
       path: '/logout',
     },
     {
-      id: 5,
+      id: 6,
       text: 'Contact',
       path: '#footer',
     },

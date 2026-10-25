@@ -9,7 +9,10 @@ export const TextArea = styled.textarea<ILongTextProps>`
   font-size: 1rem;
   outline: none;
   font-family: ${Fonts.base};
-  border: 0.5px solid ${Colors.light};
+  appearance: none;
+  background-color: white;
+  border: 1px solid
+    ${({ invalidMessage }) => (invalidMessage ? Colors.danger : Colors.light)};
   height: 8.5em;
   width: 100%;
   padding: 1em 0 0 0.8em;

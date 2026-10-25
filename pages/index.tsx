@@ -19,9 +19,10 @@ import {
   Placeholder,
 } from '../components';
 import { setProjects } from '../redux/actions';
-import { IGlobalStates, IProjects } from '../interfaces';
+import { IGlobalStates, IHeroPageProps, IProjects } from '../interfaces';
+import { getHeroServerSideProps } from '../helpers';
 
-const Home: NextPage = () => {
+const Home: NextPage<IHeroPageProps> = ({ hero }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const projects: IProjects[] = useSelector(
@@ -92,27 +93,24 @@ const Home: NextPage = () => {
                 </Styled.BalloonContainer>
                 <Styled.HeroHomeWelcomeContent>
                   <Styled.HeroHomeTitle>
-                    Hi, I&apos;m{' '}
+                    {hero.titlePrefix}{' '}
                     <Styled.PrimaryText>
-                      a Fullstack Developer
+                      {hero.titleHighlight}
                     </Styled.PrimaryText>
-                    .
+                    {hero.titleSuffix}
                   </Styled.HeroHomeTitle>
                   <Styled.HeroHomeSubtitle>
-                    I&apos;m Mathius a fullstack developer with 1+ years working
-                    experiences.
+                    {hero.subtitle}
                   </Styled.HeroHomeSubtitle>
                   <Button
                     type="button"
                     size="md"
                     rounded
                     onClick={() => {
-                      router.push(
-                        'https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw',
-                      );
+                      router.push(hero.buttonUrl);
                     }}
                   >
-                    My Youtube
+                    {hero.buttonText}
                   </Button>
                 </Styled.HeroHomeWelcomeContent>
               </Styled.HeroHomeCol>
@@ -263,5 +261,7 @@ const Home: NextPage = () => {
     </Fragment>
   );
 };
+
+export const getServerSideProps = getHeroServerSideProps;
 
 export default Home;
