@@ -71,3 +71,13 @@ describe('preview mode', () => {
     });
   });
 });
+
+it('draws a hand-drawn style wavy line under the highlight in the theme blue', () => {
+  renderWithStore(<HeroContent hero={hero} />);
+  expect(screen.getByText('a Mobile Developer')).toHaveStyle({
+    color: 'var(--color-primary)',
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'wavy',
+    textDecorationColor: 'var(--color-primary)',
+  });
+});

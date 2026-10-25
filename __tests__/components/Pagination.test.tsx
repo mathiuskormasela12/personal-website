@@ -49,3 +49,18 @@ it('defaults to page 1 without the removed defaultProps', async () => {
   await userEvent.click(screen.getByLabelText('Next page'));
   expect(push).toHaveBeenCalledWith('/?page=2', undefined, { shallow: true });
 });
+
+it('fills the current page and keeps the others outlined and round', () => {
+  renderWithStore(<Pagination totalPages={3} page={2} />, {
+    projects: projectsState({ nextPage: 3, previousPage: 1 }),
+  });
+  expect(screen.getByText('2')).toHaveStyle({
+    backgroundColor: 'var(--color-dark)',
+    color: 'var(--color-background)',
+    borderRadius: '999px',
+  });
+  expect(screen.getByText('1')).toHaveStyle({
+    backgroundColor: 'var(--color-surface)',
+    color: 'var(--color-light)',
+  });
+});

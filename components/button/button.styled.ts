@@ -8,7 +8,7 @@ export const Button = styled.button<IButtonProps>`
   outline: none;
   border: none;
   cursor: pointer;
-  color: white;
+  color: ${Colors.background};
   background-color: ${Colors.primary};
   border-radius: ${({ rounded }) => (rounded ? '2em' : '.6em')};
   padding: 0.9em 2.4em;

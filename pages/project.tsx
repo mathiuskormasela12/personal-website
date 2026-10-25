@@ -117,7 +117,7 @@ const Project: NextPage = () => {
       <Head title="Create a Project" />
       <Styled.HeroCreateProject>
         <Navbar />
-        <Styled.HeroCreateProjectBody>
+        <Styled.HeroCreateProjectBody data-page-body>
           <Container
             inheritHeight
             customSize={{
@@ -126,14 +126,14 @@ const Project: NextPage = () => {
           >
             <Styled.HeroCreateProjectFlex>
               <Styled.HeroCreateProjectCol>
-                <Styled.HeroCreateProjectImageContainer>
+                <Styled.IllustrationFrame $paper>
                   <Image
                     src="/icons/create-project-img.svg"
                     width={250}
                     height={250}
                     alt="Create Project"
                   />
-                </Styled.HeroCreateProjectImageContainer>
+                </Styled.IllustrationFrame>
               </Styled.HeroCreateProjectCol>
               <Styled.HeroCreateProjectCol>
                 <Styled.HeroCreateProjectTitle>

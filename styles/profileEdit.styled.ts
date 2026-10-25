@@ -9,7 +9,7 @@ export const ProfileEditGroupTitle = styled.h2`
   color: ${Colors.light};
   margin: 2rem 0 1.2rem;
   padding-top: 1.2rem;
-  border-top: 1px solid #edf1f7;
+  border-top: 1px solid ${Colors.line};
 
   &:first-of-type {
     margin-top: 0;
@@ -33,7 +33,7 @@ export const ProfileEditPreviewNav = styled.div`
   gap: 1rem;
   padding: 0.7rem 1rem;
   margin-bottom: 1.3rem;
-  border: 1px solid #edf1f7;
+  border: 1px solid ${Colors.line};
   border-radius: 0.8rem;
 `;
 
@@ -88,6 +88,6 @@ export const ProfileEditPreviewFooter = styled.div`
 export const ProfileEditPreviewCopyright = styled.p`
   align-self: stretch;
   padding-top: 0.7rem;
-  border-top: 1px solid #e3e6ee;
+  border-top: 1px solid ${Colors.line};
   font-size: 0.78rem;
 `;

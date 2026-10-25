@@ -130,3 +130,11 @@ it('shows its lists without bullet points', () => {
     .getAllByRole('list')
     .forEach((list) => expect(list).toHaveStyle({ listStyle: 'none' }));
 });
+
+it('is separated from the page by a thin line', () => {
+  const { container } = renderWithStore(<Footer />);
+  expect(container.querySelector('footer')).toHaveStyle({
+    borderTopWidth: '1px',
+    borderTopColor: 'var(--color-line)',
+  });
+});

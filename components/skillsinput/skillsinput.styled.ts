@@ -14,8 +14,8 @@ export const Pill = styled.li`
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background-color: white;
-  border: 1px solid #e4e9f1;
+  background-color: ${Colors.surface};
+  border: 1px solid ${Colors.line};
   color: ${Colors.dark};
   border-radius: 2em;
   padding: 0.28rem 0.35rem;
@@ -26,12 +26,16 @@ export const PillLogo = styled.span`
   width: 1.45rem;
   height: 1.45rem;
   border-radius: 50%;
-  background-color: #f3f6fa;
+  background-color: ${Colors.soft};
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 0.62rem;
   color: ${Colors.light};
+
+  [data-theme='dark'] & > svg {
+    filter: brightness(1.35);
+  }
 `;
 
 export const RemoveButton = styled.button`
@@ -39,7 +43,7 @@ export const RemoveButton = styled.button`
   height: 1.4rem;
   border: none;
   border-radius: 50%;
-  background-color: #f3f6fa;
+  background-color: ${Colors.soft};
   color: ${Colors.light};
   display: inline-flex;
   align-items: center;

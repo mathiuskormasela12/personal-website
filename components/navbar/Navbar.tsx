@@ -1,27 +1,29 @@
 // ========== Navbar
 // import modules
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { GrClose } from 'react-icons/gr';
-import { HiOutlineMenu } from 'react-icons/hi';
+import { FiMenu, FiX } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import { NAV_ITEMS } from '../../constants';
 import { useProfile } from '../../hooks/useProfile';
+import { useTheme } from '../../hooks/useTheme';
 import { IGlobalStates } from '../../interfaces';
 import * as Styled from './navbar.styled';
 
 // import all components
 import { Button } from '../button/Button';
 import { NavDropdown } from '../navdropdown/NavDropdown';
-import { Colors } from '../../themes';
+import { ThemeToggle } from '../themetoggle/ThemeToggle';
 import Services from '../../services';
 
 export const Navbar: NextPage = () => {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
+  const menuId = useId();
+  const { theme, toggleTheme } = useTheme();
   const accessToken: string = useSelector(
     (current: IGlobalStates) => current.auth.accessToken,
   );
@@ -87,7 +89,7 @@ export const Navbar: NextPage = () => {
               {profile.name}
             </Styled.Brand>
           </Styled.NavBrand>
-          <Styled.NavList toggle={toggle}>
+          <Styled.NavList id={menuId} toggle={toggle}>
             {navItems.map((item) => (
               <Styled.NavItems
                 key={item.id.toString()}
@@ -103,28 +105,27 @@ export const Navbar: NextPage = () => {
             )}
           </Styled.NavList>
           <Styled.NavSide>
-            <Button type="button" size="md" rounded onClick={handleButton}>
-              {accessToken !== '' && refreshToken !== '' && id > 0
-                ? 'Action'
-                : 'Hire Me'}
-            </Button>
-            {toggle ? (
-              <GrClose
-                size={20}
-                color={Colors.dark}
-                onClick={() =>
-                  setToggle((currentToggle: boolean) => !currentToggle)
-                }
-              />
-            ) : (
-              <HiOutlineMenu
-                size={25}
-                color={Colors.dark}
-                onClick={() =>
-                  setToggle((currentToggle: boolean) => !currentToggle)
-                }
-              />
-            )}
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+            <Styled.HireSlot>
+              <Button type="button" size="md" onClick={handleButton}>
+                {accessToken !== '' && refreshToken !== '' && id > 0
+                  ? 'Action'
+                  : 'Hire Me'}
+              </Button>
+            </Styled.HireSlot>
+            <Styled.MenuButton
+              type="button"
+              aria-label={toggle ? 'Close menu' : 'Open menu'}
+              aria-expanded={toggle}
+              aria-controls={menuId}
+              onClick={() => setToggle((current) => !current)}
+            >
+              {toggle ? (
+                <FiX size={22} aria-hidden />
+              ) : (
+                <FiMenu size={22} aria-hidden />
+              )}
+            </Styled.MenuButton>
           </Styled.NavSide>
         </Styled.NavContainer>
       </Styled.Nav>

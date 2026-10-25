@@ -53,7 +53,7 @@ export const Description = styled.p`
 `;
 
 export const Panel = styled.div<IPreviewProps>`
-  background-color: #f3f6fa;
+  background-color: ${Colors.soft};
   border-radius: 1.25rem;
   padding: 2rem 0.75rem 4.4rem;
 

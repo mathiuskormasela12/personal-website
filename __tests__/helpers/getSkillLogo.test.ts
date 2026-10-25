@@ -80,3 +80,9 @@ it.each([
 ])('uses the first two letters of %p as initials', (name, initials) => {
   expect(getSkillInitials(name)).toBe(initials);
 });
+
+it('draws black brand logos in the theme text color so they show in dark mode', () => {
+  ['Express', 'Next Js', 'GitHub', 'Prisma', 'Flask', 'Java', 'Linux'].forEach(
+    (name) => expect(getSkillLogo(name)?.color).toBe('var(--color-dark)'),
+  );
+});
