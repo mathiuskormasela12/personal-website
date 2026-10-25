@@ -33,3 +33,6 @@ export * from './ICreateProjectBody';
 export * from './IEvent';
 export * from './IUpdateProjectBody';
 export * from './IPasswordFieldProps';
+export * from './IHero';
+export * from './IHeroPageProps';
+export * from './IHeroErrors';
