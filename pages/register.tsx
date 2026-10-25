@@ -17,6 +17,7 @@ import {
   Container,
   Footer,
   TextField,
+  PasswordField,
   Button,
 } from '../components';
 
@@ -219,9 +220,8 @@ const Register: NextPage = () => {
                       Password
                     </Styled.HeroCreateAuthLabel>
                     <Styled.HeroCreateAuthField>
-                      <TextField
+                      <PasswordField
                         placeholder="Password..."
-                        type="password"
                         id="password"
                         value={state.password}
                         invalidMessage={
@@ -238,9 +238,8 @@ const Register: NextPage = () => {
                       Repeat Password
                     </Styled.HeroCreateAuthLabel>
                     <Styled.HeroCreateAuthField>
-                      <TextField
+                      <PasswordField
                         placeholder="Repeat Password..."
-                        type="password"
                         id="repeat-password"
                         value={state.repeatPassword}
                         invalidMessage={

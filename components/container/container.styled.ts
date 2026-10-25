@@ -18,7 +18,8 @@ export const ContainerStyle = styled.div<IContainerProps>`
 				width: ${customSize.value}%;
 
 				@media (max-width: 920px) {
-					width: 90%;
+					width: 100%;
+					padding: 0 1.25rem;
 				}
 
 				@media (min-width: 920px) and (max-width: 1200px) {

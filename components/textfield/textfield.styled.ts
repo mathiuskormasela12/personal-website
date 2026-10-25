@@ -8,7 +8,9 @@ export const Input = styled.input<ITextFieldProps>`
   color: ${Colors.light};
   font-size: 1rem;
   outline: none;
-  border: ${({ invalidMessage }) => (invalidMessage ? '1px' : '.5px')} solid
+  appearance: none;
+  background-color: white;
+  border: 1px solid
     ${({ invalidMessage }) => (invalidMessage ? Colors.danger : Colors.light)};
   height: 2.5em;
   width: 100%;

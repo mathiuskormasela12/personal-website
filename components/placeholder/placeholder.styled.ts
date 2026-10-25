@@ -20,6 +20,7 @@ export const ImageContainer = styled.span`
 
   & > img {
     width: 25rem !important;
-    height: 25rem !important;
+    max-width: 100%;
+    height: auto !important;
   }
 `;

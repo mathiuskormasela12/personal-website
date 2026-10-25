@@ -22,6 +22,7 @@ import {
   Container,
   Footer,
   TextField,
+  PasswordField,
   Button,
 } from '../components';
 
@@ -288,9 +289,8 @@ const Forgot: NextPage = () => {
                           New Password
                         </Styled.HeroCreateForgotLabel>
                         <Styled.HeroCreateForgotField>
-                          <TextField
+                          <PasswordField
                             placeholder="Type your new password..."
-                            type="password"
                             id="password"
                             value={state.password}
                             invalidMessage={
@@ -309,9 +309,8 @@ const Forgot: NextPage = () => {
                           Repeat New Password
                         </Styled.HeroCreateForgotLabel>
                         <Styled.HeroCreateForgotField>
-                          <TextField
+                          <PasswordField
                             placeholder="Repeat your new password..."
-                            type="password"
                             id="repeat-password"
                             value={state.repeatPassword}
                             invalidMessage={

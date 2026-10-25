@@ -15,6 +15,7 @@ import {
   Container,
   Footer,
   TextField,
+  PasswordField,
   Button,
 } from '../components';
 import Services from '../services';
@@ -196,9 +197,8 @@ const Login: NextPage = () => {
                       Password
                     </Styled.HeroCreateAuthLabel>
                     <Styled.HeroCreateAuthField>
-                      <TextField
+                      <PasswordField
                         placeholder="Password..."
-                        type="password"
                         id="password"
                         value={state.password}
                         invalidMessage={

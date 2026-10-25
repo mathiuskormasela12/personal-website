@@ -32,3 +32,4 @@ export * from './IGetAllProjectsQueries';
 export * from './ICreateProjectBody';
 export * from './IEvent';
 export * from './IUpdateProjectBody';
+export * from './IPasswordFieldProps';
