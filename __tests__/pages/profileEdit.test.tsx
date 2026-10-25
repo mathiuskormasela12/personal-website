@@ -26,6 +26,9 @@ const saved = {
   facebookUrl: 'https://www.facebook.com/mathiuskormasela/',
   twitterUrl: '',
   youtubeUrl: 'https://www.youtube.com/@mathius',
+  name: 'Mathius K',
+  email: 'me@example.com',
+  phone: '+819012345678',
 };
 
 const renderPage = (auth = loggedIn) =>
@@ -34,6 +37,9 @@ const renderPage = (auth = loggedIn) =>
 const waitForForm = () => screen.findByLabelText('Description');
 const saveButton = () => screen.getByRole('button', { name: 'Save' });
 const preview = () => screen.getByRole('region', { name: 'Preview' });
+const nameField = () => screen.getByLabelText('Name', { selector: 'input' });
+const emailField = () => screen.getByLabelText('Email', { selector: 'input' });
+const phoneField = () => screen.getByLabelText('Phone', { selector: 'input' });
 
 beforeEach(() => {
   setCachedProfile(null);
@@ -82,6 +88,103 @@ it('fills the form with the saved profile', async () => {
   expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
     'Edit Profile',
   );
+});
+
+it('starts with an About you group for the name, email and phone', async () => {
+  renderPage();
+  const form = (await waitForForm()).closest('form') as HTMLElement;
+  expect(
+    within(form)
+      .getAllByRole('heading', { level: 2 })
+      .map((h) => h.textContent),
+  ).toEqual(['About you', 'Skills section', 'Footer social links']);
+  expect(nameField()).toHaveValue('Mathius K');
+  expect(emailField()).toHaveValue('me@example.com');
+  expect(emailField()).toHaveAttribute('type', 'email');
+  expect(phoneField()).toHaveValue('90 1234 5678');
+  expect(
+    screen.getByRole('button', { name: 'Country: Japan +81' }),
+  ).toBeInTheDocument();
+  expect(
+    nameField().compareDocumentPosition(screen.getByLabelText('Description')) &
+      Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy();
+});
+
+it('shows the name, email and phone live in the preview', async () => {
+  jest.spyOn(Date, 'now').mockReturnValue(new Date(2030, 6, 1).getTime());
+  renderPage();
+  await waitForForm();
+  expect(within(preview()).getAllByText('Mathius K').length).toBeGreaterThan(0);
+  expect(
+    within(preview()).getByRole('link', { name: '+81 90 1234 5678' }),
+  ).toHaveAttribute('href', 'tel:+819012345678');
+
+  await userEvent.clear(nameField());
+  await userEvent.type(nameField(), 'Kotori');
+  await userEvent.clear(emailField());
+  await userEvent.type(emailField(), 'kotori@example.com');
+  await userEvent.clear(phoneField());
+
+  expect(within(preview()).getAllByText('Kotori')).toHaveLength(2);
+  expect(within(preview()).getByText('© Kotori 2030')).toBeInTheDocument();
+  expect(
+    within(preview()).getByRole('link', { name: 'kotori@example.com' }),
+  ).toHaveAttribute('href', 'mailto:kotori@example.com');
+  expect(
+    within(preview()).queryByRole('link', { name: /^\+/ }),
+  ).not.toBeInTheDocument();
+  jest.restoreAllMocks();
+});
+
+it.each([
+  [
+    'the name is empty',
+    () => userEvent.clear(nameField()),
+    "Your name can't be empty",
+  ],
+  [
+    'the email is wrong',
+    () => userEvent.type(emailField(), '@'),
+    "The email doesn't look right",
+  ],
+  [
+    'the phone is too short',
+    async () => {
+      await userEvent.clear(phoneField());
+      await userEvent.type(phoneField(), '90 12');
+    },
+    "The phone number doesn't look right",
+  ],
+])('blocks saving when %s', async (_, change, message) => {
+  renderPage();
+  await waitForForm();
+  await change();
+  expect(screen.getByText(message)).toBeInTheDocument();
+  expect(saveButton()).toBeDisabled();
+});
+
+it('saves the name, email and phone with the rest of the profile', async () => {
+  (Services.updateProfile as jest.Mock).mockResolvedValue({
+    data: { message: 'ok', results: saved },
+  });
+  renderPage();
+  await waitForForm();
+  await userEvent.clear(nameField());
+  await userEvent.type(nameField(), '  Kotori ');
+  await userEvent.clear(emailField());
+  await userEvent.clear(phoneField());
+  await userEvent.type(phoneField(), '0811 1906 204');
+  await userEvent.click(screen.getByRole('button', { name: /^Country:/ }));
+  await userEvent.type(screen.getByRole('searchbox'), 'indonesia');
+  await userEvent.click(screen.getByRole('option', { name: 'Indonesia +62' }));
+  await userEvent.click(saveButton());
+  expect(Services.updateProfile).toHaveBeenCalledWith({
+    ...saved,
+    name: 'Kotori',
+    email: '',
+    phone: '+628111906204',
+  });
 });
 
 it('shows a live preview of the skills section and the footer icons', async () => {

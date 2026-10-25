@@ -47,6 +47,9 @@ describe('Services', () => {
       facebookUrl: '',
       twitterUrl: '',
       youtubeUrl: 'https://www.youtube.com/@mathius',
+      name: 'Mathius K',
+      email: 'me@example.com',
+      phone: '+819012345678',
     };
     Services.updateProfile(profile);
     expect(mockPatch).toHaveBeenCalledWith('/profile', profile);

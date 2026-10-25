@@ -1,7 +1,7 @@
 import React from 'react';
-import { FiMail, FiPhone } from 'react-icons/fi';
 import { getCurrentYear } from '../../helpers';
 import { useProfile } from '../../hooks/useProfile';
+import { ContactLinks } from '../contactlinks/ContactLinks';
 import { SocialLinks } from '../sociallinks/SocialLinks';
 import * as Styled from './footer.styled';
 
@@ -10,9 +10,6 @@ const QUICK_LINKS = [
   { text: 'Projects', href: '/#projects' },
   { text: 'Skills', href: '/#skills' },
 ];
-
-const EMAIL = 'mathiuskormasela12@gmail.com';
-const PHONE = { text: '+62 811 1906 204', href: 'tel:+628111906204' };
 
 export const Footer: React.FC = () => {
   const year = getCurrentYear();
@@ -23,7 +20,7 @@ export const Footer: React.FC = () => {
       <Styled.Container>
         <Styled.Top>
           <div>
-            <Styled.Brand>Mathius</Styled.Brand>
+            <Styled.Brand>{profile.name}</Styled.Brand>
             <Styled.Tagline>My personal website.</Styled.Tagline>
             <Styled.Tagline>
               Let&apos;s write our future with code.
@@ -41,27 +38,16 @@ export const Footer: React.FC = () => {
           </nav>
           <div>
             <Styled.ColumnTitle>Contact</Styled.ColumnTitle>
-            <Styled.Contacts>
-              <li>
-                <Styled.Contact href={`mailto:${EMAIL}`}>
-                  <FiMail aria-hidden />
-                  {EMAIL}
-                </Styled.Contact>
-              </li>
-              <li>
-                <Styled.Contact href={PHONE.href}>
-                  <FiPhone aria-hidden />
-                  {PHONE.text}
-                </Styled.Contact>
-              </li>
-            </Styled.Contacts>
+            <ContactLinks contacts={profile} />
             <Styled.Social>
               <SocialLinks links={profile} />
             </Styled.Social>
           </div>
         </Styled.Top>
         <Styled.Bottom>
-          <p>&copy; Mathius {year}</p>
+          <p>
+            &copy; {profile.name} {year}
+          </p>
           <p>Created with love in Jakarta</p>
         </Styled.Bottom>
       </Styled.Container>

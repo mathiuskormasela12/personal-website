@@ -18,3 +18,7 @@ export * from './skillssection/SkillsSection';
 export * from './skillsinput/SkillsInput';
 export * from './sociallinks/SocialLinks';
 export * from './navdropdown/NavDropdown';
+export * from './countryflag/CountryFlag';
+export * from './contactlinks/ContactLinks';
+export * from './countrypicker/CountryPicker';
+export * from './phoneinput/PhoneInput';

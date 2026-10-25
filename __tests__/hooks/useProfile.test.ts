@@ -18,6 +18,9 @@ const saved = {
   facebookUrl: '',
   twitterUrl: '',
   youtubeUrl: 'https://www.youtube.com/@mathius',
+  name: 'Mathius K',
+  email: 'me@example.com',
+  phone: '+819012345678',
 };
 
 const getProfile = Services.getProfile as jest.Mock;
@@ -89,4 +92,26 @@ it('does not update after the component is gone', async () => {
   await loadProfile();
   expect(errors).not.toHaveBeenCalled();
   errors.mockRestore();
+});
+
+it('fills fields that an older API does not send yet with the defaults', async () => {
+  getProfile.mockResolvedValue({
+    data: {
+      results: {
+        skills: ['React'],
+        skillsDescription: 'Hi',
+        facebookUrl: '',
+        twitterUrl: '',
+        youtubeUrl: '',
+      },
+    },
+  });
+  await expect(loadProfile()).resolves.toEqual({
+    ...PROFILE_DEFAULTS,
+    skills: ['React'],
+    skillsDescription: 'Hi',
+    facebookUrl: '',
+    twitterUrl: '',
+    youtubeUrl: '',
+  });
 });

@@ -3,6 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import { Navbar } from '../../components';
+import { PROFILE_DEFAULTS } from '../../constants';
+import { setCachedProfile } from '../../hooks/useProfile';
+import Services from '../../services';
 import { emptyProject, projectsState, renderWithStore } from '../test-utils';
 
 jest.mock('next/router', () => ({ useRouter: jest.fn() }));
@@ -12,6 +15,8 @@ jest.mock('sweetalert2', () => ({
 }));
 const push = jest.fn();
 beforeEach(() => {
+  setCachedProfile(null);
+  jest.spyOn(Services, 'getProfile').mockRejectedValue(new Error('offline'));
   push.mockClear();
   (useRouter as jest.Mock).mockReturnValue({ push, pathname: '/', query: {} });
 });
@@ -94,4 +99,14 @@ it('opens the edit action for the current project', async () => {
   await userEvent.click(screen.getByRole('button', { name: 'Action' }));
   expect(Swal.fire).toHaveBeenCalled();
   await waitFor(() => expect(push).toHaveBeenCalledWith('/project-edit/5'));
+});
+
+it('shows the name from the profile as the brand', async () => {
+  jest.spyOn(Services, 'getProfile').mockResolvedValue({
+    data: { results: { ...PROFILE_DEFAULTS, name: 'Mathius K' } },
+  } as never);
+  renderWithStore(<Navbar />);
+  expect(
+    await screen.findByRole('link', { name: 'Mathius K' }),
+  ).toHaveAttribute('href', '/');
 });

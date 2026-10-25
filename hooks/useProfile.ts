@@ -9,8 +9,9 @@ let loadedProfile: IProfile | null = null;
 const requestProfile = async (): Promise<IProfile> => {
   try {
     const { data } = await Services.getProfile();
-    loadedProfile = data.results;
-    return data.results;
+    const profile = { ...PROFILE_DEFAULTS, ...data.results };
+    loadedProfile = profile;
+    return profile;
   } catch {
     profileRequest = null;
     return PROFILE_DEFAULTS;

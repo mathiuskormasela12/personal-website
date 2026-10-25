@@ -4,4 +4,7 @@ export interface IProfile {
   facebookUrl: string;
   twitterUrl: string;
   youtubeUrl: string;
+  name: string;
+  email: string;
+  phone: string;
 }

@@ -73,38 +73,6 @@ export const QuickLink = styled(NextLink)`
   }
 `;
 
-export const Contacts = styled.ul`
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-
-  @media (min-width: 1201px) {
-    align-items: flex-start;
-  }
-`;
-
-export const Contact = styled.a`
-  color: ${Colors.thinPrimary};
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  overflow-wrap: anywhere;
-
-  & > svg {
-    color: ${Colors.primary};
-    flex: none;
-  }
-
-  &:hover,
-  &:focus-visible {
-    color: ${Colors.primary};
-  }
-`;
-
 export const Social = styled.div`
   display: flex;
   justify-content: center;
