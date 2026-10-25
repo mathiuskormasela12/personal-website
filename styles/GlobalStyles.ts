@@ -94,6 +94,30 @@ export const GlobalStyles = createGlobalStyle`
 		color: var(--color-light);
 	}
 
+	@media (max-height: 500px) and (orientation: landscape) {
+		.swal2-container .swal2-icon {
+			font-size: 0.55rem;
+			margin: 0.8rem auto 0.2rem;
+		}
+
+		.swal2-container .swal2-title {
+			font-size: 1.4rem;
+			padding-top: 0.4rem;
+		}
+
+		.swal2-container .swal2-html-container {
+			margin: 0.6rem 1.2rem 0.2rem;
+		}
+
+		.swal2-container .swal2-actions {
+			margin-top: 0.8rem;
+		}
+
+		.swal2-container .swal2-popup {
+			padding-bottom: 0.8rem;
+		}
+	}
+
 	input[type="password"]::-ms-reveal,
 	input[type="password"]::-ms-clear {
 		display: none;
