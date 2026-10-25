@@ -23,9 +23,9 @@ export const NavHero = styled.div<INavbarCollapesProps>`
             content: '';
             position: fixed;
             top: 0;
-            right: 0;
+            right: var(--safe-right);
             bottom: 0;
-            left: 0;
+            left: var(--safe-left);
             background: rgba(0, 0, 0, 0.5);
             pointer-events: none;
             z-index: -1;
