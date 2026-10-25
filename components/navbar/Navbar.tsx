@@ -14,6 +14,7 @@ import * as Styled from './navbar.styled';
 
 // import all components
 import { Button } from '../button/Button';
+import { NavDropdown } from '../navdropdown/NavDropdown';
 import { Colors } from '../../themes';
 import Services from '../../services';
 
@@ -29,7 +30,11 @@ export const Navbar: NextPage = () => {
   const id: number = useSelector(
     (current: IGlobalStates) => current.projects.project.id,
   );
-  const navItems = accessToken !== '' ? NAV_ITEMS.ADMIN : NAV_ITEMS.USER;
+  const isAdmin = accessToken !== '';
+  const navItems = isAdmin ? NAV_ITEMS.ADMIN : NAV_ITEMS.USER;
+  const isAdminPage = NAV_ITEMS.ADMIN_MENU.some(
+    (item) => item.path === router.pathname,
+  );
 
   const handleMoveToOtherWebsite = (link: string) => {
     window.location.href = link;
@@ -89,6 +94,11 @@ export const Navbar: NextPage = () => {
                 <Styled.NavLink href={item.path}>{item.text}</Styled.NavLink>
               </Styled.NavItems>
             ))}
+            {isAdmin && (
+              <Styled.NavItems active={isAdminPage}>
+                <NavDropdown label="Admin" items={NAV_ITEMS.ADMIN_MENU} />
+              </Styled.NavItems>
+            )}
           </Styled.NavList>
           <Styled.NavSide>
             <Button type="button" size="md" rounded onClick={handleButton}>

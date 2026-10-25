@@ -32,6 +32,9 @@ it('shows visitor links, a single brand link and Hire Me', () => {
   expect(
     screen.queryByRole('link', { name: 'Edit Profile' }),
   ).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', { name: 'Admin' }),
+  ).not.toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Skills' })).toHaveAttribute(
     'href',
     '#skills',
@@ -40,7 +43,46 @@ it('shows visitor links, a single brand link and Hire Me', () => {
   expect(container.querySelectorAll('ul > a')).toHaveLength(0);
 });
 
-it('shows admin links and opens the edit action for the current project', async () => {
+it('keeps the admin top bar short and puts admin pages in a dropdown', async () => {
+  renderWithStore(<Navbar />, {
+    auth: { accessToken: 'a', refreshToken: 'r' },
+  });
+  ['Home', 'Projects', 'Contact'].forEach((name) =>
+    expect(screen.getByRole('link', { name })).toBeInTheDocument(),
+  );
+  ['Create Project', 'Edit Hero', 'Edit Profile', 'Logout'].forEach((name) =>
+    expect(screen.queryByRole('link', { name })).not.toBeInTheDocument(),
+  );
+
+  await userEvent.click(screen.getByRole('button', { name: 'Admin' }));
+  [
+    ['Create Project', '/project'],
+    ['Edit Hero', '/hero-edit'],
+    ['Edit Profile', '/profile-edit'],
+    ['Logout', '/logout'],
+  ].forEach(([name, href]) =>
+    expect(screen.getByRole('link', { name })).toHaveAttribute('href', href),
+  );
+});
+
+it('highlights Admin while an admin page is open', () => {
+  (useRouter as jest.Mock).mockReturnValue({
+    push,
+    pathname: '/hero-edit',
+    query: {},
+  });
+  renderWithStore(<Navbar />, {
+    auth: { accessToken: 'a', refreshToken: 'r' },
+  });
+  expect(
+    screen.getByRole('button', { name: 'Admin' }).closest('li'),
+  ).toHaveStyle({ backgroundColor: 'rgb(210, 234, 253)' });
+  expect(
+    screen.getByRole('link', { name: 'Home' }).closest('li'),
+  ).not.toHaveStyle({ backgroundColor: 'rgb(210, 234, 253)' });
+});
+
+it('opens the edit action for the current project', async () => {
   (Swal.fire as jest.Mock).mockResolvedValue({
     isConfirmed: true,
     isDenied: false,
@@ -49,22 +91,6 @@ it('shows admin links and opens the edit action for the current project', async 
     auth: { accessToken: 'a', refreshToken: 'r' },
     projects: projectsState({ project: { ...emptyProject, id: 5 } }),
   });
-  expect(screen.getByRole('link', { name: 'Create' })).toHaveAttribute(
-    'href',
-    '/project',
-  );
-  expect(screen.getByRole('link', { name: 'Logout' })).toHaveAttribute(
-    'href',
-    '/logout',
-  );
-  expect(screen.getByRole('link', { name: 'Edit Hero' })).toHaveAttribute(
-    'href',
-    '/hero-edit',
-  );
-  expect(screen.getByRole('link', { name: 'Edit Profile' })).toHaveAttribute(
-    'href',
-    '/profile-edit',
-  );
   await userEvent.click(screen.getByRole('button', { name: 'Action' }));
   expect(Swal.fire).toHaveBeenCalled();
   await waitFor(() => expect(push).toHaveBeenCalledWith('/project-edit/5'));
