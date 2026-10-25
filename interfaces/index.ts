@@ -42,3 +42,4 @@ export * from './ISkillTileProps';
 export * from './ISkillsSectionProps';
 export * from './ISkillsInputProps';
 export * from './ISocialLinksProps';
+export * from './INavDropdownProps';

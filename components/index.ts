@@ -17,3 +17,4 @@ export * from './skilltile/SkillTile';
 export * from './skillssection/SkillsSection';
 export * from './skillsinput/SkillsInput';
 export * from './sociallinks/SocialLinks';
+export * from './navdropdown/NavDropdown';

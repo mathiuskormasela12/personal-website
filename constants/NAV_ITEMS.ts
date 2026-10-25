@@ -1,4 +1,6 @@
 // ========== NAV ITEMS
+import { FiEdit3, FiLogOut, FiPlusSquare, FiUser } from 'react-icons/fi';
+import { INavDropdownItem } from '../interfaces';
 
 export const NAV_ITEMS = {
   USER: [
@@ -36,28 +38,35 @@ export const NAV_ITEMS = {
     },
     {
       id: 3,
-      text: 'Create',
-      path: '/project',
-    },
-    {
-      id: 4,
-      text: 'Edit Hero',
-      path: '/hero-edit',
-    },
-    {
-      id: 5,
-      text: 'Edit Profile',
-      path: '/profile-edit',
-    },
-    {
-      id: 6,
-      text: 'Logout',
-      path: '/logout',
-    },
-    {
-      id: 7,
       text: 'Contact',
       path: '#footer',
     },
   ],
+  ADMIN_MENU: [
+    {
+      id: 1,
+      text: 'Create Project',
+      path: '/project',
+      icon: FiPlusSquare,
+    },
+    {
+      id: 2,
+      text: 'Edit Hero',
+      path: '/hero-edit',
+      icon: FiEdit3,
+    },
+    {
+      id: 3,
+      text: 'Edit Profile',
+      path: '/profile-edit',
+      icon: FiUser,
+    },
+    {
+      id: 4,
+      text: 'Logout',
+      path: '/logout',
+      icon: FiLogOut,
+      danger: true,
+    },
+  ] satisfies INavDropdownItem[],
 };
