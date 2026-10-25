@@ -28,3 +28,17 @@ it('uses the same whole-pixel border and native look reset as TextField', () => 
     backgroundColor: 'rgb(255, 255, 255)',
   });
 });
+
+it('uses the soft input border color when the value is valid', () => {
+  renderWithStore(<LongText placeholder="Subtitle" />);
+  expect(screen.getByPlaceholderText('Subtitle')).toHaveStyle({
+    borderLeftColor: 'rgb(200, 205, 219)',
+  });
+});
+
+it('uses the danger border color when the value is invalid', () => {
+  renderWithStore(<LongText placeholder="Subtitle" invalidMessage="Bad" />);
+  expect(screen.getByPlaceholderText('Subtitle')).toHaveStyle({
+    borderLeftColor: 'hsl(348, 100%, 61%)',
+  });
+});
