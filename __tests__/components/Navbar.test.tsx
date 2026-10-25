@@ -287,8 +287,8 @@ describe('the dark layer behind the open phone menu', () => {
     expect(layer).toContain('position:fixed');
     expect(layer).toMatch(/top:0;/);
     expect(layer).toMatch(/bottom:0;/);
-    expect(layer).toMatch(/left:0;/);
-    expect(layer).toMatch(/right:0;/);
+    expect(layer).toContain('left:var(--safe-left);');
+    expect(layer).toContain('right:var(--safe-right);');
   });
 
   it('is not drawn when the menu is closed', () => {
@@ -296,5 +296,30 @@ describe('the dark layer behind the open phone menu', () => {
     const hero = screen.getByRole('navigation').parentElement as HTMLElement;
     const name = hero.classList[hero.classList.length - 1];
     expect(navHeroRules()).not.toContain(`.${name}::before{`);
+  });
+});
+
+describe('the page color beside the open phone menu', () => {
+  const root = () => document.documentElement;
+
+  afterEach(() => {
+    root().removeAttribute('data-menu-open');
+  });
+
+  it('tells the page that the menu is open and clears it when it closes', async () => {
+    renderWithStore(<Navbar />);
+    expect(root()).not.toHaveAttribute('data-menu-open');
+    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    expect(root()).toHaveAttribute('data-menu-open', 'true');
+    await userEvent.click(screen.getByRole('button', { name: 'Close menu' }));
+    expect(root()).not.toHaveAttribute('data-menu-open');
+  });
+
+  it('clears the mark when the navbar leaves the page while the menu is open', async () => {
+    const { unmount } = renderWithStore(<Navbar />);
+    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    expect(root()).toHaveAttribute('data-menu-open', 'true');
+    unmount();
+    expect(root()).not.toHaveAttribute('data-menu-open');
   });
 });

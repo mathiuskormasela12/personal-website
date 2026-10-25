@@ -1,6 +1,6 @@
 // ========== Navbar
 // import modules
-import React, { useId, useState } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -23,6 +23,12 @@ export const Navbar: NextPage = () => {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
   const menuId = useId();
+
+  useEffect(() => {
+    if (!toggle) return undefined;
+    document.documentElement.setAttribute('data-menu-open', 'true');
+    return () => document.documentElement.removeAttribute('data-menu-open');
+  }, [toggle]);
   const { theme, toggleTheme } = useTheme();
   const accessToken: string = useSelector(
     (current: IGlobalStates) => current.auth.accessToken,

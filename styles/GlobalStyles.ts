@@ -31,6 +31,7 @@ export const GlobalStyles = createGlobalStyle`
 		${toCssVariables(LIGHT_TOKENS)}
 		--safe-left: env(safe-area-inset-left, 0px);
 		--safe-right: env(safe-area-inset-right, 0px);
+		--color-dimmed: color-mix(in srgb, var(--color-background) 50%, black);
 		color-scheme: light;
 	}
 
@@ -48,6 +49,18 @@ export const GlobalStyles = createGlobalStyle`
 	body {
 		padding-left: var(--safe-left);
 		padding-right: var(--safe-right);
+	}
+
+	#__next {
+		background-color: var(--color-background);
+		min-height: 100vh;
+		min-height: 100dvh;
+	}
+
+	@media (max-width: 1200px) {
+		html[data-menu-open='true'] body {
+			background-color: var(--color-dimmed);
+		}
 	}
 
 	html {
