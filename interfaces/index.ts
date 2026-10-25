@@ -43,3 +43,7 @@ export * from './ISkillsSectionProps';
 export * from './ISkillsInputProps';
 export * from './ISocialLinksProps';
 export * from './INavDropdownProps';
+export * from './ICountryFlagProps';
+export * from './IContactLinksProps';
+export * from './ICountryPickerProps';
+export * from './IPhoneInputProps';

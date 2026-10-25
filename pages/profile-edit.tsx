@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { IconType } from 'react-icons';
 import { SiFacebook, SiX, SiYoutube } from 'react-icons/si';
+import { FiMail, FiPhone, FiUser } from 'react-icons/fi';
+import { HiOutlineMenu } from 'react-icons/hi';
 import Swal from 'sweetalert2';
 import * as Styled from '../styles';
 import {
@@ -17,9 +19,11 @@ import {
   SkillsInput,
   SkillsSection,
   SocialLinks,
+  ContactLinks,
+  PhoneInput,
 } from '../components';
 import Services from '../services';
-import { getErrorMessage, validateProfile } from '../helpers';
+import { getCurrentYear, getErrorMessage, validateProfile } from '../helpers';
 import { loadProfile, setCachedProfile } from '../hooks/useProfile';
 import { IGlobalStates, IProfile } from '../interfaces';
 
@@ -47,6 +51,9 @@ const trimProfile = (profile: IProfile): IProfile => ({
   facebookUrl: profile.facebookUrl.trim(),
   twitterUrl: profile.twitterUrl.trim(),
   youtubeUrl: profile.youtubeUrl.trim(),
+  name: profile.name.trim(),
+  email: profile.email.trim(),
+  phone: profile.phone.trim(),
 });
 
 const ProfileEdit: NextPage = () => {
@@ -139,6 +146,60 @@ const ProfileEdit: NextPage = () => {
               {values ? (
                 <Styled.HeroCreateAuthForm onSubmit={handleSubmit}>
                   <Styled.ProfileEditGroupTitle>
+                    About you
+                  </Styled.ProfileEditGroupTitle>
+                  <Styled.HeroCreateAuthControl>
+                    <Styled.ProfileEditLabel htmlFor="profile-name">
+                      <FiUser size={14} aria-hidden />
+                      Name
+                    </Styled.ProfileEditLabel>
+                    <Styled.HeroCreateAuthField>
+                      <TextField
+                        id="profile-name"
+                        autoComplete="name"
+                        placeholder="Your name"
+                        value={values.name}
+                        invalidMessage={errors.name}
+                        onChange={(event) =>
+                          setField('name', event.target.value)
+                        }
+                      />
+                    </Styled.HeroCreateAuthField>
+                  </Styled.HeroCreateAuthControl>
+                  <Styled.HeroCreateAuthControl>
+                    <Styled.ProfileEditLabel htmlFor="profile-email">
+                      <FiMail size={14} aria-hidden />
+                      Email
+                    </Styled.ProfileEditLabel>
+                    <Styled.HeroCreateAuthField>
+                      <TextField
+                        id="profile-email"
+                        type="email"
+                        autoComplete="email"
+                        placeholder="you@example.com (leave empty to hide it)"
+                        value={values.email}
+                        invalidMessage={errors.email}
+                        onChange={(event) =>
+                          setField('email', event.target.value)
+                        }
+                      />
+                    </Styled.HeroCreateAuthField>
+                  </Styled.HeroCreateAuthControl>
+                  <Styled.HeroCreateAuthControl>
+                    <Styled.ProfileEditLabel htmlFor="profile-phone">
+                      <FiPhone size={14} aria-hidden />
+                      Phone
+                    </Styled.ProfileEditLabel>
+                    <Styled.HeroCreateAuthField>
+                      <PhoneInput
+                        id="profile-phone"
+                        value={values.phone}
+                        invalidMessage={errors.phone}
+                        onChange={(phone) => setField('phone', phone)}
+                      />
+                    </Styled.HeroCreateAuthField>
+                  </Styled.HeroCreateAuthControl>
+                  <Styled.ProfileEditGroupTitle>
                     Skills section
                   </Styled.ProfileEditGroupTitle>
                   <Styled.HeroCreateAuthControl>
@@ -215,14 +276,31 @@ const ProfileEdit: NextPage = () => {
                 <Styled.HeroEditPreviewLabel id="profile-preview-label">
                   Preview
                 </Styled.HeroEditPreviewLabel>
+                <Styled.ProfileEditPreviewNav>
+                  <Styled.ProfileEditPreviewBrand>
+                    {values.name}
+                  </Styled.ProfileEditPreviewBrand>
+                  <Styled.ProfileEditPreviewNavLinks aria-hidden>
+                    Home · Projects · Contact
+                  </Styled.ProfileEditPreviewNavLinks>
+                  <Styled.ProfileEditPreviewMenu aria-hidden>
+                    <HiOutlineMenu size={20} />
+                  </Styled.ProfileEditPreviewMenu>
+                </Styled.ProfileEditPreviewNav>
                 <SkillsSection
                   skills={values.skills}
                   description={values.skillsDescription}
                   preview
                 />
                 <Styled.ProfileEditPreviewFooter>
-                  <span>Footer icons</span>
+                  <Styled.ProfileEditPreviewBrand>
+                    {values.name}
+                  </Styled.ProfileEditPreviewBrand>
+                  <ContactLinks contacts={values} />
                   <SocialLinks links={values} />
+                  <Styled.ProfileEditPreviewCopyright>
+                    {`© ${values.name} ${getCurrentYear()}`}
+                  </Styled.ProfileEditPreviewCopyright>
                 </Styled.ProfileEditPreviewFooter>
               </Styled.HeroEditPreview>
             )}

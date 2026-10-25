@@ -9,6 +9,7 @@ import { GrClose } from 'react-icons/gr';
 import { HiOutlineMenu } from 'react-icons/hi';
 import Swal from 'sweetalert2';
 import { NAV_ITEMS } from '../../constants';
+import { useProfile } from '../../hooks/useProfile';
 import { IGlobalStates } from '../../interfaces';
 import * as Styled from './navbar.styled';
 
@@ -30,6 +31,7 @@ export const Navbar: NextPage = () => {
   const id: number = useSelector(
     (current: IGlobalStates) => current.projects.project.id,
   );
+  const profile = useProfile();
   const isAdmin = accessToken !== '';
   const navItems = isAdmin ? NAV_ITEMS.ADMIN : NAV_ITEMS.USER;
   const isAdminPage = NAV_ITEMS.ADMIN_MENU.some(
@@ -82,7 +84,7 @@ export const Navbar: NextPage = () => {
         <Styled.NavContainer>
           <Styled.NavBrand>
             <Styled.Brand as={Link} href="/">
-              Mathius
+              {profile.name}
             </Styled.Brand>
           </Styled.NavBrand>
           <Styled.NavList toggle={toggle}>

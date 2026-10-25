@@ -1,5 +1,6 @@
-import React, { useEffect, useId, useRef, useState } from 'react';
+import React, { useId, useRef, useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
+import { useDismiss } from '../../hooks/useDismiss';
 import { INavDropdownProps } from '../../interfaces';
 import * as Styled from './navdropdown.styled';
 
@@ -9,32 +10,12 @@ export const NavDropdown: React.FC<INavDropdownProps> = ({ label, items }) => {
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (!isOpen) {
-      return undefined;
-    }
-
-    const handleMouseDown = (event: MouseEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-        triggerRef.current?.focus();
-      }
-    };
-
-    document.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen]);
+  useDismiss({
+    isOpen,
+    onDismiss: () => setIsOpen(false),
+    rootRef,
+    triggerRef,
+  });
 
   return (
     <Styled.Root ref={rootRef}>

@@ -10,3 +10,5 @@ export * from './getErrorMessage';
 export * from './isHttpUrl';
 export * from './getSkillLogo';
 export * from './validateProfile';
+export * from './isValidEmail';
+export * from './formatPhone';

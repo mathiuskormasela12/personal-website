@@ -17,4 +17,7 @@ export const PROFILE_DEFAULTS: IProfile = {
   facebookUrl: 'https://www.facebook.com/mathiuskormasela/',
   twitterUrl: 'https://twitter.com/Mathius87248424',
   youtubeUrl: 'https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw/videos',
+  name: 'Mathius',
+  email: 'mathiuskormasela12@gmail.com',
+  phone: '+628111906204',
 };

@@ -2,6 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { Footer } from '../../components';
 import Services from '../../services';
 import { setCachedProfile } from '../../hooks/useProfile';
+import { PROFILE_DEFAULTS } from '../../constants';
 import { renderWithStore } from '../test-utils';
 
 jest.mock('../../services', () => ({
@@ -83,6 +84,44 @@ it('uses the social links from the profile', async () => {
     'href',
     'https://www.youtube.com/@mathius',
   );
+});
+
+it('uses the name, email and phone from the profile', async () => {
+  jest.spyOn(Date, 'now').mockReturnValue(new Date(2030, 6, 1).getTime());
+  (Services.getProfile as jest.Mock).mockResolvedValue({
+    data: {
+      results: {
+        ...PROFILE_DEFAULTS,
+        name: 'Mathius K',
+        email: 'me@example.com',
+        phone: '+819012345678',
+      },
+    },
+  });
+  renderWithStore(<Footer />);
+  await waitFor(() =>
+    expect(screen.getByText('© Mathius K 2030')).toBeInTheDocument(),
+  );
+  expect(screen.getByText('Mathius K')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'me@example.com' })).toHaveAttribute(
+    'href',
+    'mailto:me@example.com',
+  );
+  expect(
+    screen.getByRole('link', { name: '+81 90 1234 5678' }),
+  ).toHaveAttribute('href', 'tel:+819012345678');
+});
+
+it('hides the email and phone when they are empty', async () => {
+  (Services.getProfile as jest.Mock).mockResolvedValue({
+    data: { results: { ...PROFILE_DEFAULTS, email: '', phone: '' } },
+  });
+  renderWithStore(<Footer />);
+  await waitFor(() =>
+    expect(screen.queryByRole('link', { name: /@/ })).not.toBeInTheDocument(),
+  );
+  expect(screen.queryByRole('link', { name: /811/ })).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Youtube' })).toBeInTheDocument();
 });
 
 it('shows its lists without bullet points', () => {
