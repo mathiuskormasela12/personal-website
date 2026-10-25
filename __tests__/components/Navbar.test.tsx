@@ -195,3 +195,22 @@ it('remembers the current page in the Logout link, so Stay can return to it', as
     '/hero-edit',
   );
 });
+
+it('keeps the phone menu inside a short landscape screen and lets it scroll', async () => {
+  renderWithStore(<Navbar />, {
+    auth: { accessToken: 'a', refreshToken: 'r' },
+  });
+  const list = screen.getByRole('link', { name: 'Home' }).closest('ul');
+  const phone = getMediaRuleStyle(list as HTMLElement, '(max-width: 1200px)');
+  expect(phone?.getPropertyValue('max-height')).toBe('calc(100vh - 4.5rem)');
+  expect(phone?.getPropertyValue('overflow-y')).toBe('auto');
+  expect(phone?.getPropertyValue('overscroll-behavior')).toBe('contain');
+});
+
+it('does not limit the height of the desktop pill', () => {
+  renderWithStore(<Navbar />);
+  const list = screen.getByRole('link', { name: 'Home' }).closest('ul');
+  const desktop = getMediaRuleStyle(list as HTMLElement, '(min-width: 1201px)');
+  expect(desktop?.getPropertyValue('max-height')).toBe('');
+  expect(desktop?.getPropertyValue('overflow-y')).toBe('');
+});

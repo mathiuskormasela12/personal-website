@@ -87,6 +87,15 @@ export const NavList = styled.ul<INavbarCollapesProps>`
     background-color: ${Colors.background};
     border-top: 1px solid ${Colors.line};
     display: ${({ toggle }) => (toggle ? 'flex' : 'none')};
+    max-height: calc(100vh - 4.5rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  @supports (height: 100dvh) {
+    @media (max-width: 1200px) {
+      max-height: calc(100dvh - 4.5rem);
+    }
   }
 `;
 

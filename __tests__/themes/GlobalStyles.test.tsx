@@ -41,3 +41,15 @@ it('paints the SweetAlert popups with the theme colors', () => {
     /\.swal2-html-container\{[^}]*color:var\(--color-light\)/,
   );
 });
+
+it('makes the SweetAlert popups compact on short landscape screens', () => {
+  const styles = css();
+  const short =
+    styles.split('@media(max-height:500px)and(orientation:landscape){')[1] ??
+    '';
+  expect(short).toMatch(
+    /\.swal2-container\.swal2-icon\{[^}]*font-size:0\.55rem/,
+  );
+  expect(short).toContain('.swal2-container.swal2-title{');
+  expect(short).toContain('.swal2-container.swal2-actions{');
+});
