@@ -53,3 +53,15 @@ it('makes the SweetAlert popups compact on short landscape screens', () => {
   expect(short).toContain('.swal2-container.swal2-title{');
   expect(short).toContain('.swal2-container.swal2-actions{');
 });
+
+it('keeps the page content out of the notch area but paints behind it', () => {
+  const styles = css();
+  expect(styles).toContain('--safe-left:env(safe-area-inset-left,0px);');
+  expect(styles).toContain('--safe-right:env(safe-area-inset-right,0px);');
+  expect(styles).toMatch(
+    /body\{[^}]*padding-left:var\(--safe-left\);[^}]*padding-right:var\(--safe-right\)/,
+  );
+  expect(styles).toMatch(
+    /html,body\{[^}]*background-color:var\(--color-background\)/,
+  );
+});

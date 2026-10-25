@@ -1,6 +1,7 @@
 // ========== _app
 // import all modules
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { StyleSheetManager } from 'styled-components';
@@ -13,6 +14,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <StyleSheetManager shouldForwardProp={shouldForwardProp}>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+      </Head>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <Component {...pageProps} />
