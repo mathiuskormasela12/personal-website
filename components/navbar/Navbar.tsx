@@ -40,6 +40,12 @@ export const Navbar: NextPage = () => {
     (item) => item.path === router.pathname,
   );
 
+  const adminMenu = NAV_ITEMS.ADMIN_MENU.map((item) =>
+    item.path === '/logout'
+      ? { ...item, path: `/logout?from=${encodeURIComponent(router.asPath)}` }
+      : item,
+  );
+
   const handleMoveToOtherWebsite = (link: string) => {
     window.location.href = link;
   };
@@ -100,7 +106,7 @@ export const Navbar: NextPage = () => {
             ))}
             {isAdmin && (
               <Styled.NavItems active={isAdminPage}>
-                <NavDropdown label="Admin" items={NAV_ITEMS.ADMIN_MENU} />
+                <NavDropdown label="Admin" items={adminMenu} />
               </Styled.NavItems>
             )}
           </Styled.NavList>

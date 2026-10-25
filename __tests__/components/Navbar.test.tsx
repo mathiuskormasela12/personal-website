@@ -28,7 +28,12 @@ beforeEach(() => {
   setCachedProfile(null);
   jest.spyOn(Services, 'getProfile').mockRejectedValue(new Error('offline'));
   push.mockClear();
-  (useRouter as jest.Mock).mockReturnValue({ push, pathname: '/', query: {} });
+  (useRouter as jest.Mock).mockReturnValue({
+    push,
+    pathname: '/',
+    asPath: '/',
+    query: {},
+  });
 });
 
 it('shows visitor links, a single brand link and Hire Me', () => {
@@ -74,7 +79,7 @@ it('keeps the admin top bar short and puts admin pages in a dropdown', async () 
     ['Create Project', '/project'],
     ['Edit Hero', '/hero-edit'],
     ['Edit Profile', '/profile-edit'],
-    ['Logout', '/logout'],
+    ['Logout', '/logout?from=%2F'],
   ].forEach(([name, href]) =>
     expect(screen.getByRole('link', { name })).toHaveAttribute('href', href),
   );
@@ -168,4 +173,25 @@ it('shows the name from the profile as the brand', async () => {
   expect(
     await screen.findByRole('link', { name: 'Mathius K' }),
   ).toHaveAttribute('href', '/');
+});
+
+it('remembers the current page in the Logout link, so Stay can return to it', async () => {
+  (useRouter as jest.Mock).mockReturnValue({
+    push,
+    pathname: '/hero-edit',
+    asPath: '/hero-edit',
+    query: {},
+  });
+  renderWithStore(<Navbar />, {
+    auth: { accessToken: 'a', refreshToken: 'r' },
+  });
+  await userEvent.click(screen.getByRole('button', { name: 'Admin' }));
+  expect(screen.getByRole('link', { name: 'Logout' })).toHaveAttribute(
+    'href',
+    '/logout?from=%2Fhero-edit',
+  );
+  expect(screen.getByRole('link', { name: 'Edit Hero' })).toHaveAttribute(
+    'href',
+    '/hero-edit',
+  );
 });
