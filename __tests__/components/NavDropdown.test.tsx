@@ -91,7 +91,7 @@ it('separates a danger item and shows it in red', async () => {
   renderDropdown();
   await userEvent.click(trigger());
   const logout = screen.getByRole('link', { name: 'Logout' });
-  expect(logout).toHaveStyle({ color: 'hsl(348, 100%, 61%)' });
+  expect(logout).toHaveStyle({ color: 'var(--color-danger)' });
   expect(logout.closest('li')).toHaveStyle({ borderTopWidth: '1px' });
   expect(
     screen.getByRole('link', { name: 'Edit Hero' }).closest('li'),

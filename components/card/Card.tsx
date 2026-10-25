@@ -1,8 +1,8 @@
 // ========== Card
 // import all modules
 import React from 'react';
+import { FiArrowUpRight } from 'react-icons/fi';
 import { ICardProps } from '../../interfaces';
-import { SkillVariants } from '../../types';
 import * as Styled from './card.styled';
 
 export const Card: React.FC<ICardProps> = (props) => {
@@ -13,49 +13,21 @@ export const Card: React.FC<ICardProps> = (props) => {
       <Styled.Image
         src={img}
         alt={title}
-        sizes="100vw"
+        sizes="(min-width: 1201px) 33vw, (min-width: 600px) 50vw, 100vw"
         width={370}
         height={220}
-        quality={5}
+        quality={75}
       />
-      <Styled.CardTechnology>
-        {technologies.map((item) => {
-          const skillsVariant = [
-            'primary',
-            'secondary',
-            'tertiary',
-            'quaternary',
-          ];
-          let selectedVariant: SkillVariants = 'primary';
-
-          skillsVariant.forEach(() => {
-            const rand = Math.floor(Math.random() * 3) + 0;
-            if (rand === 0) {
-              selectedVariant = 'primary';
-            } else if (rand === 1) {
-              selectedVariant = 'secondary';
-            } else if (rand === 2) {
-              selectedVariant = 'tertiary';
-            } else if (rand === 3) {
-              selectedVariant = 'quaternary';
-            }
-          });
-
-          return (
-            <Styled.SkillBadge
-              key={item.id.toString()}
-              variant={selectedVariant}
-            >
-              {item.name.toUpperCase()}
-            </Styled.SkillBadge>
-          );
-        })}
-      </Styled.CardTechnology>
+      <Styled.Tags>
+        {technologies.map((item) => (
+          <Styled.Tag key={item.id.toString()}>{item.name}</Styled.Tag>
+        ))}
+      </Styled.Tags>
       <Styled.CardTitle>{title}</Styled.CardTitle>
-      <Styled.CardDescription>
-        {description.slice(0, 100)}
-        ...
-      </Styled.CardDescription>
+      <Styled.CardDescription>{description}</Styled.CardDescription>
+      <Styled.Arrow data-arrow aria-hidden>
+        <FiArrowUpRight size={16} />
+      </Styled.Arrow>
     </Styled.Card>
   );
 };

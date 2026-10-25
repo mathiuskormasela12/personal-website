@@ -6,7 +6,12 @@ import { Navbar } from '../../components';
 import { PROFILE_DEFAULTS } from '../../constants';
 import { setCachedProfile } from '../../hooks/useProfile';
 import Services from '../../services';
-import { emptyProject, projectsState, renderWithStore } from '../test-utils';
+import {
+  emptyProject,
+  getMediaRuleStyle,
+  projectsState,
+  renderWithStore,
+} from '../test-utils';
 
 jest.mock('next/router', () => ({ useRouter: jest.fn() }));
 jest.mock('sweetalert2', () => ({
@@ -15,6 +20,11 @@ jest.mock('sweetalert2', () => ({
 }));
 const push = jest.fn();
 beforeEach(() => {
+  window.matchMedia = jest.fn().mockReturnValue({
+    matches: false,
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+  });
   setCachedProfile(null);
   jest.spyOn(Services, 'getProfile').mockRejectedValue(new Error('offline'));
   push.mockClear();
@@ -81,10 +91,59 @@ it('highlights Admin while an admin page is open', () => {
   });
   expect(
     screen.getByRole('button', { name: 'Admin' }).closest('li'),
-  ).toHaveStyle({ backgroundColor: 'rgb(210, 234, 253)' });
+  ).toHaveStyle({ fontWeight: 'bold', color: 'var(--color-dark)' });
   expect(
     screen.getByRole('link', { name: 'Home' }).closest('li'),
-  ).not.toHaveStyle({ backgroundColor: 'rgb(210, 234, 253)' });
+  ).not.toHaveStyle({ fontWeight: 'bold' });
+});
+
+it('marks the current page in bold, without a colored box', () => {
+  renderWithStore(<Navbar />);
+  const home = screen.getByRole('link', { name: 'Home' }).closest('li');
+  expect(home).toHaveStyle({ fontWeight: 'bold', color: 'var(--color-dark)' });
+  expect(home).not.toHaveStyle({ backgroundColor: 'var(--color-shape-color)' });
+  expect(
+    screen.getByRole('link', { name: 'Projects' }).closest('li'),
+  ).toHaveStyle({ color: 'var(--color-light)' });
+});
+
+it('groups the links in a soft pill on desktop', () => {
+  renderWithStore(<Navbar />);
+  const list = screen.getByRole('link', { name: 'Home' }).closest('ul');
+  const desktop = getMediaRuleStyle(list as HTMLElement, '(min-width: 1201px)');
+  expect(desktop?.getPropertyValue('background-color')).toBe(
+    'var(--color-nav-pill)',
+  );
+  expect(desktop?.getPropertyValue('border-radius')).toBe('999px');
+});
+
+it('switches between light and dark from the navbar', async () => {
+  document.documentElement.dataset.theme = 'light';
+  renderWithStore(<Navbar />);
+  await userEvent.click(
+    screen.getByRole('button', { name: 'Switch to dark theme' }),
+  );
+  expect(document.documentElement.dataset.theme).toBe('dark');
+  expect(
+    screen.getByRole('button', { name: 'Switch to light theme' }),
+  ).toBeInTheDocument();
+});
+
+it('opens and closes the phone menu with a real button', async () => {
+  renderWithStore(<Navbar />);
+  const menu = screen.getByRole('button', { name: 'Open menu' });
+  expect(menu).toHaveAttribute('aria-expanded', 'false');
+  expect(menu).toHaveAttribute('type', 'button');
+  await userEvent.click(menu);
+  const close = screen.getByRole('button', { name: 'Close menu' });
+  expect(close).toHaveAttribute('aria-expanded', 'true');
+  const list = screen.getByRole('link', { name: 'Home' }).closest('ul');
+  expect(close).toHaveAttribute('aria-controls', list?.id);
+  await userEvent.click(close);
+  expect(screen.getByRole('button', { name: 'Open menu' })).toHaveAttribute(
+    'aria-expanded',
+    'false',
+  );
 });
 
 it('opens the edit action for the current project', async () => {

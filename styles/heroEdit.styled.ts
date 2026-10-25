@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Colors } from '../themes';
 
 export const HeroEdit = styled.div`
-  background-color: white;
+  background-color: ${Colors.background};
   min-height: 100vh;
   width: 100%;
 `;
@@ -22,8 +22,14 @@ export const HeroEditFlex = styled.div`
 `;
 
 export const HeroEditPreview = styled.section`
-  border: 1px solid ${Colors.shapeColor};
-  border-radius: 1rem;
+  border-width: 1px;
+  border-style: solid;
+  border-top-color: ${Colors.line};
+  border-right-color: ${Colors.line};
+  border-bottom-color: ${Colors.line};
+  border-left-color: ${Colors.line};
+  border-radius: 1.2rem;
+  background-color: ${Colors.surface};
   padding: 1.5rem 1.25rem;
   text-align: center;
 

@@ -2,7 +2,6 @@
 // import all modules
 import React, { Fragment, useEffect } from 'react';
 import type { NextPage } from 'next';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from '../../styles';
@@ -51,28 +50,19 @@ const Detail: NextPage = () => {
         <Styled.HeroDetailBody>
           <Container>
             <Placeholder isProject>
-              <Fragment>
-                <Styled.HeroDetailHeader>
-                  <Styled.HeroDetailTitle>
-                    {project.title}
-                  </Styled.HeroDetailTitle>
-                </Styled.HeroDetailHeader>
-                <Styled.HeroDetailMain>
-                  <Styled.ImageContainerHeroDetailFlex>
-                    <Styled.ImageContainerHeroDetail>
-                      <Image
-                        src={project.img ? project.img : '/'}
-                        alt={project.title}
-                        width={550}
-                        height={320}
-                      />
-                    </Styled.ImageContainerHeroDetail>
-                  </Styled.ImageContainerHeroDetailFlex>
-                  <Styled.HeroDetailText>
-                    {project.description}
-                  </Styled.HeroDetailText>
-                </Styled.HeroDetailMain>
-              </Fragment>
+              <Styled.HeroDetailArticle>
+                <Styled.HeroDetailTitle>{project.title}</Styled.HeroDetailTitle>
+                <Styled.HeroDetailImage
+                  src={project.img ? project.img : '/'}
+                  alt={project.title}
+                  width={550}
+                  height={320}
+                  sizes="(min-width: 800px) 768px, 100vw"
+                />
+                <Styled.HeroDetailText>
+                  {project.description}
+                </Styled.HeroDetailText>
+              </Styled.HeroDetailArticle>
             </Placeholder>
           </Container>
         </Styled.HeroDetailBody>

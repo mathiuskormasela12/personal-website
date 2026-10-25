@@ -9,9 +9,18 @@ export const Input = styled.input<ITextFieldProps>`
   font-size: 1rem;
   outline: none;
   appearance: none;
-  background-color: white;
-  border: 1px solid
-    ${({ invalidMessage }) => (invalidMessage ? Colors.danger : Colors.inputBorder)};
+  background-color: ${Colors.surface};
+  border-width: 1px;
+  border-style: solid;
+  ${({ invalidMessage }) => {
+    const color = invalidMessage ? Colors.danger : Colors.inputBorder;
+    return `
+      border-top-color: ${color};
+      border-right-color: ${color};
+      border-bottom-color: ${color};
+      border-left-color: ${color};
+    `;
+  }}
   height: 2.5em;
   width: 100%;
   padding-left: 0.8em;

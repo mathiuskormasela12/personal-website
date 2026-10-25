@@ -22,3 +22,4 @@ export * from './countryflag/CountryFlag';
 export * from './contactlinks/ContactLinks';
 export * from './countrypicker/CountryPicker';
 export * from './phoneinput/PhoneInput';
+export * from './themetoggle/ThemeToggle';

@@ -5,7 +5,7 @@ import Services from '../../services';
 import Home, { getServerSideProps } from '../../pages/index';
 import { getHeroServerSideProps } from '../../helpers';
 import { setCachedProfile } from '../../hooks/useProfile';
-import { renderWithStore } from '../test-utils';
+import { getMediaRuleStyle, renderWithStore } from '../test-utils';
 
 jest.mock('next/router', () => ({ useRouter: jest.fn() }));
 jest.mock('../../services', () => ({
@@ -107,5 +107,53 @@ it('shows the skills from the profile right under the hero', async () => {
   expect(
     skills.compareDocumentPosition(projects) & Node.DOCUMENT_POSITION_FOLLOWING,
   ).toBeTruthy();
+  await screen.findByText('Portfolio API');
+});
+
+it('drops the floating balloons and triangles', async () => {
+  renderWithStore(<Home hero={hero} />);
+  await screen.findByText('Portfolio API');
+  expect(screen.queryAllByAltText('Balloon')).toHaveLength(0);
+});
+
+it('shows the hero picture inside a soft rounded frame', async () => {
+  renderWithStore(<Home hero={hero} />);
+  const frame = screen.getByAltText('Hero Image').parentElement;
+  expect(frame).toHaveStyle({
+    backgroundColor: 'var(--color-soft)',
+    borderRadius: '1.5rem',
+  });
+  await screen.findByText('Portfolio API');
+});
+
+it('separates the skills and the projects with a thin line', async () => {
+  const { container } = renderWithStore(<Home hero={hero} />);
+  await screen.findByText('Portfolio API');
+  ['#skills', '#projects'].forEach((id) =>
+    expect(container.querySelector(id)).toHaveStyle({
+      borderTopWidth: '1px',
+      borderTopColor: 'var(--color-line)',
+    }),
+  );
+});
+
+it('lays the project cards out in a grid', async () => {
+  renderWithStore(<Home hero={hero} />);
+  const card = await screen.findByText('Portfolio API');
+  const grid = card.closest('#projects')?.querySelector('[data-grid]');
+  expect(grid).toHaveStyle({ display: 'grid' });
+  expect(
+    getMediaRuleStyle(grid as Element, '(min-width: 1201px)')
+      ?.getPropertyValue('grid-template-columns')
+      .replace(/\s/g, ''),
+  ).toBe('repeat(3,1fr)');
+});
+
+it('keeps the hero picture on the dark frame in dark mode', async () => {
+  document.documentElement.dataset.theme = 'dark';
+  renderWithStore(<Home hero={hero} />);
+  const frame = screen.getByAltText('Hero Image').parentElement as Element;
+  expect(getComputedStyle(frame).backgroundColor).toBe('var(--color-soft)');
+  document.documentElement.dataset.theme = 'light';
   await screen.findByText('Portfolio API');
 });

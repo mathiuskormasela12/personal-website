@@ -122,11 +122,15 @@ it('shows the error message and a red border', () => {
     screen.getByText("The phone number doesn't look right"),
   ).toBeInTheDocument();
   expect(box().parentElement).toHaveStyle({
-    borderColor: 'hsl(348, 100%, 61%)',
+    borderLeftColor: 'var(--color-danger)',
+    borderRightColor: 'var(--color-danger)',
   });
 });
 
 it('uses the soft border when the number is fine', () => {
   setup('+628111906204');
-  expect(box().parentElement).toHaveStyle({ borderColor: '#C8CDDB' });
+  expect(box().parentElement).toHaveStyle({
+    borderLeftColor: 'var(--color-input-border)',
+    borderRightColor: 'var(--color-input-border)',
+  });
 });

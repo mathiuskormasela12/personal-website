@@ -121,3 +121,14 @@ it('shows the pills without bullet points', () => {
   renderWithStore(<Harness initial={['React']} />);
   expect(screen.getByRole('list')).toHaveStyle({ listStyle: 'none' });
 });
+
+it('brightens the pill logos a little in dark mode', () => {
+  renderWithStore(<Harness initial={['MySQL']} />);
+  const svg = screen
+    .getByRole('button', { name: 'Remove MySQL' })
+    .closest('li')
+    ?.querySelector('svg');
+  document.documentElement.dataset.theme = 'dark';
+  expect(getComputedStyle(svg as Element).filter).toBe('brightness(1.35)');
+  document.documentElement.dataset.theme = 'light';
+});

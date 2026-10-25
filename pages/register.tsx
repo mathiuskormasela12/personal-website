@@ -173,7 +173,7 @@ const Register: NextPage = () => {
       <Head title="Sign Up" />
       <Styled.HeroCreateAuth>
         <Navbar />
-        <Styled.HeroCreateAuthBody>
+        <Styled.HeroCreateAuthBody data-page-body>
           <Container
             inheritHeight
             customSize={{
@@ -182,14 +182,14 @@ const Register: NextPage = () => {
           >
             <Styled.HeroCreateAuthFlex>
               <Styled.HeroCreateAuthCol>
-                <Styled.HeroCreateAuthImageContainer>
+                <Styled.IllustrationFrame $paper>
                   <Image
                     src="/icons/register.svg"
                     width={250}
                     height={250}
                     alt="Create Auth"
                   />
-                </Styled.HeroCreateAuthImageContainer>
+                </Styled.IllustrationFrame>
               </Styled.HeroCreateAuthCol>
               <Styled.HeroCreateAuthCol>
                 <Styled.HeroCreateAuthTitle>

@@ -11,8 +11,8 @@ export const Link = styled.a`
   width: 2.4rem;
   height: 2.4rem;
   border-radius: 50%;
-  background-color: white;
-  border: 1px solid #e3e8f2;
+  background-color: ${Colors.surface};
+  border: 1px solid ${Colors.line};
   color: ${Colors.primary};
   display: inline-flex;
   align-items: center;

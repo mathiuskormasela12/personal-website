@@ -4,6 +4,9 @@ import { Colors } from '../../themes';
 
 export const Footer = styled.footer`
   background-color: ${Colors.footerColor};
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: ${Colors.line};
   padding: 2.8rem 0 1.4rem;
 `;
 
@@ -83,7 +86,7 @@ export const Social = styled.div`
 `;
 
 export const Bottom = styled.div`
-  border-top: 1px solid #e3e6ee;
+  border-top: 1px solid ${Colors.line};
   margin-top: 2rem;
   padding-top: 1.1rem;
   text-align: center;

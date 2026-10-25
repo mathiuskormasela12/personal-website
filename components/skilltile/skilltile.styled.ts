@@ -13,9 +13,9 @@ export const Tile = styled.span`
   width: 3.6rem;
   height: 3.6rem;
   border-radius: 0.9rem;
-  background-color: white;
-  border: 1px solid #e4e9f1;
-  box-shadow: 0 2px 0 #e4e9f1;
+  background-color: ${Colors.surface};
+  border: 1px solid ${Colors.line};
+  box-shadow: 0 2px 0 ${Colors.line};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,6 +23,10 @@ export const Tile = styled.span`
 
   &:hover {
     transform: translateY(-3px);
+  }
+
+  [data-theme='dark'] & > svg {
+    filter: brightness(1.35);
   }
 
   @media (min-width: 1201px) {

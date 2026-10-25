@@ -32,21 +32,22 @@ it('removes the native iOS input look so the border is drawn by the app', () => 
   renderWithStore(<TextField placeholder="Email" />);
   expect(screen.getByPlaceholderText('Email')).toHaveStyle({
     appearance: 'none',
-    backgroundColor: 'rgb(255, 255, 255)',
+    backgroundColor: 'var(--color-surface)',
   });
 });
 
 it('uses the soft input border color when the value is valid', () => {
   renderWithStore(<TextField placeholder="Email" />);
   expect(screen.getByPlaceholderText('Email')).toHaveStyle({
-    borderLeftColor: 'rgb(200, 205, 219)',
-    borderRightColor: 'rgb(200, 205, 219)',
+    borderLeftColor: 'var(--color-input-border)',
+    borderRightColor: 'var(--color-input-border)',
   });
 });
 
 it('uses the danger border color when the value is invalid', () => {
   renderWithStore(<TextField placeholder="Email" invalidMessage="Invalid" />);
   expect(screen.getByPlaceholderText('Email')).toHaveStyle({
-    borderLeftColor: 'hsl(348, 100%, 61%)',
+    borderLeftColor: 'var(--color-danger)',
+    borderRightColor: 'var(--color-danger)',
   });
 });

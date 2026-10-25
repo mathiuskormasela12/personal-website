@@ -20,7 +20,7 @@ export const Trigger = styled.button`
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 1rem 1.35rem;
+  padding: 0.55rem 0.9rem;
   border: none;
   background: transparent;
   color: inherit;
@@ -36,8 +36,9 @@ export const Chevron = styled.span<IOpenProps>`
 
 export const Menu = styled.ul`
   list-style: none;
-  background-color: #f7f9fc;
+  background-color: ${Colors.soft};
   padding: 0.3rem 0;
+  font-weight: normal;
 
   @media (min-width: 1201px) {
     position: absolute;
@@ -46,8 +47,8 @@ export const Menu = styled.ul`
     z-index: 2;
     min-width: 14rem;
     padding: 0.45rem;
-    background-color: white;
-    border: 1px solid #e4e9f1;
+    background-color: ${Colors.surface};
+    border: 1px solid ${Colors.line};
     border-radius: 1rem;
     box-shadow: 0 18px 40px -22px rgba(45, 67, 121, 0.45);
   }
@@ -57,7 +58,9 @@ export const MenuItem = styled.li<IDangerProps>`
   ${({ $danger }) =>
     $danger
       ? `
-    border-top: 1px solid #edf1f7;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: ${Colors.line};
     margin-top: 0.35rem;
     padding-top: 0.35rem;
   `
@@ -81,7 +84,7 @@ export const MenuLink = styled(Link)<IDangerProps>`
 
   &:hover,
   &:focus-visible {
-    background-color: #eef2f8;
+    background-color: ${Colors.soft};
   }
 
   @media (min-width: 1201px) {

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Colors } from '../themes';
 
 export const HeroCreateProject = styled.div`
-  background-color: white;
+  background-color: ${Colors.background};
   height: 125vh;
   width: 100%;
 
@@ -15,6 +15,10 @@ export const HeroCreateProject = styled.div`
 
 export const HeroCreateProjectBody = styled.div`
   height: 100%;
+
+  @media (min-width: 1201px) {
+    padding-top: 4.8rem;
+  }
 
   @media (max-width: 1024px) {
     height: auto;
@@ -55,25 +59,10 @@ export const HeroCreateProjectCol = styled.div`
   }
 `;
 
-export const HeroCreateProjectImageContainer = styled.span`
-  margin: 32px auto;
-  box-sizing: content-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
-  & > img {
-    position: absolute;
-    width: 30rem !important;
-    height: 30rem !important;
-  }
-`;
-
 export const HeroCreateProjectTitle = styled.h1`
   color: ${Colors.dark};
   font-size: 2.1rem;
+  font-weight: normal;
 
   @media (max-width: 1200px) {
     text-align: center;
@@ -110,10 +99,10 @@ export const FileContainer = styled.label`
   cursor: pointer;
   align-items: center;
   color: ${Colors.light};
-  background-color: white;
+  background-color: ${Colors.surface};
   font-size: 1rem;
   outline: none;
-  border: 0.5px solid ${Colors.light};
+  border: 1px solid ${Colors.inputBorder};
   height: 2.5em;
   width: 100%;
   padding-left: 0.8em;

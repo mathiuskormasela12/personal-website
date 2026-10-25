@@ -227,3 +227,11 @@ describe('live preview', () => {
     expect(style?.getPropertyValue('position')).toBe('sticky');
   });
 });
+
+it('shows the preview on a calm card that follows the theme', () => {
+  renderPage();
+  expect(screen.getByRole('region', { name: 'Preview' })).toHaveStyle({
+    backgroundColor: 'var(--color-surface)',
+    borderTopColor: 'var(--color-line)',
+  });
+});

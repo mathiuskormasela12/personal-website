@@ -11,38 +11,32 @@ export const Pagination = styled.div`
 `;
 
 export const PaginationItems = styled.div<IPaginationProps>`
-  width: 2.5em;
-  line-height: 2.5em;
-  text-align: center;
-  font-size: 1rem;
-  font-weight: bold;
-  color: ${Colors.dark};
-  border-radius: 50%;
-  margin-right: 0.5rem;
+  min-width: 2.3rem;
+  height: 2.3rem;
+  padding: 0 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  border: 1px solid ${Colors.line};
+  border-radius: 999px;
+  margin-right: 0.4rem;
+  background-color: ${({ active }) => (active ? Colors.dark : Colors.surface)};
+  color: ${({ active }) => (active ? Colors.background : Colors.light)};
+  opacity: ${({ disabled }) => (disabled ? 0.45 : 1)};
 
   &:last-child {
     margin-right: 0;
   }
 
-  ${({ disabled, active }) => {
-    let styles = '';
-
-    if (!disabled) {
-      styles += `
-				&:hover {
-					cursor: pointer;
-					background-color: ${Colors.shapeColor};
-				}
-			`;
-    }
-
-    if (active) {
-      styles += `
-					cursor: pointer;
-					background-color: ${Colors.shapeColor};
-			`;
-    }
-
-    return styles;
-  }}
+  ${({ disabled, active }) =>
+    !disabled && !active
+      ? `
+        &:hover {
+          cursor: pointer;
+          color: ${Colors.dark};
+          border-color: ${Colors.inputBorder};
+        }
+      `
+      : ''}
 `;
