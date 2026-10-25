@@ -15,6 +15,13 @@ it('shows the empty state when there are no projects', () => {
   renderWithStore(<Placeholder>{child}</Placeholder>);
   expect(screen.getByAltText('Empty')).toBeInTheDocument();
 });
+it('keeps the state image inside narrow screens without stretching it', () => {
+  renderWithStore(<Placeholder>{child}</Placeholder>);
+  expect(screen.getByAltText('Empty')).toHaveStyle({
+    maxWidth: '100%',
+    height: 'auto',
+  });
+});
 it('renders children when projects exist', () => {
   renderWithStore(<Placeholder>{child}</Placeholder>, {
     projects: projectsState({ projects: [project] }),

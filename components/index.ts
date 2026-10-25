@@ -9,5 +9,6 @@ export * from './card/Card';
 export * from './footer/Footer';
 export * from './pagination/Pagination';
 export * from './textfield/TextField';
+export * from './passwordfield/PasswordField';
 export * from './longtext/LongText';
 export * from './placeholder/Placeholder';
