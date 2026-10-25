@@ -7,7 +7,12 @@ export const Footer = styled.footer`
   border-top-width: 1px;
   border-top-style: solid;
   border-top-color: ${Colors.line};
-  padding: 2.8rem 0 1.4rem;
+  margin-left: calc(-1 * var(--safe-left));
+  margin-right: calc(-1 * var(--safe-right));
+  padding-top: 2.8rem;
+  padding-bottom: 1.4rem;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
 `;
 
 export const Container = styled.div`

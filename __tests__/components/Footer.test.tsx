@@ -138,3 +138,14 @@ it('is separated from the page by a thin line', () => {
     borderTopColor: 'var(--color-line)',
   });
 });
+
+it('reaches the screen edges and keeps its text out of the notch area', () => {
+  const { container } = renderWithStore(<Footer />);
+  const footer = container.querySelector('footer');
+  expect(footer).toHaveStyle({
+    marginLeft: 'calc(-1 * var(--safe-left))',
+    marginRight: 'calc(-1 * var(--safe-right))',
+    paddingLeft: 'var(--safe-left)',
+    paddingRight: 'var(--safe-right)',
+  });
+});

@@ -7,7 +7,8 @@ import { Colors } from '../../themes';
 import { Button as GhostButton } from '../themetoggle/themetoggle.styled';
 
 export const NavHero = styled.div<INavbarCollapesProps>`
-  width: 100%;
+  left: 0;
+  right: 0;
   position: absolute;
   z-index: 3;
 
@@ -31,6 +32,8 @@ export const Nav = styled.nav`
   border-bottom: 1px solid ${Colors.line};
   height: 4.8rem;
   width: 100%;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
 
   @media (max-width: 1200px) {
     height: auto;
@@ -39,7 +42,7 @@ export const Nav = styled.nav`
 
 export const NavContainer = styled.div`
   margin: 0 auto;
-  width: calc(100vw - 10rem);
+  width: calc(100% - 10rem);
   max-width: 1280px;
   height: 100%;
   display: flex;
@@ -81,9 +84,14 @@ export const NavList = styled.ul<INavbarCollapesProps>`
 
   @media (max-width: 1200px) {
     order: 3;
-    width: 100%;
+    width: calc(100% + var(--safe-left) + var(--safe-right));
+    margin-left: calc(-1 * var(--safe-left));
+    margin-right: calc(-1 * var(--safe-right));
     flex-direction: column;
-    padding: 0.4rem 0 1rem;
+    padding-top: 0.4rem;
+    padding-bottom: 1rem;
+    padding-left: var(--safe-left);
+    padding-right: var(--safe-right);
     background-color: ${Colors.background};
     border-top: 1px solid ${Colors.line};
     display: ${({ toggle }) => (toggle ? 'flex' : 'none')};

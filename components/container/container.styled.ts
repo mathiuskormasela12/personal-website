@@ -5,11 +5,11 @@ import { IContainerProps } from '../../interfaces';
 
 export const ContainerStyle = styled.div<IContainerProps>`
   margin: 0 auto;
-  width: ${({ fluid }) => (fluid ? '100%' : 'calc(100vw - 10rem)')};
+  width: ${({ fluid }) => (fluid ? '100%' : 'calc(100% - 10rem)')};
   height: ${({ inheritHeight }) => (inheritHeight ? '100%' : 'auto')};
 
   @media (max-width: 1200px) {
-    width: ${({ fluid }) => (fluid ? '100%' : 'calc(100vw - 3.6rem)')};
+    width: ${({ fluid }) => (fluid ? '100%' : 'calc(100% - 3.6rem)')};
   }
 
   ${({ customSize }) => {

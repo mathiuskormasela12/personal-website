@@ -214,3 +214,39 @@ it('does not limit the height of the desktop pill', () => {
   expect(desktop?.getPropertyValue('max-height')).toBe('');
   expect(desktop?.getPropertyValue('overflow-y')).toBe('');
 });
+
+it('spans the whole screen width and keeps its content out of the notch area', () => {
+  renderWithStore(<Navbar />);
+  const nav = screen.getByRole('navigation');
+  const layer = nav.parentElement as HTMLElement;
+  expect(layer).toHaveStyle({ left: '0', right: '0' });
+  expect(layer).not.toHaveStyle({ width: '100%' });
+  expect(nav).toHaveStyle({
+    paddingLeft: 'var(--safe-left)',
+    paddingRight: 'var(--safe-right)',
+  });
+});
+
+it('does not size the navbar content by the screen width', () => {
+  renderWithStore(<Navbar />);
+  const content = screen.getByRole('navigation').firstElementChild as Element;
+  const css = Array.from(document.styleSheets)
+    .flatMap((sheet) => Array.from(sheet.cssRules))
+    .map((rule) => rule.cssText)
+    .join('');
+  expect(content.className).toBeTruthy();
+  expect(css).not.toContain('100vw');
+});
+
+it('draws the phone menu list, with its top line, from edge to edge', () => {
+  renderWithStore(<Navbar />);
+  const list = screen.getByRole('link', { name: 'Home' }).closest('ul');
+  const phone = getMediaRuleStyle(list as HTMLElement, '(max-width: 1200px)');
+  expect(phone?.getPropertyValue('width').replace(/\s/g, '')).toBe(
+    'calc(100%+var(--safe-left)+var(--safe-right))',
+  );
+  expect(phone?.getPropertyValue('margin-left').replace(/\s/g, '')).toBe(
+    'calc(-1*var(--safe-left))',
+  );
+  expect(phone?.getPropertyValue('padding-left')).toBe('var(--safe-left)');
+});

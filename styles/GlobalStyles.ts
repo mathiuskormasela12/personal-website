@@ -29,6 +29,8 @@ export const GlobalStyles = createGlobalStyle`
 
 	:root {
 		${toCssVariables(LIGHT_TOKENS)}
+		--safe-left: env(safe-area-inset-left, 0px);
+		--safe-right: env(safe-area-inset-right, 0px);
 		color-scheme: light;
 	}
 
@@ -41,6 +43,11 @@ export const GlobalStyles = createGlobalStyle`
 	body {
 		background-color: var(--color-background);
 		color: var(--color-dark);
+	}
+
+	body {
+		padding-left: var(--safe-left);
+		padding-right: var(--safe-right);
 	}
 
 	html {
