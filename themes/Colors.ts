@@ -14,6 +14,7 @@ export const Colors = {
   lightBlueText: '#239CFF',
   dark: '#2D4379',
   light: '#586991',
+  inputBorder: '#C8CDDB',
   gray: '#575757',
   footerColor: '#F6F6F6',
   danger: 'hsl(348, 100%, 61%)',

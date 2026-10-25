@@ -12,7 +12,7 @@ export const TextArea = styled.textarea<ILongTextProps>`
   appearance: none;
   background-color: white;
   border: 1px solid
-    ${({ invalidMessage }) => (invalidMessage ? Colors.danger : Colors.light)};
+    ${({ invalidMessage }) => (invalidMessage ? Colors.danger : Colors.inputBorder)};
   height: 8.5em;
   width: 100%;
   padding: 1em 0 0 0.8em;
