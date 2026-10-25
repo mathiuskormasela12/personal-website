@@ -14,6 +14,7 @@ import {
   Container,
   Card,
   HeroContent,
+  SkillsSection,
   Footer,
   Pagination,
   Placeholder,
@@ -21,10 +22,12 @@ import {
 import { setProjects } from '../redux/actions';
 import { IGlobalStates, IHeroPageProps, IProjects } from '../interfaces';
 import { getHeroServerSideProps } from '../helpers';
+import { useProfile } from '../hooks/useProfile';
 
 const Home: NextPage<IHeroPageProps> = ({ hero }) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const profile = useProfile();
   const projects: IProjects[] = useSelector(
     (current: IGlobalStates) => current.projects.projects,
   );
@@ -108,6 +111,14 @@ const Home: NextPage<IHeroPageProps> = ({ hero }) => {
             </Styled.HeroHomeRow>
           </Container>
         </Styled.HeroWelcome>
+        <Styled.HomeSkills id="skills">
+          <Container>
+            <SkillsSection
+              skills={profile.skills}
+              description={profile.skillsDescription}
+            />
+          </Container>
+        </Styled.HomeSkills>
         <Styled.HeroProject id="projects">
           <Container>
             <Styled.HeroProjectHeader>

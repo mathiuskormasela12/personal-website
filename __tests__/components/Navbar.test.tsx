@@ -29,6 +29,13 @@ it('shows visitor links, a single brand link and Hire Me', () => {
   expect(
     screen.queryByRole('link', { name: 'Edit Hero' }),
   ).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('link', { name: 'Edit Profile' }),
+  ).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Skills' })).toHaveAttribute(
+    'href',
+    '#skills',
+  );
   expect(container.querySelectorAll('a a')).toHaveLength(0);
   expect(container.querySelectorAll('ul > a')).toHaveLength(0);
 });
@@ -53,6 +60,10 @@ it('shows admin links and opens the edit action for the current project', async 
   expect(screen.getByRole('link', { name: 'Edit Hero' })).toHaveAttribute(
     'href',
     '/hero-edit',
+  );
+  expect(screen.getByRole('link', { name: 'Edit Profile' })).toHaveAttribute(
+    'href',
+    '/profile-edit',
   );
   await userEvent.click(screen.getByRole('button', { name: 'Action' }));
   expect(Swal.fire).toHaveBeenCalled();

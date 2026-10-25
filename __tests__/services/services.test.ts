@@ -36,6 +36,21 @@ describe('Services', () => {
     Services.updateHero(hero);
     expect(mockPatch).toHaveBeenCalledWith('/hero', hero);
   });
+  it('reads the profile', () => {
+    Services.getProfile();
+    expect(mockGet).toHaveBeenCalledWith('/profile');
+  });
+  it('replaces the profile', () => {
+    const profile = {
+      skills: ['React'],
+      skillsDescription: 'Hi',
+      facebookUrl: '',
+      twitterUrl: '',
+      youtubeUrl: 'https://www.youtube.com/@mathius',
+    };
+    Services.updateProfile(profile);
+    expect(mockPatch).toHaveBeenCalledWith('/profile', profile);
+  });
   it('hits the auth and project endpoints', () => {
     Services.login({ email: 'a@b.c', password: 'x' } as never);
     Services.resetPassword(7, { password: 'p', repeatPassword: 'p' });

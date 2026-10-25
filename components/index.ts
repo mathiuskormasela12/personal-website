@@ -13,3 +13,7 @@ export * from './passwordfield/PasswordField';
 export * from './longtext/LongText';
 export * from './placeholder/Placeholder';
 export * from './herocontent/HeroContent';
+export * from './skilltile/SkillTile';
+export * from './skillssection/SkillsSection';
+export * from './skillsinput/SkillsInput';
+export * from './sociallinks/SocialLinks';

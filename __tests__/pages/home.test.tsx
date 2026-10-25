@@ -4,12 +4,13 @@ import { useRouter } from 'next/router';
 import Services from '../../services';
 import Home, { getServerSideProps } from '../../pages/index';
 import { getHeroServerSideProps } from '../../helpers';
+import { setCachedProfile } from '../../hooks/useProfile';
 import { renderWithStore } from '../test-utils';
 
 jest.mock('next/router', () => ({ useRouter: jest.fn() }));
 jest.mock('../../services', () => ({
   __esModule: true,
-  default: { getAllProjects: jest.fn() },
+  default: { getAllProjects: jest.fn(), getProfile: jest.fn() },
 }));
 
 const hero = {
@@ -24,6 +25,18 @@ const hero = {
 const push = jest.fn();
 
 beforeEach(() => {
+  setCachedProfile(null);
+  (Services.getProfile as jest.Mock).mockResolvedValue({
+    data: {
+      results: {
+        skills: ['React', 'Docker'],
+        skillsDescription: 'Mostly TypeScript.',
+        facebookUrl: '',
+        twitterUrl: '',
+        youtubeUrl: 'https://www.youtube.com/@mathius',
+      },
+    },
+  });
   push.mockClear();
   (useRouter as jest.Mock).mockReturnValue({
     push,
@@ -74,4 +87,25 @@ it('opens the hero button link', async () => {
 
 it('loads the hero texts on the server', () => {
   expect(getServerSideProps).toBe(getHeroServerSideProps);
+});
+
+it('shows the skills from the profile right under the hero', async () => {
+  const { container } = renderWithStore(<Home hero={hero} />);
+  const skills = await screen.findByRole('region', {
+    name: 'What I build with',
+  });
+  expect(await screen.findByText('Mostly TypeScript.')).toBeInTheDocument();
+  expect(screen.getByText('Docker')).toBeInTheDocument();
+  expect(skills.closest('#skills')).not.toBeNull();
+
+  const heroHeading = screen.getAllByRole('heading', { level: 1 })[0];
+  const projects = container.querySelector('#projects') as Node;
+  expect(
+    heroHeading.compareDocumentPosition(skills) &
+      Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy();
+  expect(
+    skills.compareDocumentPosition(projects) & Node.DOCUMENT_POSITION_FOLLOWING,
+  ).toBeTruthy();
+  await screen.findByText('Portfolio API');
 });
