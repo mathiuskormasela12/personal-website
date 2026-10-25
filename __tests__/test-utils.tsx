@@ -50,12 +50,14 @@ export const getMediaRuleStyle = (
   const classSelectors = Array.from(element.classList).map(
     (name) => `.${name}`,
   );
+  const withoutSpaces = (text: string) => text.replace(/\s/g, '');
 
   return Array.from(document.styleSheets)
     .flatMap((sheet) => Array.from(sheet.cssRules))
     .filter(
       (rule): rule is CSSMediaRule =>
-        rule instanceof CSSMediaRule && rule.media.mediaText === mediaText,
+        rule instanceof CSSMediaRule &&
+        withoutSpaces(rule.media.mediaText) === withoutSpaces(mediaText),
     )
     .flatMap((rule) => Array.from(rule.cssRules))
     .find(

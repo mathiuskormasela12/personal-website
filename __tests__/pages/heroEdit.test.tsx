@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
@@ -6,7 +6,7 @@ import Services from '../../services';
 import HeroEdit, { getServerSideProps } from '../../pages/hero-edit';
 import { HERO_DEFAULTS } from '../../constants';
 import { getHeroServerSideProps } from '../../helpers';
-import { renderWithStore } from '../test-utils';
+import { getMediaRuleStyle, renderWithStore } from '../test-utils';
 
 jest.mock('next/router', () => ({ useRouter: jest.fn() }));
 jest.mock('sweetalert2', () => ({
@@ -159,4 +159,71 @@ it('disables the button while saving', async () => {
   renderPage();
   await userEvent.click(saveButton());
   expect(screen.getByRole('button', { name: 'Saving...' })).toBeDisabled();
+});
+
+describe('live preview', () => {
+  const preview = () => screen.getByRole('region', { name: 'Preview' });
+
+  it('shows the current hero texts like the home page does', () => {
+    renderPage();
+    expect(
+      within(preview()).getByRole('heading', { level: 2 }),
+    ).toHaveTextContent(/^Hi, I'm a Fullstack Developer\.$/);
+    expect(
+      within(preview()).getByText(HERO_DEFAULTS.subtitle),
+    ).toBeInTheDocument();
+  });
+
+  it('keeps a single h1 on the page', () => {
+    renderPage();
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Edit Hero',
+    );
+  });
+
+  it('updates while the owner types', async () => {
+    renderPage();
+    await replaceText('Greeting', 'Hello,');
+    await replaceText('Highlighted Text', 'a Mobile Developer');
+    await replaceText('Ending', '!');
+    await replaceText('Subtitle', 'I build apps.');
+    await replaceText('Button Text', 'My GitHub');
+
+    expect(
+      within(preview()).getByRole('heading', { level: 2 }),
+    ).toHaveTextContent(/^Hello, a Mobile Developer!$/);
+    expect(within(preview()).getByText('I build apps.')).toBeInTheDocument();
+    expect(
+      within(preview()).getByRole('button', { name: 'My GitHub' }),
+    ).toBeInTheDocument();
+  });
+
+  it('disables the preview button and shows the link that will open', async () => {
+    renderPage();
+    expect(
+      within(preview()).getByRole('button', { name: 'My Youtube' }),
+    ).toBeDisabled();
+
+    await replaceText('Button Link', 'https://github.com/mathius');
+    expect(
+      within(preview()).getByText('https://github.com/mathius'),
+    ).toBeInTheDocument();
+  });
+
+  it('comes before the form so it sits above it on mobile', () => {
+    renderPage();
+    const form = screen.getByLabelText('Greeting').closest('form') as Node;
+    expect(
+      preview().compareDocumentPosition(form) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('moves to the right of the form and stays visible on desktop', () => {
+    renderPage();
+    const style = getMediaRuleStyle(preview(), '(min-width: 1201px)');
+    expect(style?.getPropertyValue('order')).toBe('2');
+    expect(style?.getPropertyValue('position')).toBe('sticky');
+  });
 });

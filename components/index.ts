@@ -12,3 +12,4 @@ export * from './textfield/TextField';
 export * from './passwordfield/PasswordField';
 export * from './longtext/LongText';
 export * from './placeholder/Placeholder';
+export * from './herocontent/HeroContent';
