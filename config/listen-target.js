@@ -1,8 +1,9 @@
 // Where the Next.js server listens. Owner rule: read PORT, bind 0.0.0.0,
 // fall back to 8081 only when PORT is not set.
+const dotenv = require('dotenv');
 const DEFAULT_PORT = 8081;
 const HOST = '0.0.0.0';
-
+dotenv.config();
 /** @param {Record<string, string | undefined>} env */
 function getListenTarget(env = process.env) {
   const raw = (env.PORT ?? '').trim();
