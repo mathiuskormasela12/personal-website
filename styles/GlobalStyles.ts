@@ -32,7 +32,6 @@ export const GlobalStyles = createGlobalStyle`
 		${toCssVariables(LIGHT_TOKENS)}
 		--safe-left: env(safe-area-inset-left, 0px);
 		--safe-right: env(safe-area-inset-right, 0px);
-		--color-dimmed: color-mix(in srgb, var(--color-background) 50%, black);
 		color-scheme: light;
 	}
 
