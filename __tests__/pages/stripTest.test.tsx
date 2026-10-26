@@ -134,3 +134,54 @@ it('shows the sizes that the browser reports', () => {
   expect(screen.getByText(/Notch space right: /)).toBeInTheDocument();
   expect(screen.getByText(/Browser: /)).toBeInTheDocument();
 });
+
+describe('the grey bars made in three ways', () => {
+  const left = () => screen.getByTestId('left-edge');
+  const right = () => screen.getByTestId('right-edge');
+  const next = () => press('Next grey');
+
+  it('starts with the grey off and the normal bar colors', () => {
+    render(<StripTest />);
+    expect(screen.getByText('Grey: off')).toBeInTheDocument();
+    expect(left()).toHaveAttribute('data-grey', 'off');
+    expect(left()).toHaveStyle({ backgroundColor: 'rgb(251, 140, 0)' });
+  });
+
+  it('first uses a plain grey color on both bars', () => {
+    render(<StripTest />);
+    next();
+    expect(screen.getByText('Grey: 1 plain (#7e7e7f)')).toBeInTheDocument();
+    expect(left()).toHaveStyle({ backgroundColor: 'rgb(126, 126, 127)' });
+    expect(right()).toHaveStyle({ backgroundColor: 'rgb(126, 126, 127)' });
+  });
+
+  it('then uses the same grey made by mixing the page color with black', () => {
+    render(<StripTest />);
+    next();
+    next();
+    expect(screen.getByText('Grey: 2 mixed (color-mix)')).toBeInTheDocument();
+    expect(left()).toHaveAttribute('data-grey', 'mixed');
+    expect(right()).toHaveAttribute('data-grey', 'mixed');
+  });
+
+  it('then uses the dimmed color variable exactly like the real site', () => {
+    render(<StripTest />);
+    next();
+    next();
+    next();
+    expect(
+      screen.getByText('Grey: 3 site variable (--color-dimmed)'),
+    ).toBeInTheDocument();
+    expect(left()).toHaveAttribute('data-grey', 'variable');
+  });
+
+  it('goes back to off after the third grey', () => {
+    render(<StripTest />);
+    next();
+    next();
+    next();
+    next();
+    expect(screen.getByText('Grey: off')).toBeInTheDocument();
+    expect(left()).toHaveStyle({ backgroundColor: 'rgb(251, 140, 0)' });
+  });
+});
