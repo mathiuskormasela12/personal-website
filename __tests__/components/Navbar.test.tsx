@@ -428,9 +428,23 @@ describe('the full-screen menu on touch screens held sideways', () => {
     expect(line).toContain('border-bottom-color:transparent;');
   });
 
-  it('adds nothing when the menu is closed', () => {
+  it('only lifts the navbar above the edge bars when the menu is closed', () => {
     renderWithStore(<Navbar />);
-    expect(heroLandscapeRules(heroName())).toBe('');
+    expect(heroLandscapeRules(heroName())).toBe(`.${heroName()}{z-index:5;}`);
+  });
+
+  it('draws the navbar and its lines above the edge bars, so they reach the page edge', async () => {
+    renderWithStore(<Navbar />);
+    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    const own = heroLandscapeRules(heroName())
+      .split('\n')
+      .find((rule) => rule.startsWith(`.${heroName()}{`));
+    expect(own).toContain('z-index:5;');
+    const barZ = Array.from(document.styleSheets)
+      .flatMap((sheet) => Array.from(sheet.cssRules))
+      .map((rule) => rule.cssText.replace(/\s/g, ''))
+      .find((rule) => rule.includes('width:24px;'));
+    expect(barZ).toContain('z-index:4;');
   });
 
   it('keeps the 50% black dim for other phone screens', async () => {

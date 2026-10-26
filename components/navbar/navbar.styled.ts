@@ -43,6 +43,8 @@ export const NavHero = styled.div<INavbarCollapesProps>`
   }
 
   @media ${LANDSCAPE_TOUCH_MEDIA} {
+    z-index: 5;
+
     ${({ toggle }) =>
       toggle
         ? `
