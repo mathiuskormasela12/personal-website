@@ -299,6 +299,9 @@ describe('the dark layer behind the open phone menu', () => {
   });
 });
 
+const LANDSCAPE_RULE =
+  '@(max-width:1200px)and(orientation:landscape)and(pointer:coarse){';
+
 describe('the edge bars that set the strip color in Chrome on iPhone', () => {
   const bars = () =>
     Array.from(document.querySelectorAll('[data-edge-bar]')) as HTMLElement[];
@@ -350,35 +353,25 @@ describe('the edge bars that set the strip color in Chrome on iPhone', () => {
     expect(rules.find((rule) => rule.startsWith('.'))).toContain(
       'display:none;',
     );
-    expect(
-      rules.find((rule) =>
-        rule.startsWith(
-          '@(max-width:1200px)and(orientation:landscape)and(pointer:coarse){',
-        ),
-      ),
-    ).toContain('display:block;');
+    expect(rules.find((rule) => rule.startsWith(LANDSCAPE_RULE))).toContain(
+      'display:block;',
+    );
   });
 
-  it('uses the page color when the menu is closed and the dimmed color when it is open', async () => {
+  it('keeps the page color when the menu is closed and when it is open', async () => {
     renderWithStore(<Navbar />);
     const landscape = (element: Element) =>
       rulesFor(element)
-        .filter((rule) =>
-          rule.startsWith(
-            '@(max-width:1200px)and(orientation:landscape)and(pointer:coarse){',
-          ),
-        )
+        .filter((rule) => rule.startsWith(LANDSCAPE_RULE))
         .join('');
     expect(landscape(bars()[0])).toContain(
       'background:var(--color-background);',
     );
     await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
-    expect(landscape(bars()[0])).toContain('background:var(--color-dimmed);');
-    expect(landscape(bars()[1])).toContain('background:var(--color-dimmed);');
-    await userEvent.click(screen.getByRole('button', { name: 'Close menu' }));
-    expect(landscape(bars()[0])).toContain(
-      'background:var(--color-background);',
-    );
+    bars().forEach((bar) => {
+      expect(landscape(bar)).toContain('background:var(--color-background);');
+      expect(landscape(bar)).not.toContain('--color-dimmed');
+    });
   });
 
   it('lets the bars be tapped like the test page did, and keeps them out of the accessibility tree', () => {
@@ -394,5 +387,55 @@ describe('the edge bars that set the strip color in Chrome on iPhone', () => {
     renderWithStore(<Navbar />);
     await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
     expect(document.documentElement).not.toHaveAttribute('data-menu-open');
+  });
+});
+
+describe('the full-screen menu on touch screens held sideways', () => {
+  const heroLandscapeRules = (name: string): string =>
+    Array.from(document.styleSheets)
+      .flatMap((sheet) => Array.from(sheet.cssRules))
+      .filter(
+        (rule): rule is CSSMediaRule =>
+          rule instanceof CSSMediaRule &&
+          `@${rule.media.mediaText.replace(/\s/g, '')}{` === LANDSCAPE_RULE,
+      )
+      .flatMap((rule) => Array.from(rule.cssRules))
+      .map((rule) => rule.cssText.replace(/\s/g, ''))
+      .filter((rule) => rule.startsWith(`.${name}`))
+      .join('\n');
+  const heroName = () => {
+    const hero = screen.getByRole('navigation').parentElement as HTMLElement;
+    return hero.classList[hero.classList.length - 1];
+  };
+
+  it('covers the whole screen with the page color instead of the dim', async () => {
+    renderWithStore(<Navbar />);
+    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    const layer = heroLandscapeRules(heroName())
+      .split('\n')
+      .find((rule) => rule.includes('::before{'));
+    expect(layer).toContain('left:0;');
+    expect(layer).toContain('right:0;');
+    expect(layer).toContain('background:var(--color-background);');
+  });
+
+  it('hides the line under the open menu', async () => {
+    renderWithStore(<Navbar />);
+    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    const line = heroLandscapeRules(heroName())
+      .split('\n')
+      .find((rule) => rule.includes('>nav{'));
+    expect(line).toContain('border-bottom-color:transparent;');
+  });
+
+  it('adds nothing when the menu is closed', () => {
+    renderWithStore(<Navbar />);
+    expect(heroLandscapeRules(heroName())).toBe('');
+  });
+
+  it('keeps the 50% black dim for other phone screens', async () => {
+    renderWithStore(<Navbar />);
+    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    expect(navHeroRules()).toContain('background:rgba(0,0,0,0.5)');
   });
 });
