@@ -48,10 +48,10 @@ export const EdgeBar = styled.div<IEdgeBarProps>`
   top: 0;
   bottom: 0;
   ${({ side }) => (side === 'left' ? 'left: 0;' : 'right: 0;')}
-  width: 2px;
+  width: 24px;
   z-index: 4;
 
-  @media (max-width: 1200px) and (orientation: landscape) {
+  @media (max-width: 1200px) and (orientation: landscape) and (pointer: coarse) {
     display: block;
     background: ${({ toggle }) =>
       toggle ? 'var(--color-dimmed)' : 'var(--color-background)'};

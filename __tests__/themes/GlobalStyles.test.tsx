@@ -77,3 +77,16 @@ it('does not change the body color for the phone menu', () => {
   expect(styles).not.toContain('data-menu-open');
   expect(styles).not.toContain('#__next{');
 });
+
+it('keeps the content clear of the 24px edge bars on touch screens held sideways', () => {
+  const styles = css();
+  const query =
+    '@media(max-width:1200px)and(orientation:landscape)and(pointer:coarse){';
+  const block = styles.split(query)[1] ?? '';
+  expect(block).toMatch(
+    /^:root\{--safe-left:max\(env\(safe-area-inset-left,0px\),24px\);--safe-right:max\(env\(safe-area-inset-right,0px\),24px\);\}/,
+  );
+  expect(styles.indexOf(query)).toBeGreaterThan(
+    styles.indexOf('--safe-left:env(safe-area-inset-left,0px);'),
+  );
+});
