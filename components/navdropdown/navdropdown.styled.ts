@@ -40,6 +40,11 @@ export const Menu = styled.ul`
   padding: 0.3rem 0;
   font-weight: normal;
 
+  @media (max-width: 1200px) {
+    margin-left: calc(-1 * var(--safe-left));
+    margin-right: calc(-1 * var(--safe-right));
+  }
+
   @media (min-width: 1201px) {
     position: absolute;
     top: calc(100% + 0.5rem);

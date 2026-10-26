@@ -115,3 +115,16 @@ it('floats under the button on desktop and opens inline on phones', async () => 
     ),
   ).toBe('absolute');
 });
+
+it('lets the phone menu box and the line above Logout reach the page edges', async () => {
+  renderDropdown();
+  await userEvent.click(trigger());
+  const list = screen.getByRole('link', { name: 'Edit Hero' }).closest('ul');
+  const phone = getMediaRuleStyle(list as HTMLElement, '(max-width: 1200px)');
+  const flat = (name: string) =>
+    phone?.getPropertyValue(name).replace(/\s/g, '');
+  expect(flat('margin-left')).toBe('calc(-1*var(--safe-left))');
+  expect(flat('margin-right')).toBe('calc(-1*var(--safe-right))');
+  expect(flat('padding-left')).toBe('');
+  expect(flat('padding-right')).toBe('');
+});
