@@ -8,8 +8,19 @@ export const Input = styled.input<ITextFieldProps>`
   color: ${Colors.light};
   font-size: 1rem;
   outline: none;
-  border: ${({ invalidMessage }) => (invalidMessage ? '1px' : '.5px')} solid
-    ${({ invalidMessage }) => (invalidMessage ? Colors.danger : Colors.light)};
+  appearance: none;
+  background-color: ${Colors.surface};
+  border-width: 1px;
+  border-style: solid;
+  ${({ invalidMessage }) => {
+    const color = invalidMessage ? Colors.danger : Colors.inputBorder;
+    return `
+      border-top-color: ${color};
+      border-right-color: ${color};
+      border-bottom-color: ${color};
+      border-left-color: ${color};
+    `;
+  }}
   height: 2.5em;
   width: 100%;
   padding-left: 0.8em;

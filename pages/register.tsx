@@ -17,6 +17,7 @@ import {
   Container,
   Footer,
   TextField,
+  PasswordField,
   Button,
 } from '../components';
 
@@ -172,7 +173,7 @@ const Register: NextPage = () => {
       <Head title="Sign Up" />
       <Styled.HeroCreateAuth>
         <Navbar />
-        <Styled.HeroCreateAuthBody>
+        <Styled.HeroCreateAuthBody data-page-body>
           <Container
             inheritHeight
             customSize={{
@@ -181,14 +182,14 @@ const Register: NextPage = () => {
           >
             <Styled.HeroCreateAuthFlex>
               <Styled.HeroCreateAuthCol>
-                <Styled.HeroCreateAuthImageContainer>
+                <Styled.IllustrationFrame $paper>
                   <Image
                     src="/icons/register.svg"
                     width={250}
                     height={250}
                     alt="Create Auth"
                   />
-                </Styled.HeroCreateAuthImageContainer>
+                </Styled.IllustrationFrame>
               </Styled.HeroCreateAuthCol>
               <Styled.HeroCreateAuthCol>
                 <Styled.HeroCreateAuthTitle>
@@ -219,9 +220,8 @@ const Register: NextPage = () => {
                       Password
                     </Styled.HeroCreateAuthLabel>
                     <Styled.HeroCreateAuthField>
-                      <TextField
+                      <PasswordField
                         placeholder="Password..."
-                        type="password"
                         id="password"
                         value={state.password}
                         invalidMessage={
@@ -238,9 +238,8 @@ const Register: NextPage = () => {
                       Repeat Password
                     </Styled.HeroCreateAuthLabel>
                     <Styled.HeroCreateAuthField>
-                      <TextField
+                      <PasswordField
                         placeholder="Repeat Password..."
-                        type="password"
                         id="repeat-password"
                         value={state.repeatPassword}
                         invalidMessage={

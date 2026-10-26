@@ -1,58 +1,62 @@
 // ========== Home Styles
 // import all modules
 import styled from 'styled-components';
-import { IBalloonProps, IHeroProjectsMainColProps } from '../interfaces';
-import { Colors } from '../themes';
+import { Colors, Fonts } from '../themes';
+
+const sectionLine = `
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: ${Colors.line};
+`;
 
 export const HeroHome = styled.div`
   height: auto;
-  background-color: white;
+  background-color: ${Colors.background};
 `;
 
 export const HeroWelcome = styled.div`
-  height: calc(100vh - 6.4rem);
+  padding: 8rem 0 4rem;
 
-  @media (max-width: 768px) and (orientation: landscape) {
-    height: 100vh;
+  @media (min-width: 1201px) {
+    padding: 9.5rem 0 5.5rem;
   }
 `;
 
 export const HeroHomeRow = styled.div`
-  display: flex;
-  height: 100%;
+  display: grid;
+  gap: 2.5rem;
   align-items: center;
-`;
 
-export const HeroHomeCol = styled.div`
-  flex: 2;
-  position: relative;
-
-  @media (max-width: 1200px) {
-    text-align: center;
-  }
-
-  &:last-child {
-    flex: 3;
-
-    @media (max-width: 1200px) {
-      display: none;
-    }
+  @media (min-width: 1201px) {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
   }
 `;
 
 export const HeroHomeTitle = styled.h1`
   color: ${Colors.dark};
-  font-size: 2.4rem;
+  font-size: 2.35rem;
   font-weight: normal;
-  word-wrap: break-word;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+
+  @media (min-width: 1201px) {
+    font-size: 3.4rem;
+  }
+
+  &:is(h2) {
+    font-size: 2rem;
+  }
 `;
 
 export const HeroHomeSubtitle = styled.p`
-  color: ${Colors.dark};
-  font-size: 1rem;
-  word-wrap: break-word;
-  margin: 1rem 0 1.2rem 0;
-  line-height: 1.5em;
+  color: ${Colors.light};
+  font-family: ${Fonts.light};
+  font-size: 1.08rem;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  margin: 1.5rem 0 1.8rem;
+  max-width: 30rem;
 `;
 
 export const PrimaryText = styled.span`
@@ -60,212 +64,68 @@ export const PrimaryText = styled.span`
 `;
 
 export const HeroHomeWelcomeContent = styled.div`
-  margin-left: 3.6rem;
+  min-width: 0;
+`;
 
-  @media (min-width: 1200px) {
-    width: 24rem;
-  }
+export const HomeSkills = styled.section`
+  ${sectionLine}
+  padding: 4.5rem 0;
 
-  @media (max-width: 1200px) {
-    margin-left: 0;
+  @media (min-width: 1201px) {
+    padding: 6rem 0;
   }
 `;
 
-export const BalloonContainer = styled.span<IBalloonProps>`
-  margin: 32px auto;
-  box-sizing: content-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
+export const HeroProject = styled.section`
+  ${sectionLine}
+  padding: 4.5rem 0;
 
-  @media (max-width: 1300px) {
-    display: none;
+  @media (min-width: 1201px) {
+    padding: 6rem 0;
   }
-
-  ${(props) => {
-    let styles = '';
-
-    if (!props.customPosition && props.top) {
-      styles += `
-							top: 0 !important;
-						`;
-    }
-
-    if (!props.customPosition && props.bottom) {
-      styles += `
-							bottom: 0 !important;
-
-							@media (max-width: 920px) {
-								bottom: -4.5rem !important;
-							}
-						`;
-    }
-
-    if (!props.customPosition && props.left) {
-      styles += `
-							left: 0 !important;
-						`;
-    }
-
-    if (!props.customPosition && props.right) {
-      styles += `
-							right: 0 !important;
-						`;
-    }
-
-    if (props.rotate > 0) {
-      styles += `
-							transform: rotate(${props.rotate}deg);
-						`;
-    }
-
-    if (props.hiddenWhenSize > 0) {
-      styles += `
-				@media (max-width: ${props.hiddenWhenSize}px) {
-					display: none !important;
-				}
-			`;
-    }
-
-    if (props.customPosition) {
-      styles += `
-				${Object.keys(props.customPosition)
-          .map((item, index) => {
-            if (props.customPosition) {
-              return `${item}: ${Object.values(props.customPosition)[index]}rem`;
-            }
-            return '';
-          })
-          .join(' !important;')}
-			`;
-    }
-
-    return styles;
-  }}
-`;
-
-export const ImageContainer = styled.span`
-  margin: 32px auto;
-  box-sizing: content-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  & > img {
-    position: absolute !important;
-    right: 3.5rem !important;
-  }
-`;
-
-export const HeroProject = styled.div`
-  padding: 0 0 2rem 0;
 `;
 
 export const HeroProjectHeader = styled.header`
-  text-align: center;
   display: flex;
-  align-items: center;
   flex-direction: column;
-  position: relative;
-
-  & > h1 {
-    width: 20rem;
-  }
-
-  & > p {
-    width: 10rem;
-  }
-`;
-
-export const HeroProjectMain = styled.main`
-  margin-top: 2rem;
-`;
-
-export const HeroProjectMainRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 2.5rem;
-`;
-
-export const HeroProjectMainCol = styled.div<IHeroProjectsMainColProps>`
-  width: 29%;
-  margin-right: auto;
-
-  @media (min-width: 1200px) {
-    &:nth-child(3n + 0) {
-      margin-right: 0 !important;
-    }
-
-    ${({ count }) => {
-      if (count % 3 === 2) {
-        return `
-					&:nth-child(${count - 1}) {
-						margin-right: 6% !important;
-					}
-				`;
-      }
-
-      return '';
-    }}
-  }
-
-  @media (min-width: 600px) and (max-width: 1024px) {
-    &:nth-child(2n + 0) {
-      margin-right: 0 !important;
-    }
-
-    ${({ count }) => {
-      if (count % 2 === 2) {
-        return `
-						&:nth-child(${count - 1}) {
-							margin-right: 2% !important;
-						}
-					`;
-      }
-
-      return '';
-    }}
-  }
-
+  gap: 0.6rem;
   margin-bottom: 2.2rem;
 
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  ${({ count }) => `
-		&:nth-child(${count - 1}) {
-			margin-bottom: 0;
-		}
-	`}
-
-  @media (max-width: 600px) {
-    width: 100%;
-  }
-
-  @media (min-width: 600px) and (max-width: 1024px) {
-    width: 48%;
+  @media (min-width: 1201px) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
   }
 `;
 
-export const Pagination = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-export const PaginationItems = styled.div`
-  width: 2.5em;
-  line-height: 2.5em;
-  text-align: center;
-  font-size: 1rem;
+export const SectionTitle = styled.h2`
   color: ${Colors.dark};
-  cursor: pointer;
-  border-radius: 50%;
+  font-size: 1.9rem;
+  font-weight: normal;
 
-  &:hover {
-    background-color: ${Colors.shapeColor};
+  @media (min-width: 1201px) {
+    font-size: 2.4rem;
+  }
+`;
+
+export const SectionLead = styled.p`
+  color: ${Colors.light};
+  font-family: ${Fonts.light};
+  line-height: 1.6;
+`;
+
+export const HeroProjectMain = styled.div``;
+
+export const HeroProjectMainRow = styled.div`
+  display: grid;
+  gap: 1.2rem;
+  margin-bottom: 2.2rem;
+
+  @media (min-width: 600px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1201px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 `;

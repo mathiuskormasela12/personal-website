@@ -43,6 +43,30 @@ export const makeStore = (preloadedState: TestState = {}) =>
     },
   });
 
+export const getMediaRuleStyle = (
+  element: Element,
+  mediaText: string,
+): CSSStyleDeclaration | undefined => {
+  const classSelectors = Array.from(element.classList).map(
+    (name) => `.${name}`,
+  );
+  const withoutSpaces = (text: string) => text.replace(/\s/g, '');
+
+  return Array.from(document.styleSheets)
+    .flatMap((sheet) => Array.from(sheet.cssRules))
+    .filter(
+      (rule): rule is CSSMediaRule =>
+        rule instanceof CSSMediaRule &&
+        withoutSpaces(rule.media.mediaText) === withoutSpaces(mediaText),
+    )
+    .flatMap((rule) => Array.from(rule.cssRules))
+    .find(
+      (rule): rule is CSSStyleRule =>
+        rule instanceof CSSStyleRule &&
+        classSelectors.includes(rule.selectorText),
+    )?.style;
+};
+
 export const renderWithStore = (
   ui: React.ReactElement,
   preloadedState: TestState = {},

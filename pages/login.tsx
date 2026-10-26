@@ -15,6 +15,7 @@ import {
   Container,
   Footer,
   TextField,
+  PasswordField,
   Button,
 } from '../components';
 import Services from '../services';
@@ -149,7 +150,7 @@ const Login: NextPage = () => {
       <Head title="Sign In" />
       <Styled.HeroCreateAuth>
         <Navbar />
-        <Styled.HeroCreateAuthBody>
+        <Styled.HeroCreateAuthBody data-page-body>
           <Container
             inheritHeight
             customSize={{
@@ -158,14 +159,14 @@ const Login: NextPage = () => {
           >
             <Styled.HeroCreateAuthFlex>
               <Styled.HeroCreateAuthCol>
-                <Styled.HeroCreateAuthImageContainer>
+                <Styled.IllustrationFrame $paper>
                   <Image
                     src="/icons/login.svg"
                     width={250}
                     height={250}
                     alt="Create Auth"
                   />
-                </Styled.HeroCreateAuthImageContainer>
+                </Styled.IllustrationFrame>
               </Styled.HeroCreateAuthCol>
               <Styled.HeroCreateAuthCol>
                 <Styled.HeroCreateAuthTitle>
@@ -196,9 +197,8 @@ const Login: NextPage = () => {
                       Password
                     </Styled.HeroCreateAuthLabel>
                     <Styled.HeroCreateAuthField>
-                      <TextField
+                      <PasswordField
                         placeholder="Password..."
-                        type="password"
                         id="password"
                         value={state.password}
                         invalidMessage={

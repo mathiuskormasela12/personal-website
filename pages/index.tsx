@@ -12,18 +12,22 @@ import {
   Head,
   Navbar,
   Container,
-  Button,
   Card,
+  HeroContent,
+  SkillsSection,
   Footer,
   Pagination,
   Placeholder,
 } from '../components';
 import { setProjects } from '../redux/actions';
-import { IGlobalStates, IProjects } from '../interfaces';
+import { IGlobalStates, IHeroPageProps, IProjects } from '../interfaces';
+import { getHeroServerSideProps } from '../helpers';
+import { useProfile } from '../hooks/useProfile';
 
-const Home: NextPage = () => {
+const Home: NextPage<IHeroPageProps> = ({ hero }) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const profile = useProfile();
   const projects: IProjects[] = useSelector(
     (current: IGlobalStates) => current.projects.projects,
   );
@@ -43,201 +47,47 @@ const Home: NextPage = () => {
       <Styled.HeroHome>
         <Navbar />
         <Styled.HeroWelcome>
-          <Container inheritHeight>
+          <Container>
             <Styled.HeroHomeRow>
-              <Styled.HeroHomeCol>
-                <Styled.BalloonContainer
-                  customPosition={{
-                    top: -7,
-                  }}
-                  rotate={0}
-                  hiddenWhenSize={0}
-                >
-                  <Image
-                    src="/icons/balloon.svg"
-                    width={80}
-                    height={80}
-                    alt="Balloon"
-                  />
-                </Styled.BalloonContainer>
-                <Styled.BalloonContainer
-                  customPosition={{
-                    top: -5.5,
-                    right: 0,
-                  }}
-                  rotate={270}
-                  hiddenWhenSize={0}
-                >
-                  <Image
-                    src="/icons/balloon.svg"
-                    width={80}
-                    height={80}
-                    alt="Balloon"
-                  />
-                </Styled.BalloonContainer>
-                <Styled.BalloonContainer
-                  customPosition={{
-                    bottom: -5.5,
-                    right: 0,
-                  }}
-                  rotate={100}
-                  hiddenWhenSize={0}
-                >
-                  <Image
-                    src="/icons/balloon.svg"
-                    width={80}
-                    height={80}
-                    alt="Balloon"
-                  />
-                </Styled.BalloonContainer>
-                <Styled.HeroHomeWelcomeContent>
-                  <Styled.HeroHomeTitle>
-                    Hi, I&apos;m{' '}
-                    <Styled.PrimaryText>
-                      a Fullstack Developer
-                    </Styled.PrimaryText>
-                    .
-                  </Styled.HeroHomeTitle>
-                  <Styled.HeroHomeSubtitle>
-                    I&apos;m Mathius a fullstack developer with 1+ years working
-                    experiences.
-                  </Styled.HeroHomeSubtitle>
-                  <Button
-                    type="button"
-                    size="md"
-                    rounded
-                    onClick={() => {
-                      router.push(
-                        'https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw',
-                      );
-                    }}
-                  >
-                    My Youtube
-                  </Button>
-                </Styled.HeroHomeWelcomeContent>
-              </Styled.HeroHomeCol>
-              <Styled.HeroHomeCol>
-                <Styled.ImageContainer>
-                  <Image
-                    src="/icons/hero-img.svg"
-                    alt="Hero Image"
-                    width={400}
-                    height={350}
-                  />
-                </Styled.ImageContainer>
-              </Styled.HeroHomeCol>
+              <Styled.HeroHomeWelcomeContent>
+                <HeroContent hero={hero} />
+              </Styled.HeroHomeWelcomeContent>
+              <Styled.IllustrationFrame>
+                <Image
+                  src="/icons/hero-img.svg"
+                  alt="Hero Image"
+                  width={400}
+                  height={350}
+                  priority
+                />
+              </Styled.IllustrationFrame>
             </Styled.HeroHomeRow>
           </Container>
         </Styled.HeroWelcome>
+        <Styled.HomeSkills id="skills">
+          <Container>
+            <SkillsSection
+              skills={profile.skills}
+              description={profile.skillsDescription}
+            />
+          </Container>
+        </Styled.HomeSkills>
         <Styled.HeroProject id="projects">
           <Container>
             <Styled.HeroProjectHeader>
-              <Styled.BalloonContainer
-                customPosition={{
-                  top: -2.2,
-                  left: 14,
-                }}
-                rotate={0}
-                hiddenWhenSize={768}
-              >
-                <Image
-                  src="/icons/balloon.svg"
-                  width={80}
-                  height={80}
-                  alt="Balloon"
-                />
-              </Styled.BalloonContainer>
-              <Styled.BalloonContainer
-                customPosition={{
-                  top: 5,
-                  left: 29,
-                }}
-                rotate={0}
-                hiddenWhenSize={0}
-              >
-                <Image
-                  src="/icons/triangle.svg"
-                  width={20}
-                  height={20}
-                  alt="Balloon"
-                />
-              </Styled.BalloonContainer>
-              <Styled.BalloonContainer
-                customPosition={{
-                  top: 5,
-                  right: 29,
-                }}
-                rotate={157}
-                hiddenWhenSize={0}
-              >
-                <Image
-                  src="/icons/triangle.svg"
-                  width={20}
-                  height={20}
-                  alt="Balloon"
-                />
-              </Styled.BalloonContainer>
-              <Styled.HeroHomeTitle>
+              <Styled.SectionTitle>
                 <Styled.PrimaryText>Latest Projects</Styled.PrimaryText> Updates
-              </Styled.HeroHomeTitle>
-              <Styled.HeroHomeSubtitle>
+              </Styled.SectionTitle>
+              <Styled.SectionLead>
                 Let&apos;s write our future with code
-              </Styled.HeroHomeSubtitle>
-              <Styled.BalloonContainer
-                customPosition={{
-                  top: -2.2,
-                  right: 14,
-                }}
-                rotate={100}
-                hiddenWhenSize={768}
-              >
-                <Image
-                  src="/icons/balloon.svg"
-                  width={80}
-                  height={80}
-                  alt="Balloon"
-                />
-              </Styled.BalloonContainer>
-              <Styled.BalloonContainer
-                customPosition={{
-                  bottom: 7.5,
-                  left: 29,
-                }}
-                rotate={0}
-                hiddenWhenSize={0}
-              >
-                <Image
-                  src="/icons/triangle.svg"
-                  width={20}
-                  height={20}
-                  alt="Balloon"
-                />
-              </Styled.BalloonContainer>
-              <Styled.BalloonContainer
-                customPosition={{
-                  bottom: 6.5,
-                  right: 30,
-                }}
-                rotate={157}
-                hiddenWhenSize={0}
-              >
-                <Image
-                  src="/icons/triangle.svg"
-                  width={20}
-                  height={20}
-                  alt="Balloon"
-                />
-              </Styled.BalloonContainer>
+              </Styled.SectionLead>
             </Styled.HeroProjectHeader>
             <Styled.HeroProjectMain>
-              <Styled.HeroProjectMainRow>
+              <Styled.HeroProjectMainRow data-grid>
                 <Placeholder>
                   <Fragment>
                     {projects.map((item) => (
-                      <Styled.HeroProjectMainCol
-                        key={item.id.toString()}
-                        count={projects.length}
-                      >
+                      <div key={item.id.toString()}>
                         <Card
                           title={item.title}
                           description={item.description}
@@ -247,7 +97,7 @@ const Home: NextPage = () => {
                             router.push(`/detail/${String(item.id)}`);
                           }}
                         />
-                      </Styled.HeroProjectMainCol>
+                      </div>
                     ))}
                   </Fragment>
                 </Placeholder>
@@ -263,5 +113,7 @@ const Home: NextPage = () => {
     </Fragment>
   );
 };
+
+export const getServerSideProps = getHeroServerSideProps;
 
 export default Home;

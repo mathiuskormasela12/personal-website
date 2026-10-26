@@ -9,7 +9,19 @@ export const TextArea = styled.textarea<ILongTextProps>`
   font-size: 1rem;
   outline: none;
   font-family: ${Fonts.base};
-  border: 0.5px solid ${Colors.light};
+  appearance: none;
+  background-color: ${Colors.surface};
+  border-width: 1px;
+  border-style: solid;
+  ${({ invalidMessage }) => {
+    const color = invalidMessage ? Colors.danger : Colors.inputBorder;
+    return `
+      border-top-color: ${color};
+      border-right-color: ${color};
+      border-bottom-color: ${color};
+      border-left-color: ${color};
+    `;
+  }}
   height: 8.5em;
   width: 100%;
   padding: 1em 0 0 0.8em;

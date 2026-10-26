@@ -11,6 +11,7 @@ export const Text = styled.h3`
 `;
 
 export const ImageContainer = styled.span`
+  grid-column: 1 / -1;
   margin: 32px auto;
   box-sizing: content-box;
   display: flex;
@@ -20,6 +21,7 @@ export const ImageContainer = styled.span`
 
   & > img {
     width: 25rem !important;
-    height: 25rem !important;
+    max-width: 100%;
+    height: auto !important;
   }
 `;

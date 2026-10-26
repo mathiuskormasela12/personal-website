@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Colors } from '../themes';
 
 export const HeroCreateAuth = styled.div`
-  background-color: white;
+  background-color: ${Colors.background};
   height: 100vh;
   width: 100%;
 
@@ -15,6 +15,10 @@ export const HeroCreateAuth = styled.div`
 
 export const HeroCreateAuthBody = styled.div`
   height: 100%;
+
+  @media (min-width: 1201px) {
+    padding-top: 4.8rem;
+  }
 
   @media (max-width: 1024px) {
     height: auto;
@@ -55,25 +59,10 @@ export const HeroCreateAuthCol = styled.div`
   }
 `;
 
-export const HeroCreateAuthImageContainer = styled.span`
-  margin: 32px auto;
-  box-sizing: content-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
-  & > img {
-    position: absolute;
-    width: 30rem !important;
-    height: 30rem !important;
-  }
-`;
-
 export const HeroCreateAuthTitle = styled.h1`
   color: ${Colors.dark};
   font-size: 2.1rem;
+  font-weight: normal;
 
   @media (max-width: 1200px) {
     text-align: center;

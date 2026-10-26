@@ -1,99 +1,56 @@
-// ========== Footer
-// import all modules
 import React from 'react';
 import { getCurrentYear } from '../../helpers';
+import { useProfile } from '../../hooks/useProfile';
+import { ContactLinks } from '../contactlinks/ContactLinks';
+import { SocialLinks } from '../sociallinks/SocialLinks';
 import * as Styled from './footer.styled';
+
+const QUICK_LINKS = [
+  { text: 'Home', href: '/' },
+  { text: 'Projects', href: '/#projects' },
+  { text: 'Skills', href: '/#skills' },
+];
 
 export const Footer: React.FC = () => {
   const year = getCurrentYear();
-
-  const handleMoveToOtherWebsite = (link: string) => {
-    window.location.href = link;
-  };
+  const profile = useProfile();
 
   return (
     <Styled.Footer id="footer">
-      <Styled.FooterContainer>
-        <Styled.FooterTitle>&copy; Mathius {year}</Styled.FooterTitle>
-        <Styled.FooterTitle>My Personal Website</Styled.FooterTitle>
-        <Styled.FooterTitle>
-          let&apos;s writes our future with code
-        </Styled.FooterTitle>
-        <Styled.FooterContent>
-          <Styled.FooterContentCol>
-            <Styled.ListTitle>Frontend Skills</Styled.ListTitle>
-            <Styled.ListContent>
-              <Styled.ListItems>HTML</Styled.ListItems>
-              <Styled.ListItems>CSS</Styled.ListItems>
-              <Styled.ListItems>Javascript</Styled.ListItems>
-              <Styled.ListItems>Typescript</Styled.ListItems>
-            </Styled.ListContent>
-          </Styled.FooterContentCol>
-          <Styled.FooterContentCol>
-            <Styled.ListTitle>Backend Skills</Styled.ListTitle>
-            <Styled.ListContent>
-              <Styled.ListItems>Node Js</Styled.ListItems>
-              <Styled.ListItems>Express Js</Styled.ListItems>
-              <Styled.ListItems>Nest Js</Styled.ListItems>
-              <Styled.ListItems>MySQL</Styled.ListItems>
-              <Styled.ListItems>Mongodb</Styled.ListItems>
-            </Styled.ListContent>
-          </Styled.FooterContentCol>
-          <Styled.FooterContentCol>
-            <Styled.ListTitle>Social Media</Styled.ListTitle>
-            <Styled.ListContent>
-              <Styled.ListItems
-                pointer
-                onClick={() =>
-                  handleMoveToOtherWebsite(
-                    'https://www.facebook.com/mathiuskormasela/',
-                  )
-                }
-              >
-                Facebook
-              </Styled.ListItems>
-              <Styled.ListItems
-                pointer
-                onClick={() =>
-                  handleMoveToOtherWebsite(
-                    'https://twitter.com/Mathius87248424',
-                  )
-                }
-              >
-                Twitter
-              </Styled.ListItems>
-            </Styled.ListContent>
-          </Styled.FooterContentCol>
-          <Styled.FooterContentCol>
-            <Styled.ListTitle>Youtube</Styled.ListTitle>
-            <Styled.ListContent>
-              <Styled.ListItems
-                pointer
-                onClick={() =>
-                  handleMoveToOtherWebsite(
-                    'https://www.youtube.com/channel/UC5eUSF2W_vAkYA6wdilJjOw/videos',
-                  )
-                }
-              >
-                @mathius
-              </Styled.ListItems>
-            </Styled.ListContent>
-          </Styled.FooterContentCol>
-          <Styled.FooterContentCol>
-            <Styled.ListTitle>Contact</Styled.ListTitle>
-            <Styled.ListContent>
-              <Styled.ListItems title="mathiuskormasela12@gmail.com">
-                Email
-              </Styled.ListItems>
-              <Styled.ListItems title="+62-811-1906-204">
-                WhatsApp
-              </Styled.ListItems>
-            </Styled.ListContent>
-          </Styled.FooterContentCol>
-        </Styled.FooterContent>
-        <Styled.FooterTitle>Created with love by Mathius</Styled.FooterTitle>
-        <Styled.FooterTitle>in Jakarta {year}</Styled.FooterTitle>
-      </Styled.FooterContainer>
+      <Styled.Container>
+        <Styled.Top>
+          <div>
+            <Styled.Brand>{profile.name}</Styled.Brand>
+            <Styled.Tagline>My personal website.</Styled.Tagline>
+            <Styled.Tagline>
+              Let&apos;s write our future with code.
+            </Styled.Tagline>
+          </div>
+          <nav aria-label="Quick links">
+            <Styled.ColumnTitle>Quick links</Styled.ColumnTitle>
+            <Styled.QuickLinks>
+              {QUICK_LINKS.map(({ text, href }) => (
+                <li key={href}>
+                  <Styled.QuickLink href={href}>{text}</Styled.QuickLink>
+                </li>
+              ))}
+            </Styled.QuickLinks>
+          </nav>
+          <div>
+            <Styled.ColumnTitle>Contact</Styled.ColumnTitle>
+            <ContactLinks contacts={profile} />
+            <Styled.Social>
+              <SocialLinks links={profile} />
+            </Styled.Social>
+          </div>
+        </Styled.Top>
+        <Styled.Bottom>
+          <p>
+            &copy; {profile.name} {year}
+          </p>
+          <p>Created with love in Jakarta</p>
+        </Styled.Bottom>
+      </Styled.Container>
     </Styled.Footer>
   );
 };

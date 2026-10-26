@@ -1,25 +1,29 @@
 // ========== Navbar
 // import modules
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { GrClose } from 'react-icons/gr';
-import { HiOutlineMenu } from 'react-icons/hi';
+import { FiMenu, FiX } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import { NAV_ITEMS } from '../../constants';
+import { useProfile } from '../../hooks/useProfile';
+import { useTheme } from '../../hooks/useTheme';
 import { IGlobalStates } from '../../interfaces';
 import * as Styled from './navbar.styled';
 
 // import all components
 import { Button } from '../button/Button';
-import { Colors } from '../../themes';
+import { NavDropdown } from '../navdropdown/NavDropdown';
+import { ThemeToggle } from '../themetoggle/ThemeToggle';
 import Services from '../../services';
 
 export const Navbar: NextPage = () => {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
+  const menuId = useId();
+  const { theme, toggleTheme } = useTheme();
   const accessToken: string = useSelector(
     (current: IGlobalStates) => current.auth.accessToken,
   );
@@ -29,7 +33,18 @@ export const Navbar: NextPage = () => {
   const id: number = useSelector(
     (current: IGlobalStates) => current.projects.project.id,
   );
-  const navItems = accessToken !== '' ? NAV_ITEMS.ADMIN : NAV_ITEMS.USER;
+  const profile = useProfile();
+  const isAdmin = accessToken !== '';
+  const navItems = isAdmin ? NAV_ITEMS.ADMIN : NAV_ITEMS.USER;
+  const isAdminPage = NAV_ITEMS.ADMIN_MENU.some(
+    (item) => item.path === router.pathname,
+  );
+
+  const adminMenu = NAV_ITEMS.ADMIN_MENU.map((item) =>
+    item.path === '/logout'
+      ? { ...item, path: `/logout?from=${encodeURIComponent(router.asPath)}` }
+      : item,
+  );
 
   const handleMoveToOtherWebsite = (link: string) => {
     window.location.href = link;
@@ -72,50 +87,58 @@ export const Navbar: NextPage = () => {
   };
 
   return (
-    <Styled.NavHero toggle={toggle}>
-      <Styled.Nav>
-        <Styled.NavContainer>
-          <Styled.NavBrand>
-            <Styled.Brand as={Link} href="/">
-              Mathius
-            </Styled.Brand>
-          </Styled.NavBrand>
-          <Styled.NavList toggle={toggle}>
-            {navItems.map((item) => (
-              <Styled.NavItems
-                key={item.id.toString()}
-                active={router.pathname === item.path}
+    <>
+      <Styled.EdgeBar side="left" data-edge-bar="left" aria-hidden />
+      <Styled.EdgeBar side="right" data-edge-bar="right" aria-hidden />
+      <Styled.NavHero toggle={toggle}>
+        <Styled.Nav>
+          <Styled.NavContainer>
+            <Styled.NavBrand>
+              <Styled.Brand as={Link} href="/">
+                {profile.name}
+              </Styled.Brand>
+            </Styled.NavBrand>
+            <Styled.NavList id={menuId} toggle={toggle}>
+              {navItems.map((item) => (
+                <Styled.NavItems
+                  key={item.id.toString()}
+                  active={router.pathname === item.path}
+                >
+                  <Styled.NavLink href={item.path}>{item.text}</Styled.NavLink>
+                </Styled.NavItems>
+              ))}
+              {isAdmin && (
+                <Styled.NavItems active={isAdminPage}>
+                  <NavDropdown label="Admin" items={adminMenu} />
+                </Styled.NavItems>
+              )}
+            </Styled.NavList>
+            <Styled.NavSide>
+              <ThemeToggle theme={theme} onToggle={toggleTheme} />
+              <Styled.HireSlot>
+                <Button type="button" size="md" onClick={handleButton}>
+                  {accessToken !== '' && refreshToken !== '' && id > 0
+                    ? 'Action'
+                    : 'Hire Me'}
+                </Button>
+              </Styled.HireSlot>
+              <Styled.MenuButton
+                type="button"
+                aria-label={toggle ? 'Close menu' : 'Open menu'}
+                aria-expanded={toggle}
+                aria-controls={menuId}
+                onClick={() => setToggle((current) => !current)}
               >
-                <Styled.NavLink href={item.path}>{item.text}</Styled.NavLink>
-              </Styled.NavItems>
-            ))}
-          </Styled.NavList>
-          <Styled.NavSide>
-            <Button type="button" size="md" rounded onClick={handleButton}>
-              {accessToken !== '' && refreshToken !== '' && id > 0
-                ? 'Action'
-                : 'Hire Me'}
-            </Button>
-            {toggle ? (
-              <GrClose
-                size={20}
-                color={Colors.dark}
-                onClick={() =>
-                  setToggle((currentToggle: boolean) => !currentToggle)
-                }
-              />
-            ) : (
-              <HiOutlineMenu
-                size={25}
-                color={Colors.dark}
-                onClick={() =>
-                  setToggle((currentToggle: boolean) => !currentToggle)
-                }
-              />
-            )}
-          </Styled.NavSide>
-        </Styled.NavContainer>
-      </Styled.Nav>
-    </Styled.NavHero>
+                {toggle ? (
+                  <FiX size={22} aria-hidden />
+                ) : (
+                  <FiMenu size={22} aria-hidden />
+                )}
+              </Styled.MenuButton>
+            </Styled.NavSide>
+          </Styled.NavContainer>
+        </Styled.Nav>
+      </Styled.NavHero>
+    </>
   );
 };

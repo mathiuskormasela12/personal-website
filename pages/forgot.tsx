@@ -22,6 +22,7 @@ import {
   Container,
   Footer,
   TextField,
+  PasswordField,
   Button,
 } from '../components';
 
@@ -226,7 +227,7 @@ const Forgot: NextPage = () => {
       <Head title="Forgot Password" />
       <Styled.HeroCreateForgot>
         <Navbar />
-        <Styled.HeroCreateForgotBody>
+        <Styled.HeroCreateForgotBody data-page-body>
           <Container
             inheritHeight
             customSize={{
@@ -235,14 +236,14 @@ const Forgot: NextPage = () => {
           >
             <Styled.HeroCreateForgotFlex>
               <Styled.HeroCreateForgotCol>
-                <Styled.HeroCreateForgotImageContainer>
+                <Styled.IllustrationFrame $paper>
                   <Image
                     src="/icons/forgot.svg"
                     width={250}
                     height={250}
                     alt="Create Forgot"
                   />
-                </Styled.HeroCreateForgotImageContainer>
+                </Styled.IllustrationFrame>
               </Styled.HeroCreateForgotCol>
               <Styled.HeroCreateForgotCol>
                 <Styled.HeroCreateForgotTitle>
@@ -288,9 +289,8 @@ const Forgot: NextPage = () => {
                           New Password
                         </Styled.HeroCreateForgotLabel>
                         <Styled.HeroCreateForgotField>
-                          <TextField
+                          <PasswordField
                             placeholder="Type your new password..."
-                            type="password"
                             id="password"
                             value={state.password}
                             invalidMessage={
@@ -309,9 +309,8 @@ const Forgot: NextPage = () => {
                           Repeat New Password
                         </Styled.HeroCreateForgotLabel>
                         <Styled.HeroCreateForgotField>
-                          <TextField
+                          <PasswordField
                             placeholder="Repeat your new password..."
-                            type="password"
                             id="repeat-password"
                             value={state.repeatPassword}
                             invalidMessage={
