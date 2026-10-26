@@ -77,6 +77,11 @@ it('paints html red and changes the body color between green and blue', () => {
   expect(css()).toContain('body{background:#43a047!important;}');
 });
 
+it('lets the body color show through the page wrapper', () => {
+  render(<StripTest />);
+  expect(css()).toContain('#__next{background:transparent!important;}');
+});
+
 it('shows a layer that can be tapped over the whole page and clears it', () => {
   render(<StripTest />);
   expect(screen.queryByTestId('dim-layer')).not.toBeInTheDocument();

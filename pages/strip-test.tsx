@@ -9,6 +9,7 @@ const RIGHT_NAMES = { first: 'pink', second: 'cyan' };
 
 const pageCss = (bodyBlue: boolean) => `
   html { background: #e53935 !important; }
+  #__next { background: transparent !important; }
   body { background: ${bodyBlue ? '#1e88e5' : '#43a047'} !important; }
 `;
 
