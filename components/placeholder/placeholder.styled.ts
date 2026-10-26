@@ -11,6 +11,7 @@ export const Text = styled.h3`
 `;
 
 export const ImageContainer = styled.span`
+  grid-column: 1 / -1;
   margin: 32px auto;
   box-sizing: content-box;
   display: flex;

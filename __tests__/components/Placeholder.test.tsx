@@ -40,3 +40,19 @@ it('uses the single project in detail mode', () => {
   });
   expect(screen.getByText('content')).toBeInTheDocument();
 });
+
+it('spans the whole row of the project grid so the empty image is centered', () => {
+  renderWithStore(<Placeholder>{child}</Placeholder>);
+  expect(screen.getByAltText('Empty').parentElement).toHaveStyle({
+    gridColumn: '1/-1',
+  });
+});
+
+it('spans the whole row of the project grid while loading', () => {
+  renderWithStore(<Placeholder>{child}</Placeholder>, {
+    projects: projectsState({ loading: true }),
+  });
+  expect(screen.getByAltText('Loading').parentElement).toHaveStyle({
+    gridColumn: '1/-1',
+  });
+});
