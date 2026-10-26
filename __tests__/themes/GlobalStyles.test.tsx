@@ -66,10 +66,8 @@ it('keeps the page content out of the notch area but paints behind it', () => {
   );
 });
 
-it('defines the dimmed page color from the page color and 50% black', () => {
-  expect(css()).toContain(
-    '--color-dimmed:color-mix(insrgb,var(--color-background)50%,black);',
-  );
+it('no longer defines the dimmed page color that only the test page used', () => {
+  expect(css()).not.toContain('--color-dimmed');
 });
 
 it('does not change the body color for the phone menu', () => {
