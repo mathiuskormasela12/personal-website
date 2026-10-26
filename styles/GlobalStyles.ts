@@ -40,6 +40,13 @@ export const GlobalStyles = createGlobalStyle`
 		color-scheme: dark;
 	}
 
+	@media (max-width: 1200px) and (orientation: landscape) and (pointer: coarse) {
+		:root {
+			--safe-left: max(env(safe-area-inset-left, 0px), 24px);
+			--safe-right: max(env(safe-area-inset-right, 0px), 24px);
+		}
+	}
+
 	html,
 	body {
 		background-color: var(--color-background);

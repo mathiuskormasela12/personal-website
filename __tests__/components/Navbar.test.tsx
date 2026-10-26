@@ -327,7 +327,7 @@ describe('the edge bars that set the strip color in Chrome on iPhone', () => {
     ]);
   });
 
-  it('keeps each bar fixed to its screen edge, 2px wide, above the menu', () => {
+  it('keeps each bar fixed to its screen edge, 24px wide, above the menu', () => {
     renderWithStore(<Navbar />);
     const [left, right] = bars();
     const leftRule = rulesFor(left).join('');
@@ -336,13 +336,14 @@ describe('the edge bars that set the strip color in Chrome on iPhone', () => {
     expect(leftRule).toContain('left:0;');
     expect(leftRule).toContain('top:0;');
     expect(leftRule).toContain('bottom:0;');
-    expect(leftRule).toContain('width:2px;');
+    expect(leftRule).toContain('width:24px;');
+    expect(rightRule).toContain('width:24px;');
     expect(leftRule).toContain('z-index:4;');
     expect(rightRule).toContain('right:0;');
     expect(rightRule).not.toContain('left:0;');
   });
 
-  it('shows the bars only on phones and tablets held sideways', () => {
+  it('shows the bars only on touch screens held sideways', () => {
     renderWithStore(<Navbar />);
     const [left] = bars();
     const rules = rulesFor(left);
@@ -351,7 +352,9 @@ describe('the edge bars that set the strip color in Chrome on iPhone', () => {
     );
     expect(
       rules.find((rule) =>
-        rule.startsWith('@(max-width:1200px)and(orientation:landscape){'),
+        rule.startsWith(
+          '@(max-width:1200px)and(orientation:landscape)and(pointer:coarse){',
+        ),
       ),
     ).toContain('display:block;');
   });
@@ -361,7 +364,9 @@ describe('the edge bars that set the strip color in Chrome on iPhone', () => {
     const landscape = (element: Element) =>
       rulesFor(element)
         .filter((rule) =>
-          rule.startsWith('@(max-width:1200px)and(orientation:landscape){'),
+          rule.startsWith(
+            '@(max-width:1200px)and(orientation:landscape)and(pointer:coarse){',
+          ),
         )
         .join('');
     expect(landscape(bars()[0])).toContain(
