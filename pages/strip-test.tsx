@@ -7,6 +7,21 @@ const RIGHT_COLORS = { first: '#d81b60', second: '#00acc1' };
 const LEFT_NAMES = { first: 'orange', second: 'purple' };
 const RIGHT_NAMES = { first: 'pink', second: 'cyan' };
 
+const GREYS = [
+  { id: 'off', label: 'off', color: '' },
+  { id: 'plain', label: '1 plain (#7e7e7f)', color: '#7e7e7f' },
+  {
+    id: 'mixed',
+    label: '2 mixed (color-mix)',
+    color: 'color-mix(in srgb, #fbfcfe 50%, black)',
+  },
+  {
+    id: 'variable',
+    label: '3 site variable (--color-dimmed)',
+    color: 'var(--color-dimmed)',
+  },
+];
+
 const pageCss = (bodyBlue: boolean) => `
   html { background: #e53935 !important; }
   #__next { background: transparent !important; }
@@ -52,6 +67,7 @@ const StripTest: NextPage = () => {
   const [thin, setThin] = useState(false);
   const [bodyBlue, setBodyBlue] = useState(false);
   const [dimmed, setDimmed] = useState(false);
+  const [greyIndex, setGreyIndex] = useState(0);
 
   useEffect(() => {
     const update = () => setInfo(readInfo(probe.current));
@@ -66,6 +82,7 @@ const StripTest: NextPage = () => {
 
   const key = alt ? 'second' : 'first';
   const width = thin ? 2 : 24;
+  const grey = GREYS[greyIndex];
 
   return (
     <>
@@ -76,11 +93,13 @@ const StripTest: NextPage = () => {
       </Head>
       <div
         data-testid="left-edge"
-        style={edgeStyle('left', LEFT_COLORS[key], width)}
+        data-grey={grey.id}
+        style={edgeStyle('left', grey.color || LEFT_COLORS[key], width)}
       />
       <div
         data-testid="right-edge"
-        style={edgeStyle('right', RIGHT_COLORS[key], width)}
+        data-grey={grey.id}
+        style={edgeStyle('right', grey.color || RIGHT_COLORS[key], width)}
       />
       {dimmed && (
         <div
@@ -121,6 +140,14 @@ const StripTest: NextPage = () => {
         <p>{`Bars: ${LEFT_NAMES[key]} and ${RIGHT_NAMES[key]}, ${thin ? 'thin' : 'wide'}`}</p>
         <p>{`Body: ${bodyBlue ? 'blue' : 'green'}, html: red`}</p>
         <p>{`Tappable dim: ${dimmed ? 'on' : 'off'}`}</p>
+        <p>{`Grey: ${grey.label}`}</p>
+        <button
+          type="button"
+          style={buttonStyle}
+          onClick={() => setGreyIndex((index) => (index + 1) % GREYS.length)}
+        >
+          Next grey
+        </button>
         <button
           type="button"
           style={buttonStyle}
