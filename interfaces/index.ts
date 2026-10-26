@@ -10,6 +10,7 @@ export * from './IContainerProps';
 export * from './INavItemsProps';
 export * from './IButtonProps';
 export * from './INavbarCollapseProps';
+export * from './IEdgeBarProps';
 export * from './IProjects';
 export * from './IHomeStates';
 export * from './ITechnology';

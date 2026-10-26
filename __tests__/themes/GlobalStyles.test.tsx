@@ -66,24 +66,14 @@ it('keeps the page content out of the notch area but paints behind it', () => {
   );
 });
 
-it('keeps the page color on its own wrapper so the body can change alone', () => {
-  const styles = css();
-  expect(styles).toMatch(
-    /#__next\{[^}]*background-color:var\(--color-background\);[^}]*min-height:100vh;[^}]*min-height:100dvh;/,
-  );
-});
-
 it('defines the dimmed page color from the page color and 50% black', () => {
   expect(css()).toContain(
     '--color-dimmed:color-mix(insrgb,var(--color-background)50%,black);',
   );
 });
 
-it('paints the body with the dimmed color only while the phone menu is open', () => {
+it('does not change the body color for the phone menu', () => {
   const styles = css();
-  const rule =
-    "html[data-menu-open='true']body{background-color:var(--color-dimmed);}";
-  const phone = styles.split('@media(max-width:1200px){')[1] ?? '';
-  expect(phone).toContain(rule);
-  expect(styles.replace(phone, '')).not.toContain(rule);
+  expect(styles).not.toContain('data-menu-open');
+  expect(styles).not.toContain('#__next{');
 });

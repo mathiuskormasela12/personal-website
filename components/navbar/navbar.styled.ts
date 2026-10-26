@@ -2,7 +2,11 @@
 // import all modules
 import Link from 'next/link';
 import styled from 'styled-components';
-import { INavbarCollapesProps, INavItemsProps } from '../../interfaces';
+import {
+  IEdgeBarProps,
+  INavbarCollapesProps,
+  INavItemsProps,
+} from '../../interfaces';
 import { Colors } from '../../themes';
 import { Button as GhostButton } from '../themetoggle/themetoggle.styled';
 
@@ -35,6 +39,22 @@ export const NavHero = styled.div<INavbarCollapesProps>`
 
       return '';
     }}
+  }
+`;
+
+export const EdgeBar = styled.div<IEdgeBarProps>`
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  ${({ side }) => (side === 'left' ? 'left: 0;' : 'right: 0;')}
+  width: 2px;
+  z-index: 4;
+
+  @media (max-width: 1200px) and (orientation: landscape) {
+    display: block;
+    background: ${({ toggle }) =>
+      toggle ? 'var(--color-dimmed)' : 'var(--color-background)'};
   }
 `;
 

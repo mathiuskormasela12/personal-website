@@ -51,18 +51,6 @@ export const GlobalStyles = createGlobalStyle`
 		padding-right: var(--safe-right);
 	}
 
-	#__next {
-		background-color: var(--color-background);
-		min-height: 100vh;
-		min-height: 100dvh;
-	}
-
-	@media (max-width: 1200px) {
-		html[data-menu-open='true'] body {
-			background-color: var(--color-dimmed);
-		}
-	}
-
 	html {
 		font-size: 16px;
 		font-family: ${Fonts.base};
