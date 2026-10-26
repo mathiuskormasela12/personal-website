@@ -299,27 +299,95 @@ describe('the dark layer behind the open phone menu', () => {
   });
 });
 
-describe('the page color beside the open phone menu', () => {
-  const root = () => document.documentElement;
+describe('the edge bars that set the strip color in Chrome on iPhone', () => {
+  const bars = () =>
+    Array.from(document.querySelectorAll('[data-edge-bar]')) as HTMLElement[];
+  const rulesFor = (element: Element): string[] =>
+    Array.from(document.styleSheets)
+      .flatMap((sheet) => Array.from(sheet.cssRules))
+      .flatMap((rule) =>
+        rule instanceof CSSMediaRule
+          ? Array.from(rule.cssRules).map(
+              (inner) =>
+                `@${rule.media.mediaText.replace(/\s/g, '')}{${inner.cssText.replace(/\s/g, '')}}`,
+            )
+          : [rule.cssText.replace(/\s/g, '')],
+      )
+      .filter((rule) =>
+        Array.from(element.classList).some((name) =>
+          rule.replace(/^@[^{]*\{/, '').startsWith(`.${name}{`),
+        ),
+      );
 
-  afterEach(() => {
-    root().removeAttribute('data-menu-open');
-  });
-
-  it('tells the page that the menu is open and clears it when it closes', async () => {
+  it('draws one bar on the left edge and one on the right edge', () => {
     renderWithStore(<Navbar />);
-    expect(root()).not.toHaveAttribute('data-menu-open');
-    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
-    expect(root()).toHaveAttribute('data-menu-open', 'true');
-    await userEvent.click(screen.getByRole('button', { name: 'Close menu' }));
-    expect(root()).not.toHaveAttribute('data-menu-open');
+    expect(bars().map((bar) => bar.getAttribute('data-edge-bar'))).toEqual([
+      'left',
+      'right',
+    ]);
   });
 
-  it('clears the mark when the navbar leaves the page while the menu is open', async () => {
-    const { unmount } = renderWithStore(<Navbar />);
+  it('keeps each bar fixed to its screen edge, 2px wide, above the menu', () => {
+    renderWithStore(<Navbar />);
+    const [left, right] = bars();
+    const leftRule = rulesFor(left).join('');
+    const rightRule = rulesFor(right).join('');
+    expect(leftRule).toContain('position:fixed;');
+    expect(leftRule).toContain('left:0;');
+    expect(leftRule).toContain('top:0;');
+    expect(leftRule).toContain('bottom:0;');
+    expect(leftRule).toContain('width:2px;');
+    expect(leftRule).toContain('z-index:4;');
+    expect(rightRule).toContain('right:0;');
+    expect(rightRule).not.toContain('left:0;');
+  });
+
+  it('shows the bars only on phones and tablets held sideways', () => {
+    renderWithStore(<Navbar />);
+    const [left] = bars();
+    const rules = rulesFor(left);
+    expect(rules.find((rule) => rule.startsWith('.'))).toContain(
+      'display:none;',
+    );
+    expect(
+      rules.find((rule) =>
+        rule.startsWith('@(max-width:1200px)and(orientation:landscape){'),
+      ),
+    ).toContain('display:block;');
+  });
+
+  it('uses the page color when the menu is closed and the dimmed color when it is open', async () => {
+    renderWithStore(<Navbar />);
+    const landscape = (element: Element) =>
+      rulesFor(element)
+        .filter((rule) =>
+          rule.startsWith('@(max-width:1200px)and(orientation:landscape){'),
+        )
+        .join('');
+    expect(landscape(bars()[0])).toContain(
+      'background:var(--color-background);',
+    );
     await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
-    expect(root()).toHaveAttribute('data-menu-open', 'true');
-    unmount();
-    expect(root()).not.toHaveAttribute('data-menu-open');
+    expect(landscape(bars()[0])).toContain('background:var(--color-dimmed);');
+    expect(landscape(bars()[1])).toContain('background:var(--color-dimmed);');
+    await userEvent.click(screen.getByRole('button', { name: 'Close menu' }));
+    expect(landscape(bars()[0])).toContain(
+      'background:var(--color-background);',
+    );
+  });
+
+  it('lets the bars be tapped like the test page did, and keeps them out of the accessibility tree', () => {
+    renderWithStore(<Navbar />);
+    expect(bars()).toHaveLength(2);
+    bars().forEach((bar) => {
+      expect(rulesFor(bar).join('')).not.toContain('pointer-events:none');
+      expect(bar).toHaveAttribute('aria-hidden', 'true');
+    });
+  });
+
+  it('does not change the body color while the menu is open any more', async () => {
+    renderWithStore(<Navbar />);
+    await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    expect(document.documentElement).not.toHaveAttribute('data-menu-open');
   });
 });

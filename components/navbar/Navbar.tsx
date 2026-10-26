@@ -1,6 +1,6 @@
 // ========== Navbar
 // import modules
-import React, { useEffect, useId, useState } from 'react';
+import React, { useId, useState } from 'react';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -23,12 +23,6 @@ export const Navbar: NextPage = () => {
   const router = useRouter();
   const [toggle, setToggle] = useState(false);
   const menuId = useId();
-
-  useEffect(() => {
-    if (!toggle) return undefined;
-    document.documentElement.setAttribute('data-menu-open', 'true');
-    return () => document.documentElement.removeAttribute('data-menu-open');
-  }, [toggle]);
   const { theme, toggleTheme } = useTheme();
   const accessToken: string = useSelector(
     (current: IGlobalStates) => current.auth.accessToken,
@@ -93,54 +87,68 @@ export const Navbar: NextPage = () => {
   };
 
   return (
-    <Styled.NavHero toggle={toggle}>
-      <Styled.Nav>
-        <Styled.NavContainer>
-          <Styled.NavBrand>
-            <Styled.Brand as={Link} href="/">
-              {profile.name}
-            </Styled.Brand>
-          </Styled.NavBrand>
-          <Styled.NavList id={menuId} toggle={toggle}>
-            {navItems.map((item) => (
-              <Styled.NavItems
-                key={item.id.toString()}
-                active={router.pathname === item.path}
-              >
-                <Styled.NavLink href={item.path}>{item.text}</Styled.NavLink>
-              </Styled.NavItems>
-            ))}
-            {isAdmin && (
-              <Styled.NavItems active={isAdminPage}>
-                <NavDropdown label="Admin" items={adminMenu} />
-              </Styled.NavItems>
-            )}
-          </Styled.NavList>
-          <Styled.NavSide>
-            <ThemeToggle theme={theme} onToggle={toggleTheme} />
-            <Styled.HireSlot>
-              <Button type="button" size="md" onClick={handleButton}>
-                {accessToken !== '' && refreshToken !== '' && id > 0
-                  ? 'Action'
-                  : 'Hire Me'}
-              </Button>
-            </Styled.HireSlot>
-            <Styled.MenuButton
-              type="button"
-              aria-label={toggle ? 'Close menu' : 'Open menu'}
-              aria-expanded={toggle}
-              aria-controls={menuId}
-              onClick={() => setToggle((current) => !current)}
-            >
-              {toggle ? (
-                <FiX size={22} aria-hidden />
-              ) : (
-                <FiMenu size={22} aria-hidden />
+    <>
+      <Styled.EdgeBar
+        side="left"
+        toggle={toggle}
+        data-edge-bar="left"
+        aria-hidden
+      />
+      <Styled.EdgeBar
+        side="right"
+        toggle={toggle}
+        data-edge-bar="right"
+        aria-hidden
+      />
+      <Styled.NavHero toggle={toggle}>
+        <Styled.Nav>
+          <Styled.NavContainer>
+            <Styled.NavBrand>
+              <Styled.Brand as={Link} href="/">
+                {profile.name}
+              </Styled.Brand>
+            </Styled.NavBrand>
+            <Styled.NavList id={menuId} toggle={toggle}>
+              {navItems.map((item) => (
+                <Styled.NavItems
+                  key={item.id.toString()}
+                  active={router.pathname === item.path}
+                >
+                  <Styled.NavLink href={item.path}>{item.text}</Styled.NavLink>
+                </Styled.NavItems>
+              ))}
+              {isAdmin && (
+                <Styled.NavItems active={isAdminPage}>
+                  <NavDropdown label="Admin" items={adminMenu} />
+                </Styled.NavItems>
               )}
-            </Styled.MenuButton>
-          </Styled.NavSide>
-        </Styled.NavContainer>
-      </Styled.Nav>
-    </Styled.NavHero>
+            </Styled.NavList>
+            <Styled.NavSide>
+              <ThemeToggle theme={theme} onToggle={toggleTheme} />
+              <Styled.HireSlot>
+                <Button type="button" size="md" onClick={handleButton}>
+                  {accessToken !== '' && refreshToken !== '' && id > 0
+                    ? 'Action'
+                    : 'Hire Me'}
+                </Button>
+              </Styled.HireSlot>
+              <Styled.MenuButton
+                type="button"
+                aria-label={toggle ? 'Close menu' : 'Open menu'}
+                aria-expanded={toggle}
+                aria-controls={menuId}
+                onClick={() => setToggle((current) => !current)}
+              >
+                {toggle ? (
+                  <FiX size={22} aria-hidden />
+                ) : (
+                  <FiMenu size={22} aria-hidden />
+                )}
+              </Styled.MenuButton>
+            </Styled.NavSide>
+          </Styled.NavContainer>
+        </Styled.Nav>
+      </Styled.NavHero>
+    </>
   );
 };
