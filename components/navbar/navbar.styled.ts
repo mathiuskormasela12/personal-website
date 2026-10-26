@@ -7,6 +7,7 @@ import {
   INavbarCollapesProps,
   INavItemsProps,
 } from '../../interfaces';
+import { LANDSCAPE_TOUCH_MEDIA } from '../../constants';
 import { Colors } from '../../themes';
 import { Button as GhostButton } from '../themetoggle/themetoggle.styled';
 
@@ -40,6 +41,23 @@ export const NavHero = styled.div<INavbarCollapesProps>`
       return '';
     }}
   }
+
+  @media ${LANDSCAPE_TOUCH_MEDIA} {
+    ${({ toggle }) =>
+      toggle
+        ? `
+          &::before {
+            left: 0;
+            right: 0;
+            background: var(--color-background);
+          }
+
+          & > nav {
+            border-bottom-color: transparent;
+          }
+        `
+        : ''}
+  }
 `;
 
 export const EdgeBar = styled.div<IEdgeBarProps>`
@@ -51,10 +69,9 @@ export const EdgeBar = styled.div<IEdgeBarProps>`
   width: 24px;
   z-index: 4;
 
-  @media (max-width: 1200px) and (orientation: landscape) and (pointer: coarse) {
+  @media ${LANDSCAPE_TOUCH_MEDIA} {
     display: block;
-    background: ${({ toggle }) =>
-      toggle ? 'var(--color-dimmed)' : 'var(--color-background)'};
+    background: var(--color-background);
   }
 `;
 

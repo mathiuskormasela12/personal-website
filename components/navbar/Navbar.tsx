@@ -88,18 +88,8 @@ export const Navbar: NextPage = () => {
 
   return (
     <>
-      <Styled.EdgeBar
-        side="left"
-        toggle={toggle}
-        data-edge-bar="left"
-        aria-hidden
-      />
-      <Styled.EdgeBar
-        side="right"
-        toggle={toggle}
-        data-edge-bar="right"
-        aria-hidden
-      />
+      <Styled.EdgeBar side="left" data-edge-bar="left" aria-hidden />
+      <Styled.EdgeBar side="right" data-edge-bar="right" aria-hidden />
       <Styled.NavHero toggle={toggle}>
         <Styled.Nav>
           <Styled.NavContainer>
