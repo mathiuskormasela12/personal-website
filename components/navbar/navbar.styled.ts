@@ -10,6 +10,7 @@ import {
 import { LANDSCAPE_TOUCH_MEDIA } from '../../constants';
 import { Colors } from '../../themes';
 import { Button as GhostButton } from '../themetoggle/themetoggle.styled';
+import { CHEVRON_GAP, CHEVRON_SIZE } from '../navdropdown/navdropdown.styled';
 
 export const NavHero = styled.div<INavbarCollapesProps>`
   left: 0;
@@ -172,7 +173,10 @@ export const NavItems = styled.li<INavItemsProps>`
     &::after {
       content: '';
       position: absolute;
-      left: 50%;
+      left: ${({ withChevron }) =>
+        withChevron
+          ? `calc(50% - (${CHEVRON_SIZE}px + ${CHEVRON_GAP}) / 2)`
+          : '50%'};
       bottom: 0.3rem;
       width: 1rem;
       height: 2px;

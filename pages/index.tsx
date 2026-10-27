@@ -14,18 +14,20 @@ import {
   Container,
   Card,
   HeroContent,
+  HeroSkeleton,
   SkillsSection,
   Footer,
   Pagination,
   Placeholder,
 } from '../components';
 import { setProjects } from '../redux/actions';
-import { IGlobalStates, IHeroPageProps, IProjects } from '../interfaces';
-import { getHeroServerSideProps } from '../helpers';
+import { IGlobalStates, IProjects } from '../interfaces';
+import { useHero } from '../hooks/useHero';
 import { useProfile } from '../hooks/useProfile';
 
-const Home: NextPage<IHeroPageProps> = ({ hero }) => {
+const Home: NextPage = () => {
   const router = useRouter();
+  const hero = useHero();
   const dispatch = useDispatch();
   const profile = useProfile();
   const projects: IProjects[] = useSelector(
@@ -50,7 +52,7 @@ const Home: NextPage<IHeroPageProps> = ({ hero }) => {
           <Container>
             <Styled.HeroHomeRow>
               <Styled.HeroHomeWelcomeContent>
-                <HeroContent hero={hero} />
+                {hero ? <HeroContent hero={hero} /> : <HeroSkeleton />}
               </Styled.HeroHomeWelcomeContent>
               <Styled.IllustrationFrame>
                 <Image
@@ -113,7 +115,5 @@ const Home: NextPage<IHeroPageProps> = ({ hero }) => {
     </Fragment>
   );
 };
-
-export const getServerSideProps = getHeroServerSideProps;
 
 export default Home;

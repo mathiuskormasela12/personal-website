@@ -2,15 +2,19 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import Services from '../../services';
-import Home, { getServerSideProps } from '../../pages/index';
-import { getHeroServerSideProps } from '../../helpers';
+import * as HomePage from '../../pages/index';
+import { setCachedHero } from '../../hooks/useHero';
 import { setCachedProfile } from '../../hooks/useProfile';
 import { getMediaRuleStyle, renderWithStore } from '../test-utils';
 
 jest.mock('next/router', () => ({ useRouter: jest.fn() }));
 jest.mock('../../services', () => ({
   __esModule: true,
-  default: { getAllProjects: jest.fn(), getProfile: jest.fn() },
+  default: {
+    getAllProjects: jest.fn(),
+    getProfile: jest.fn(),
+    getHero: jest.fn(),
+  },
 }));
 
 const hero = {
@@ -22,10 +26,16 @@ const hero = {
   buttonUrl: 'https://github.com/mathius',
 };
 
+const Home = HomePage.default;
 const push = jest.fn();
 
 beforeEach(() => {
   setCachedProfile(null);
+  setCachedHero(null);
+  (Services.getHero as jest.Mock).mockReset();
+  (Services.getHero as jest.Mock).mockResolvedValue({
+    data: { results: hero },
+  });
   (Services.getProfile as jest.Mock).mockResolvedValue({
     data: {
       results: {
@@ -60,16 +70,16 @@ beforeEach(() => {
 });
 
 it('loads the requested page and renders project cards', async () => {
-  renderWithStore(<Home hero={hero} />);
+  renderWithStore(<Home />);
   expect(await screen.findByText('Portfolio API')).toBeInTheDocument();
   expect(Services.getAllProjects).toHaveBeenCalledWith({ page: 2, limit: 6 });
 });
 
-it('shows the hero texts from its props', async () => {
-  renderWithStore(<Home hero={hero} />);
-  expect(screen.getAllByRole('heading', { level: 1 })[0]).toHaveTextContent(
-    /^Hello, a Mobile Developer!$/,
-  );
+it('shows the hero texts from the API', async () => {
+  renderWithStore(<Home />);
+  expect(
+    (await screen.findAllByRole('heading', { level: 1 }))[0],
+  ).toHaveTextContent(/^Hello, a Mobile Developer!$/);
   expect(screen.getByText('a Mobile Developer')).toBeInTheDocument();
   expect(
     screen.getByText('I build apps for iOS and Android.'),
@@ -78,19 +88,43 @@ it('shows the hero texts from its props', async () => {
   await screen.findByText('Portfolio API');
 });
 
+it('shows a skeleton while the hero texts are loading on the first visit', async () => {
+  (Services.getHero as jest.Mock).mockReturnValue(new Promise(() => {}));
+  renderWithStore(<Home />);
+  expect(screen.getByRole('status', { name: 'Loading' })).toBeInTheDocument();
+  expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
+  expect(screen.getByAltText('Hero Image')).toBeInTheDocument();
+  await screen.findByText('Portfolio API');
+});
+
+it('shows the hero at once on the next visit, without waiting', async () => {
+  setCachedHero(hero);
+  renderWithStore(<Home />);
+  expect(screen.getAllByRole('heading', { level: 1 })[0]).toHaveTextContent(
+    /^Hello, a Mobile Developer!$/,
+  );
+  expect(
+    screen.queryByRole('status', { name: 'Loading' }),
+  ).not.toBeInTheDocument();
+  expect(Services.getHero).not.toHaveBeenCalled();
+  await screen.findByText('Portfolio API');
+});
+
 it('opens the hero button link', async () => {
-  renderWithStore(<Home hero={hero} />);
-  await userEvent.click(screen.getByRole('button', { name: 'My GitHub' }));
+  renderWithStore(<Home />);
+  await userEvent.click(
+    await screen.findByRole('button', { name: 'My GitHub' }),
+  );
   expect(push).toHaveBeenCalledWith('https://github.com/mathius');
   await screen.findByText('Portfolio API');
 });
 
-it('loads the hero texts on the server', () => {
-  expect(getServerSideProps).toBe(getHeroServerSideProps);
+it('opens without waiting for the server, so page changes are instant', () => {
+  expect(HomePage).not.toHaveProperty('getServerSideProps');
 });
 
 it('shows the skills from the profile right under the hero', async () => {
-  const { container } = renderWithStore(<Home hero={hero} />);
+  const { container } = renderWithStore(<Home />);
   const skills = await screen.findByRole('region', {
     name: 'What I build with',
   });
@@ -98,7 +132,7 @@ it('shows the skills from the profile right under the hero', async () => {
   expect(screen.getByText('Docker')).toBeInTheDocument();
   expect(skills.closest('#skills')).not.toBeNull();
 
-  const heroHeading = screen.getAllByRole('heading', { level: 1 })[0];
+  const heroHeading = (await screen.findAllByRole('heading', { level: 1 }))[0];
   const projects = container.querySelector('#projects') as Node;
   expect(
     heroHeading.compareDocumentPosition(skills) &
@@ -111,13 +145,13 @@ it('shows the skills from the profile right under the hero', async () => {
 });
 
 it('drops the floating balloons and triangles', async () => {
-  renderWithStore(<Home hero={hero} />);
+  renderWithStore(<Home />);
   await screen.findByText('Portfolio API');
   expect(screen.queryAllByAltText('Balloon')).toHaveLength(0);
 });
 
 it('shows the hero picture inside a soft rounded frame', async () => {
-  renderWithStore(<Home hero={hero} />);
+  renderWithStore(<Home />);
   const frame = screen.getByAltText('Hero Image').parentElement;
   expect(frame).toHaveStyle({
     backgroundColor: 'var(--color-soft)',
@@ -127,7 +161,7 @@ it('shows the hero picture inside a soft rounded frame', async () => {
 });
 
 it('separates the skills and the projects with a thin line', async () => {
-  const { container } = renderWithStore(<Home hero={hero} />);
+  const { container } = renderWithStore(<Home />);
   await screen.findByText('Portfolio API');
   ['#skills', '#projects'].forEach((id) =>
     expect(container.querySelector(id)).toHaveStyle({
@@ -138,7 +172,7 @@ it('separates the skills and the projects with a thin line', async () => {
 });
 
 it('lays the project cards out in a grid', async () => {
-  renderWithStore(<Home hero={hero} />);
+  renderWithStore(<Home />);
   const card = await screen.findByText('Portfolio API');
   const grid = card.closest('#projects')?.querySelector('[data-grid]');
   expect(grid).toHaveStyle({ display: 'grid' });
@@ -151,7 +185,7 @@ it('lays the project cards out in a grid', async () => {
 
 it('keeps the hero picture on the dark frame in dark mode', async () => {
   document.documentElement.dataset.theme = 'dark';
-  renderWithStore(<Home hero={hero} />);
+  renderWithStore(<Home />);
   const frame = screen.getByAltText('Hero Image').parentElement as Element;
   expect(getComputedStyle(frame).backgroundColor).toBe('var(--color-soft)');
   document.documentElement.dataset.theme = 'light';

@@ -2,6 +2,10 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { Colors } from '../../themes';
 
+export const CHEVRON_SIZE = 15;
+
+export const CHEVRON_GAP = '0.4rem';
+
 interface IOpenProps {
   $open: boolean;
 }
@@ -19,7 +23,7 @@ export const Trigger = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  gap: ${CHEVRON_GAP};
   padding: 0.55rem 0.9rem;
   border: none;
   background: transparent;

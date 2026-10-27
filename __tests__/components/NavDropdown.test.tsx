@@ -2,6 +2,10 @@ import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { FiEdit3, FiLogOut } from 'react-icons/fi';
 import { NavDropdown } from '../../components';
+import {
+  CHEVRON_GAP,
+  CHEVRON_SIZE,
+} from '../../components/navdropdown/navdropdown.styled';
 import { getMediaRuleStyle, renderWithStore } from '../test-utils';
 
 const items = [
@@ -127,4 +131,15 @@ it('lets the phone menu box and the line above Logout reach the page edges', asy
   expect(flat('margin-right')).toBe('calc(-1*var(--safe-right))');
   expect(flat('padding-left')).toBe('');
   expect(flat('padding-right')).toBe('');
+});
+
+it('uses the shared chevron size and gap, so the navbar can center the underline', () => {
+  renderDropdown();
+  expect(CHEVRON_SIZE).toBe(15);
+  expect(CHEVRON_GAP).toBe('0.4rem');
+  expect(trigger().querySelector('svg')).toHaveAttribute(
+    'width',
+    String(CHEVRON_SIZE),
+  );
+  expect(trigger()).toHaveStyle({ gap: CHEVRON_GAP });
 });

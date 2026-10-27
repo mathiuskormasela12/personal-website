@@ -108,7 +108,7 @@ export const Navbar: NextPage = () => {
                 </Styled.NavItems>
               ))}
               {isAdmin && (
-                <Styled.NavItems active={isAdminPage}>
+                <Styled.NavItems active={isAdminPage} withChevron>
                   <NavDropdown label="Admin" items={adminMenu} />
                 </Styled.NavItems>
               )}

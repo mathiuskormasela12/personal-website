@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import Services from '../../services';
-import HeroEdit, { getServerSideProps } from '../../pages/hero-edit';
+import * as HeroEditPage from '../../pages/hero-edit';
 import { HERO_DEFAULTS } from '../../constants';
-import { getHeroServerSideProps } from '../../helpers';
+import { loadHero, setCachedHero } from '../../hooks/useHero';
 import { getMediaRuleStyle, renderWithStore } from '../test-utils';
 
 jest.mock('next/router', () => ({ useRouter: jest.fn() }));
@@ -15,9 +15,10 @@ jest.mock('sweetalert2', () => ({
 }));
 jest.mock('../../services', () => ({
   __esModule: true,
-  default: { updateHero: jest.fn() },
+  default: { updateHero: jest.fn(), getHero: jest.fn() },
 }));
 
+const HeroEdit = HeroEditPage.default;
 const loggedIn = { accessToken: 'a', refreshToken: 'r' };
 const push = jest.fn();
 
@@ -30,8 +31,11 @@ const fields = {
   'Button Link': HERO_DEFAULTS.buttonUrl,
 };
 
-const renderPage = (auth = loggedIn) =>
-  renderWithStore(<HeroEdit hero={HERO_DEFAULTS} />, { auth });
+const renderPage = async (auth = loggedIn) => {
+  const result = renderWithStore(<HeroEdit />, { auth });
+  await screen.findByLabelText('Greeting');
+  return result;
+};
 
 const saveButton = () => screen.getByRole('button', { name: 'Save' });
 
@@ -44,6 +48,11 @@ const replaceText = async (label: string, value: string) => {
 };
 
 beforeEach(() => {
+  setCachedHero(null);
+  (Services.getHero as jest.Mock).mockReset();
+  (Services.getHero as jest.Mock).mockResolvedValue({
+    data: { results: HERO_DEFAULTS },
+  });
   push.mockClear();
   (Swal.fire as jest.Mock).mockReset();
   (Services.updateHero as jest.Mock).mockReset();
@@ -54,22 +63,69 @@ beforeEach(() => {
   });
 });
 
-it('loads the hero texts on the server', () => {
-  expect(getServerSideProps).toBe(getHeroServerSideProps);
+it('opens without waiting for the server, so page changes are instant', () => {
+  expect(HeroEditPage).not.toHaveProperty('getServerSideProps');
+});
+
+it('shows a skeleton of the form and the preview while the hero is loading', () => {
+  (Services.getHero as jest.Mock).mockReturnValue(new Promise(() => {}));
+  renderWithStore(<HeroEdit />, { auth: loggedIn });
+  expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+    'Edit Hero',
+  );
+  expect(screen.getAllByRole('status', { name: 'Loading' })).toHaveLength(2);
+  expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+  expect(
+    screen.queryByRole('button', { name: 'Save' }),
+  ).not.toBeInTheDocument();
+  expect(
+    within(screen.getByRole('region', { name: 'Preview' })).getByRole(
+      'status',
+      { name: 'Loading' },
+    ),
+  ).toBeInTheDocument();
+});
+
+it('fills the form with the saved hero from the API', async () => {
+  (Services.getHero as jest.Mock).mockResolvedValue({
+    data: {
+      results: { ...HERO_DEFAULTS, titleHighlight: 'a Mobile Developer' },
+    },
+  });
+  await renderPage();
+  expect(screen.getByLabelText('Highlighted Text')).toHaveValue(
+    'a Mobile Developer',
+  );
+  expect(
+    screen.queryByRole('status', { name: 'Loading' }),
+  ).not.toBeInTheDocument();
+});
+
+it('remembers the saved texts, so the home page shows them without a new request', async () => {
+  const saved = { ...HERO_DEFAULTS, titleHighlight: 'a Mobile Developer' };
+  (Services.updateHero as jest.Mock).mockResolvedValue({
+    data: { message: 'The hero texts have been updated', results: saved },
+  });
+  await renderPage();
+  await replaceText('Highlighted Text', 'a Mobile Developer');
+  await userEvent.click(saveButton());
+  await waitFor(() => expect(Swal.fire).toHaveBeenCalledTimes(1));
+  await expect(loadHero()).resolves.toEqual(saved);
+  expect(Services.getHero).toHaveBeenCalledTimes(1);
 });
 
 it('sends visitors who are not logged in to the login page', async () => {
-  renderPage({ accessToken: '', refreshToken: '' });
+  await renderPage({ accessToken: '', refreshToken: '' });
   await waitFor(() => expect(push).toHaveBeenCalledWith('/login'));
 });
 
-it('does not redirect a logged-in owner', () => {
-  renderPage();
+it('does not redirect a logged-in owner', async () => {
+  await renderPage();
   expect(push).not.toHaveBeenCalled();
 });
 
-it('fills every field with the current hero texts', () => {
-  renderPage();
+it('fills every field with the current hero texts', async () => {
+  await renderPage();
   Object.entries(fields).forEach(([label, value]) =>
     expect(screen.getByLabelText(label)).toHaveValue(value),
   );
@@ -78,7 +134,7 @@ it('fills every field with the current hero texts', () => {
 });
 
 it('shows the validation message and blocks saving while a field is invalid', async () => {
-  renderPage();
+  await renderPage();
   await replaceText('Greeting', '');
   expect(screen.getByText("The greeting can't be empty")).toBeInTheDocument();
   expect(saveButton()).toBeDisabled();
@@ -91,7 +147,7 @@ it('shows the validation message and blocks saving while a field is invalid', as
 });
 
 it('shows the validation message for the subtitle textarea', async () => {
-  renderPage();
+  await renderPage();
   await replaceText('Subtitle', '');
   expect(screen.getByText("The subtitle can't be empty")).toBeInTheDocument();
 });
@@ -100,7 +156,7 @@ it('saves the edited texts and goes back home after the success alert', async ()
   (Services.updateHero as jest.Mock).mockResolvedValue({
     data: { message: 'The hero texts have been updated' },
   });
-  renderPage();
+  await renderPage();
   await replaceText('Highlighted Text', 'a Mobile Developer');
   await replaceText('Button Link', 'https://github.com/mathius');
   await userEvent.click(saveButton());
@@ -127,7 +183,7 @@ it('shows the API error and lets the owner try again', async () => {
   (Services.updateHero as jest.Mock).mockRejectedValue({
     message: 'The button link should be a http(s) URL',
   });
-  renderPage();
+  await renderPage();
   await userEvent.click(saveButton());
 
   await waitFor(() =>
@@ -143,7 +199,7 @@ it('shows the API error and lets the owner try again', async () => {
 
 it('shows a generic message when the error has none', async () => {
   (Services.updateHero as jest.Mock).mockRejectedValue(undefined);
-  renderPage();
+  await renderPage();
   await userEvent.click(saveButton());
   await waitFor(() =>
     expect(Swal.fire).toHaveBeenCalledWith({
@@ -156,7 +212,7 @@ it('shows a generic message when the error has none', async () => {
 
 it('disables the button while saving', async () => {
   (Services.updateHero as jest.Mock).mockReturnValue(new Promise(() => {}));
-  renderPage();
+  await renderPage();
   await userEvent.click(saveButton());
   expect(screen.getByRole('button', { name: 'Saving...' })).toBeDisabled();
 });
@@ -164,8 +220,8 @@ it('disables the button while saving', async () => {
 describe('live preview', () => {
   const preview = () => screen.getByRole('region', { name: 'Preview' });
 
-  it('shows the current hero texts like the home page does', () => {
-    renderPage();
+  it('shows the current hero texts like the home page does', async () => {
+    await renderPage();
     expect(
       within(preview()).getByRole('heading', { level: 2 }),
     ).toHaveTextContent(/^Hi, I'm a Fullstack Developer\.$/);
@@ -174,8 +230,8 @@ describe('live preview', () => {
     ).toBeInTheDocument();
   });
 
-  it('keeps a single h1 on the page', () => {
-    renderPage();
+  it('keeps a single h1 on the page', async () => {
+    await renderPage();
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
       'Edit Hero',
@@ -183,7 +239,7 @@ describe('live preview', () => {
   });
 
   it('updates while the owner types', async () => {
-    renderPage();
+    await renderPage();
     await replaceText('Greeting', 'Hello,');
     await replaceText('Highlighted Text', 'a Mobile Developer');
     await replaceText('Ending', '!');
@@ -200,7 +256,7 @@ describe('live preview', () => {
   });
 
   it('disables the preview button and shows the link that will open', async () => {
-    renderPage();
+    await renderPage();
     expect(
       within(preview()).getByRole('button', { name: 'My Youtube' }),
     ).toBeDisabled();
@@ -211,8 +267,8 @@ describe('live preview', () => {
     ).toBeInTheDocument();
   });
 
-  it('comes after the form so it sits below it on mobile', () => {
-    renderPage();
+  it('comes after the form so it sits below it on mobile', async () => {
+    await renderPage();
     const form = screen.getByLabelText('Greeting').closest('form') as Node;
     expect(
       preview().compareDocumentPosition(form) &
@@ -220,16 +276,16 @@ describe('live preview', () => {
     ).toBeTruthy();
   });
 
-  it('moves to the right of the form and stays visible on desktop', () => {
-    renderPage();
+  it('moves to the right of the form and stays visible on desktop', async () => {
+    await renderPage();
     const style = getMediaRuleStyle(preview(), '(min-width: 1201px)');
     expect(style?.getPropertyValue('order')).toBe('2');
     expect(style?.getPropertyValue('position')).toBe('sticky');
   });
 });
 
-it('shows the preview on a calm card that follows the theme', () => {
-  renderPage();
+it('shows the preview on a calm card that follows the theme', async () => {
+  await renderPage();
   expect(screen.getByRole('region', { name: 'Preview' })).toHaveStyle({
     backgroundColor: 'var(--color-surface)',
     borderTopColor: 'var(--color-line)',

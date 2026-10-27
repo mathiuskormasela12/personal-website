@@ -28,7 +28,7 @@ export const NavDropdown: React.FC<INavDropdownProps> = ({ label, items }) => {
       >
         {label}
         <Styled.Chevron $open={isOpen} aria-hidden>
-          <FiChevronDown size={15} />
+          <FiChevronDown size={Styled.CHEVRON_SIZE} />
         </Styled.Chevron>
       </Styled.Trigger>
       {isOpen && (

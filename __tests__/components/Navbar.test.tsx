@@ -3,6 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import { Navbar } from '../../components';
+import {
+  CHEVRON_GAP,
+  CHEVRON_SIZE,
+} from '../../components/navdropdown/navdropdown.styled';
 import { PROFILE_DEFAULTS } from '../../constants';
 import { setCachedProfile } from '../../hooks/useProfile';
 import Services from '../../services';
@@ -451,5 +455,44 @@ describe('the full-screen menu on touch screens held sideways', () => {
     renderWithStore(<Navbar />);
     await userEvent.click(screen.getByRole('button', { name: 'Open menu' }));
     expect(navHeroRules()).toContain('background:rgba(0,0,0,0.5)');
+  });
+});
+
+describe('the underline under the active desktop item', () => {
+  const underlineLeft = (item: Element) =>
+    Array.from(document.styleSheets)
+      .flatMap((sheet) => Array.from(sheet.cssRules))
+      .filter(
+        (rule): rule is CSSMediaRule =>
+          rule instanceof CSSMediaRule &&
+          rule.media.mediaText.replace(/\s/g, '') === '(min-width:1201px)',
+      )
+      .flatMap((rule) => Array.from(rule.cssRules))
+      .filter(
+        (rule): rule is CSSStyleRule =>
+          rule instanceof CSSStyleRule &&
+          Array.from(item.classList).some(
+            (name) => rule.selectorText === `.${name}::after`,
+          ),
+      )
+      .map((rule) => rule.style.getPropertyValue('left').replace(/\s/g, ''))
+      .pop();
+
+  it('sits under the middle of the word Admin, not under the word and the chevron', () => {
+    renderWithStore(<Navbar />, {
+      auth: { accessToken: 'a', refreshToken: 'r' },
+    });
+    const admin = screen.getByRole('button', { name: 'Admin' }).closest('li');
+    expect(underlineLeft(admin as Element)).toBe(
+      `calc(50%-(${CHEVRON_SIZE}px+${CHEVRON_GAP})/2)`,
+    );
+  });
+
+  it('stays in the middle for the items without a chevron', () => {
+    renderWithStore(<Navbar />, {
+      auth: { accessToken: 'a', refreshToken: 'r' },
+    });
+    const home = screen.getByRole('link', { name: 'Home' }).closest('li');
+    expect(underlineLeft(home as Element)).toBe('50%');
   });
 });

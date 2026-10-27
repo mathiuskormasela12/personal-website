@@ -13,14 +13,13 @@ import {
   LongText,
   Button,
   HeroContent,
+  HeroSkeleton,
+  HeroFormSkeleton,
 } from '../components';
 import Services from '../services';
-import {
-  getErrorMessage,
-  getHeroServerSideProps,
-  validateHero,
-} from '../helpers';
-import { IGlobalStates, IHero, IHeroPageProps } from '../interfaces';
+import { getErrorMessage, validateHero } from '../helpers';
+import { loadHero, setCachedHero } from '../hooks/useHero';
+import { IGlobalStates, IHero } from '../interfaces';
 
 interface IHeroFormField {
   name: keyof IHero;
@@ -70,8 +69,8 @@ const HERO_FORM_FIELDS: IHeroFormField[] = [
   },
 ];
 
-const HeroEdit: NextPage<IHeroPageProps> = ({ hero }) => {
-  const [values, setValues] = useState<IHero>(hero);
+const HeroEdit: NextPage = () => {
+  const [values, setValues] = useState<IHero | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const accessToken: string = useSelector(
@@ -89,22 +88,42 @@ const HeroEdit: NextPage<IHeroPageProps> = ({ hero }) => {
     }
   }, [isLoggedOut, router]);
 
-  const errors = validateHero(values);
+  useEffect(() => {
+    let isMounted = true;
+
+    loadHero().then((hero) => {
+      if (isMounted) {
+        setValues(hero);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const errors = values ? validateHero(values) : {};
   const buttonDisabled = loading || Object.keys(errors).length > 0;
 
   const handleChange =
     (name: keyof IHero) =>
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const { value } = event.target;
-      setValues((current) => ({ ...current, [name]: value }));
+      setValues((current) => current && { ...current, [name]: value });
     };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (!values) {
+      return;
+    }
+
     setLoading(true);
 
     try {
       const { data } = await Services.updateHero(values);
+      setCachedHero({ ...values, ...data.results });
 
       Swal.fire({
         title: 'Success',
@@ -138,46 +157,54 @@ const HeroEdit: NextPage<IHeroPageProps> = ({ hero }) => {
           <Styled.HeroEditFlex>
             <Styled.HeroEditFormCol>
               <Styled.HeroCreateAuthTitle>Edit Hero</Styled.HeroCreateAuthTitle>
-              <Styled.HeroCreateAuthForm onSubmit={handleSubmit}>
-                {HERO_FORM_FIELDS.map(
-                  ({ name, id, label, placeholder, multiline }) => {
-                    const FieldComponent = multiline ? LongText : TextField;
+              {values ? (
+                <Styled.HeroCreateAuthForm onSubmit={handleSubmit}>
+                  {HERO_FORM_FIELDS.map(
+                    ({ name, id, label, placeholder, multiline }) => {
+                      const FieldComponent = multiline ? LongText : TextField;
 
-                    return (
-                      <Styled.HeroCreateAuthControl key={name}>
-                        <Styled.HeroCreateAuthLabel htmlFor={id}>
-                          {label}
-                        </Styled.HeroCreateAuthLabel>
-                        <Styled.HeroCreateAuthField>
-                          <FieldComponent
-                            id={id}
-                            placeholder={placeholder}
-                            value={values[name]}
-                            invalidMessage={errors[name]}
-                            onChange={handleChange(name)}
-                          />
-                        </Styled.HeroCreateAuthField>
-                      </Styled.HeroCreateAuthControl>
-                    );
-                  },
-                )}
-                <Styled.HeroCreateAuthControl>
-                  <Button
-                    type="submit"
-                    size="md"
-                    disabled={buttonDisabled}
-                    fluid
-                  >
-                    {loading ? 'Saving...' : 'Save'}
-                  </Button>
-                </Styled.HeroCreateAuthControl>
-              </Styled.HeroCreateAuthForm>
+                      return (
+                        <Styled.HeroCreateAuthControl key={name}>
+                          <Styled.HeroCreateAuthLabel htmlFor={id}>
+                            {label}
+                          </Styled.HeroCreateAuthLabel>
+                          <Styled.HeroCreateAuthField>
+                            <FieldComponent
+                              id={id}
+                              placeholder={placeholder}
+                              value={values[name]}
+                              invalidMessage={errors[name]}
+                              onChange={handleChange(name)}
+                            />
+                          </Styled.HeroCreateAuthField>
+                        </Styled.HeroCreateAuthControl>
+                      );
+                    },
+                  )}
+                  <Styled.HeroCreateAuthControl>
+                    <Button
+                      type="submit"
+                      size="md"
+                      disabled={buttonDisabled}
+                      fluid
+                    >
+                      {loading ? 'Saving...' : 'Save'}
+                    </Button>
+                  </Styled.HeroCreateAuthControl>
+                </Styled.HeroCreateAuthForm>
+              ) : (
+                <HeroFormSkeleton fields={HERO_FORM_FIELDS} />
+              )}
             </Styled.HeroEditFormCol>
             <Styled.HeroEditPreview aria-labelledby="hero-preview-label">
               <Styled.HeroEditPreviewLabel id="hero-preview-label">
                 Preview
               </Styled.HeroEditPreviewLabel>
-              <HeroContent hero={values} preview />
+              {values ? (
+                <HeroContent hero={values} preview />
+              ) : (
+                <HeroSkeleton preview />
+              )}
             </Styled.HeroEditPreview>
           </Styled.HeroEditFlex>
         </Container>
@@ -186,7 +213,5 @@ const HeroEdit: NextPage<IHeroPageProps> = ({ hero }) => {
     </Fragment>
   );
 };
-
-export const getServerSideProps = getHeroServerSideProps;
 
 export default HeroEdit;
