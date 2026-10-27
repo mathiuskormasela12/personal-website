@@ -1,9 +1,7 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 // ========== Project
 // import all modules
 import React, { Fragment, useState, useRef } from 'react';
 import type { NextPage } from 'next';
-import Image from 'next/image';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
@@ -18,10 +16,16 @@ import {
   TextField,
   LongText,
   Button,
+  ProjectContent,
 } from '../components';
+import { usePickedImageUrl } from '../hooks/usePickedImageUrl';
 import { IEvent, IGlobalStates } from '../interfaces';
 import Services from '../services';
-import { generateFormData } from '../helpers';
+import {
+  generateFormData,
+  getErrorMessage,
+  parseTechnologyNames,
+} from '../helpers';
 
 const Project: NextPage = () => {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -43,6 +47,7 @@ const Project: NextPage = () => {
   });
 
   const router = useRouter();
+  const pickedImageUrl = usePickedImageUrl(state.img);
   const accessToken: string = useSelector(
     (states: IGlobalStates) => states.auth.accessToken,
   );
@@ -102,11 +107,16 @@ const Project: NextPage = () => {
             router.push('/');
           },
         });
-      } catch (err: any) {
+      } catch (err) {
+        setState((current) => ({
+          ...current,
+          loading: false,
+        }));
+
         Swal.fire({
           title: 'Failed',
           icon: 'error',
-          text: err.message,
+          text: getErrorMessage(err),
         });
       }
     }
@@ -125,16 +135,6 @@ const Project: NextPage = () => {
             }}
           >
             <Styled.HeroCreateProjectFlex>
-              <Styled.HeroCreateProjectCol>
-                <Styled.IllustrationFrame $paper>
-                  <Image
-                    src="/icons/create-project-img.svg"
-                    width={250}
-                    height={250}
-                    alt="Create Project"
-                  />
-                </Styled.IllustrationFrame>
-              </Styled.HeroCreateProjectCol>
               <Styled.HeroCreateProjectCol>
                 <Styled.HeroCreateProjectTitle>
                   Create a Project
@@ -202,12 +202,31 @@ const Project: NextPage = () => {
                     </Styled.HeroCreateProjectField>
                   </Styled.HeroCreateProjectControl>
                   <Styled.HeroCreateProjectControl>
-                    <Button type="submit" size="md" fluid>
+                    <Button
+                      type="submit"
+                      size="md"
+                      loading={state.loading}
+                      fluid
+                    >
                       Save
                     </Button>
                   </Styled.HeroCreateProjectControl>
                 </Styled.HeroCreateProjectForm>
               </Styled.HeroCreateProjectCol>
+              <Styled.HeroCreateProjectPreviewCol>
+                <Styled.HeroCreateProjectPreview aria-labelledby="project-preview-label">
+                  <Styled.HeroEditPreviewLabel id="project-preview-label">
+                    Preview
+                  </Styled.HeroEditPreviewLabel>
+                  <ProjectContent
+                    title={state.projectName}
+                    description={state.projectDescription}
+                    img={pickedImageUrl}
+                    technologies={parseTechnologyNames(state.technologies)}
+                    preview
+                  />
+                </Styled.HeroCreateProjectPreview>
+              </Styled.HeroCreateProjectPreviewCol>
             </Styled.HeroCreateProjectFlex>
           </Container>
         </Styled.HeroCreateProjectBody>

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { getErrorMessage } from '../helpers';
 import { IGlobalStates, IRegisterBody } from '../interfaces';
 import Services from '../services';
 import * as Styled from '../styles';
@@ -145,7 +146,7 @@ const Register: NextPage = () => {
           router.push('/');
         },
       });
-    } catch (err: any) {
+    } catch (err) {
       setState((currentState) => ({
         ...currentState,
         loading: false,
@@ -154,7 +155,7 @@ const Register: NextPage = () => {
       Swal.fire({
         title: 'Failed',
         icon: 'error',
-        text: err.message,
+        text: getErrorMessage(err),
       });
     }
   };
@@ -260,12 +261,13 @@ const Register: NextPage = () => {
                   </Styled.HeroCreateAuthControl>
                   <Styled.HeroCreateAuthControl>
                     <Button
+                      loading={state.loading}
                       type="submit"
                       size="md"
                       fluid
                       disabled={buttonDisabled}
                     >
-                      {state.loading ? 'Loading...' : 'Create'}
+                      Create
                     </Button>
                   </Styled.HeroCreateAuthControl>
                 </Styled.HeroCreateAuthForm>

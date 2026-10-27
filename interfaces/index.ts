@@ -48,3 +48,4 @@ export * from './IContactLinksProps';
 export * from './ICountryPickerProps';
 export * from './IPhoneInputProps';
 export * from './IThemeToggleProps';
+export * from './IProjectContentProps';

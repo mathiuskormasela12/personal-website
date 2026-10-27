@@ -1,6 +1,6 @@
 // ========== Detail Styles
 // import all modules
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import NextImage from 'next/image';
 import { Colors, Fonts } from '../themes';
 
@@ -35,12 +35,12 @@ export const HeroDetailTitle = styled.h1`
   }
 `;
 
-export const HeroDetailImage = styled(NextImage)`
+const pictureFrame = css`
   display: block;
   width: 100%;
   height: auto;
   aspect-ratio: 550 / 320;
-  object-fit: cover;
+  object-fit: contain;
   border-width: 1px;
   border-style: solid;
   border-top-color: ${Colors.line};
@@ -49,6 +49,21 @@ export const HeroDetailImage = styled(NextImage)`
   border-left-color: ${Colors.line};
   border-radius: 1.2rem;
   background-color: ${Colors.soft};
+`;
+
+export const HeroDetailImage = styled(NextImage)`
+  ${pictureFrame}
+`;
+
+export const HeroDetailEmptyImage = styled.div`
+  ${pictureFrame}
+`;
+
+export const HeroDetailMissing = styled.p`
+  color: ${Colors.light};
+  font-family: ${Fonts.light};
+  font-size: 1.05rem;
+  line-height: 1.75;
 `;
 
 export const HeroDetailText = styled.p`

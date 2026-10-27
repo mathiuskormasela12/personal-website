@@ -186,9 +186,10 @@ const HeroEdit: NextPage = () => {
                       type="submit"
                       size="md"
                       disabled={buttonDisabled}
+                      loading={loading}
                       fluid
                     >
-                      {loading ? 'Saving...' : 'Save'}
+                      Save
                     </Button>
                   </Styled.HeroCreateAuthControl>
                 </Styled.HeroCreateAuthForm>

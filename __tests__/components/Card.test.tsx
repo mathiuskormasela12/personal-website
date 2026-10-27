@@ -65,3 +65,9 @@ it('shows an arrow that screen readers skip', () => {
   expect(arrow).toHaveAttribute('aria-hidden', 'true');
   expect(arrow?.querySelector('svg')).not.toBeNull();
 });
+
+it('shows the whole project picture inside the frame, without cropping', () => {
+  const { container } = renderCard();
+  const img = container.querySelector('img') as HTMLImageElement;
+  expect(img).toHaveStyle({ objectFit: 'contain' });
+});

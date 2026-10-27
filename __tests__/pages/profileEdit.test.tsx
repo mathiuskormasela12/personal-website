@@ -283,10 +283,11 @@ it('shows the API error and lets the owner try again', async () => {
   expect(push).not.toHaveBeenCalled();
 });
 
-it('disables the button while saving', async () => {
+it('shows the spinner on the save button while saving', async () => {
   (Services.updateProfile as jest.Mock).mockReturnValue(new Promise(() => {}));
   renderPage();
   await waitForForm();
   await userEvent.click(saveButton());
-  expect(screen.getByRole('button', { name: 'Saving...' })).toBeDisabled();
+  expect(saveButton()).toHaveAttribute('aria-busy', 'true');
+  expect(saveButton()).toBeDisabled();
 });

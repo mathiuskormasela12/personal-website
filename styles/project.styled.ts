@@ -2,6 +2,7 @@
 // import all modules
 import styled from 'styled-components';
 import { Colors } from '../themes';
+import { HeroEditPreview } from './heroEdit.styled';
 
 export const HeroCreateProject = styled.div`
   background-color: ${Colors.background};
@@ -27,6 +28,7 @@ export const HeroCreateProjectBody = styled.div`
 
 export const HeroCreateProjectFlex = styled.div`
   display: flex;
+  flex-wrap: wrap;
   height: 100%;
 
   @media (max-width: 920px) {
@@ -39,23 +41,37 @@ export const HeroCreateProjectFlex = styled.div`
     padding: 10vmax 0;
   }
 
+  @media (max-width: 1200px) {
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 1201px) {
+    gap: 3rem;
+  }
+
   align-items: center;
   justify-content: space-between;
 `;
 
 export const HeroCreateProjectCol = styled.div`
-  width: 40%;
+  flex: 1 1 0;
+  min-width: 0;
 
   @media (max-width: 1200px) {
-    width: 100% !important;
-
-    &:first-child {
-      display: none;
-    }
+    flex: 0 0 100%;
   }
+`;
 
-  &:last-child {
-    width: 38%;
+export const HeroCreateProjectPreviewCol = styled(HeroCreateProjectCol)`
+  @media (min-width: 1201px) {
+    flex: 0 0 360px;
+  }
+`;
+
+export const HeroCreateProjectPreview = styled(HeroEditPreview)`
+  @media (min-width: 1201px) {
+    width: 100%;
+    order: 0;
   }
 `;
 

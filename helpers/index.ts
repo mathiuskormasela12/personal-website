@@ -12,3 +12,5 @@ export * from './getSkillLogo';
 export * from './validateProfile';
 export * from './isValidEmail';
 export * from './formatPhone';
+export * from './parseTechnologyNames';
+export * from './isTokenExpired';

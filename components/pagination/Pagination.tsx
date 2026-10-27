@@ -30,6 +30,10 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
     router.push(`/?page=${String(currentPage)}`, undefined, { shallow: true });
   };
 
+  if (totalPages <= 1) {
+    return null;
+  }
+
   return (
     <Styled.Pagination>
       <Styled.PaginationItems
@@ -45,7 +49,6 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
 
         if (pageInLooping === 6) {
           return (
-            // eslint-disable-next-line react/no-array-index-key
             <Fragment key={index.toString()}>
               <Styled.PaginationItems
                 active={pageInLooping === page}
@@ -54,7 +57,6 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
                 ...
               </Styled.PaginationItems>
               <Styled.PaginationItems
-                // eslint-disable-next-line react/no-array-index-key
                 key={index.toString()}
                 active={pageInLooping === page}
                 {...props}
@@ -67,7 +69,6 @@ export const Pagination: NextPage<IPaginationProps> = (props) => {
         if (pageInLooping < 6) {
           return (
             <Styled.PaginationItems
-              // eslint-disable-next-line react/no-array-index-key
               key={index.toString()}
               active={pageInLooping === page}
               {...props}

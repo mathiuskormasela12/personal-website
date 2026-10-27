@@ -496,3 +496,25 @@ describe('the underline under the active desktop item', () => {
     expect(underlineLeft(home as Element)).toBe('50%');
   });
 });
+
+it('shows a loading popup while the project is being deleted', async () => {
+  (Swal.fire as jest.Mock).mockResolvedValueOnce({
+    isConfirmed: false,
+    isDenied: true,
+  });
+  jest.spyOn(Services, 'deleteProject').mockReturnValue(new Promise(() => {}));
+  renderWithStore(<Navbar />, {
+    auth: { accessToken: 'a', refreshToken: 'r' },
+    projects: projectsState({ project: { ...emptyProject, id: 5 } }),
+  });
+  await userEvent.click(screen.getByRole('button', { name: 'Action' }));
+  await waitFor(() =>
+    expect(Swal.fire).toHaveBeenCalledWith(
+      expect.objectContaining({
+        title: 'Deleting...',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+      }),
+    ),
+  );
+});
