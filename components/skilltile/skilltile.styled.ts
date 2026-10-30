@@ -29,6 +29,11 @@ export const Tile = styled.span`
     filter: brightness(1.35);
   }
 
+  @media (max-width: 359px) {
+    width: 3rem;
+    height: 3rem;
+  }
+
   @media (min-width: 1201px) {
     width: 4.6rem;
     height: 4.6rem;
@@ -45,6 +50,10 @@ export const Caption = styled.span`
   font-size: 0.7rem;
   color: ${Colors.light};
   white-space: nowrap;
+
+  @media (max-width: 359px) {
+    font-size: 0.6rem;
+  }
 
   @media (min-width: 1201px) {
     font-size: 0.78rem;
