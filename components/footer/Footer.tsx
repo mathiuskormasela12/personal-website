@@ -9,6 +9,7 @@ const QUICK_LINKS = [
   { text: 'Home', href: '/' },
   { text: 'Projects', href: '/#projects' },
   { text: 'Skills', href: '/#skills' },
+  { text: 'Experience', href: '/#experience' },
 ];
 
 export const Footer: React.FC = () => {

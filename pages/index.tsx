@@ -16,6 +16,7 @@ import {
   HeroContent,
   HeroSkeleton,
   SkillsSection,
+  ExperienceSection,
   Footer,
   Pagination,
   Placeholder,
@@ -24,12 +25,14 @@ import { setProjects } from '../redux/actions';
 import { IGlobalStates, IProjects } from '../interfaces';
 import { useHero } from '../hooks/useHero';
 import { useProfile } from '../hooks/useProfile';
+import { useExperiences } from '../hooks/useExperiences';
 
 const Home: NextPage = () => {
   const router = useRouter();
   const hero = useHero();
   const dispatch = useDispatch();
   const profile = useProfile();
+  const experiences = useExperiences();
   const projects: IProjects[] = useSelector(
     (current: IGlobalStates) => current.projects.projects,
   );
@@ -74,6 +77,13 @@ const Home: NextPage = () => {
             />
           </Container>
         </Styled.HomeSkills>
+        {experiences.length > 0 && (
+          <Styled.HomeExperience id="experience">
+            <Container>
+              <ExperienceSection experiences={experiences} />
+            </Container>
+          </Styled.HomeExperience>
+        )}
         <Styled.HeroProject id="projects">
           <Container>
             <Styled.HeroProjectHeader>

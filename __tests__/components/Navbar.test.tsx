@@ -46,8 +46,12 @@ it('shows visitor links, a single brand link and Hire Me', () => {
     'href',
     '/',
   );
-  ['Home', 'Projects', 'Skills', 'Contact'].forEach((t) =>
+  ['Home', 'Projects', 'Skills', 'Experience', 'Contact'].forEach((t) =>
     expect(screen.getByRole('link', { name: t })).toBeInTheDocument(),
+  );
+  expect(screen.getByRole('link', { name: 'Experience' })).toHaveAttribute(
+    'href',
+    '#experience',
   );
   expect(screen.getByRole('button', { name: 'Hire Me' })).toBeInTheDocument();
   expect(
@@ -71,10 +75,16 @@ it('keeps the admin top bar short and puts admin pages in a dropdown', async () 
   renderWithStore(<Navbar />, {
     auth: { accessToken: 'a', refreshToken: 'r' },
   });
-  ['Home', 'Projects', 'Contact'].forEach((name) =>
+  ['Home', 'Projects', 'Experience', 'Contact'].forEach((name) =>
     expect(screen.getByRole('link', { name })).toBeInTheDocument(),
   );
-  ['Create Project', 'Edit Hero', 'Edit Profile', 'Logout'].forEach((name) =>
+  [
+    'Create Project',
+    'Edit Hero',
+    'Edit Profile',
+    'Edit Experience',
+    'Logout',
+  ].forEach((name) =>
     expect(screen.queryByRole('link', { name })).not.toBeInTheDocument(),
   );
 
@@ -83,6 +93,7 @@ it('keeps the admin top bar short and puts admin pages in a dropdown', async () 
     ['Create Project', '/project'],
     ['Edit Hero', '/hero-edit'],
     ['Edit Profile', '/profile-edit'],
+    ['Edit Experience', '/experience-edit'],
     ['Logout', '/logout?from=%2F'],
   ].forEach(([name, href]) =>
     expect(screen.getByRole('link', { name })).toHaveAttribute('href', href),

@@ -39,6 +39,7 @@ it('has quick links to the home page sections', () => {
     ['Home', '/'],
     ['Projects', '/#projects'],
     ['Skills', '/#skills'],
+    ['Experience', '/#experience'],
   ].forEach(([name, href]) =>
     expect(screen.getByRole('link', { name })).toHaveAttribute('href', href),
   );

@@ -9,4 +9,5 @@ export * from './auth.styled';
 export * from './forgot.styled';
 export * from './heroEdit.styled';
 export * from './profileEdit.styled';
+export * from './experienceEdit.styled';
 export * from './illustration.styled';

@@ -15,6 +15,8 @@ export * from './placeholder/Placeholder';
 export * from './herocontent/HeroContent';
 export * from './skilltile/SkillTile';
 export * from './skillssection/SkillsSection';
+export * from './experiencesection/ExperienceSection';
+export * from './descriptioninput/DescriptionInput';
 export * from './skillsinput/SkillsInput';
 export * from './sociallinks/SocialLinks';
 export * from './navdropdown/NavDropdown';
