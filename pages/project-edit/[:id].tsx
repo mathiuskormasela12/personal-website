@@ -1,9 +1,7 @@
-/* eslint-disable no-mixed-spaces-and-tabs */
 // ========== Project Edit
 // import all modules
 import React, { Fragment, useState, useRef, useEffect } from 'react';
 import type { NextPage } from 'next';
-import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
@@ -18,10 +16,16 @@ import {
   TextField,
   LongText,
   Button,
+  ProjectContent,
 } from '../../components';
+import { usePickedImageUrl } from '../../hooks/usePickedImageUrl';
 import { IEvent, IGlobalStates, IProjects } from '../../interfaces';
 import Services from '../../services';
-import { generateFormData } from '../../helpers';
+import {
+  generateFormData,
+  getErrorMessage,
+  parseTechnologyNames,
+} from '../../helpers';
 import { setProject } from '../../redux/actions';
 
 const ProjectEdit: NextPage = () => {
@@ -50,6 +54,7 @@ const ProjectEdit: NextPage = () => {
 
   const [state, setState] = useState<State>(() => toFormState(project));
   const [syncedProject, setSyncedProject] = useState<IProjects>(project);
+  const pickedImageUrl = usePickedImageUrl(state.img);
 
   // Reset the form whenever the project in the store changes (adjusting state during
   // render instead of a setState-in-effect, per React 19 / react-hooks v7).
@@ -142,11 +147,16 @@ const ProjectEdit: NextPage = () => {
             router.push('/');
           }
         });
-      } catch (err: any) {
+      } catch (err) {
+        setState((current) => ({
+          ...current,
+          loading: false,
+        }));
+
         Swal.fire({
           title: 'Failed',
           icon: 'error',
-          text: err.message,
+          text: getErrorMessage(err),
         });
       }
     } else {
@@ -174,11 +184,16 @@ const ProjectEdit: NextPage = () => {
             router.push('/');
           }
         });
-      } catch (err: any) {
+      } catch (err) {
+        setState((current) => ({
+          ...current,
+          loading: false,
+        }));
+
         Swal.fire({
           title: 'Failed',
           icon: 'error',
-          text: err.message,
+          text: getErrorMessage(err),
         });
       }
     }
@@ -197,16 +212,6 @@ const ProjectEdit: NextPage = () => {
             }}
           >
             <Styled.HeroCreateProjectFlex>
-              <Styled.HeroCreateProjectCol>
-                <Styled.IllustrationFrame $paper>
-                  <Image
-                    src="/icons/create-project-img.svg"
-                    width={250}
-                    height={250}
-                    alt="Create Project"
-                  />
-                </Styled.IllustrationFrame>
-              </Styled.HeroCreateProjectCol>
               <Styled.HeroCreateProjectCol>
                 <Styled.HeroCreateProjectTitle>
                   Edit a Project
@@ -274,12 +279,31 @@ const ProjectEdit: NextPage = () => {
                     </Styled.HeroCreateProjectField>
                   </Styled.HeroCreateProjectControl>
                   <Styled.HeroCreateProjectControl>
-                    <Button type="submit" size="md" fluid>
+                    <Button
+                      type="submit"
+                      size="md"
+                      loading={state.loading}
+                      fluid
+                    >
                       Save
                     </Button>
                   </Styled.HeroCreateProjectControl>
                 </Styled.HeroCreateProjectForm>
               </Styled.HeroCreateProjectCol>
+              <Styled.HeroCreateProjectPreviewCol>
+                <Styled.HeroCreateProjectPreview aria-labelledby="project-preview-label">
+                  <Styled.HeroEditPreviewLabel id="project-preview-label">
+                    Preview
+                  </Styled.HeroEditPreviewLabel>
+                  <ProjectContent
+                    title={state.projectName}
+                    description={state.projectDescription}
+                    img={pickedImageUrl ?? (project.img || null)}
+                    technologies={parseTechnologyNames(state.technologies)}
+                    preview
+                  />
+                </Styled.HeroCreateProjectPreview>
+              </Styled.HeroCreateProjectPreviewCol>
             </Styled.HeroCreateProjectFlex>
           </Container>
         </Styled.HeroCreateProjectBody>

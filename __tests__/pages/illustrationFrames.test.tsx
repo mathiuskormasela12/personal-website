@@ -13,12 +13,22 @@ jest.mock('next/router', () => ({ useRouter: jest.fn() }));
 const loggedIn = { accessToken: 'a', refreshToken: 'r' };
 const loggedOut = { accessToken: '', refreshToken: '' };
 
-const cases: [string, NextPage, string, typeof loggedIn][] = [
+const illustrationCases: [string, NextPage, string, typeof loggedIn][] = [
   ['login', Login, 'Create Auth', loggedOut],
   ['register', Register, 'Create Auth', loggedIn],
   ['forgot', Forgot, 'Create Forgot', loggedOut],
-  ['create project', Project, 'Create Project', loggedIn],
-  ['edit project', ProjectEdit, 'Create Project', loggedIn],
+];
+
+const pageCases: [string, NextPage, typeof loggedIn][] = [
+  ...illustrationCases.map(
+    ([name, Page, , auth]): [string, NextPage, typeof loggedIn] => [
+      name,
+      Page,
+      auth,
+    ],
+  ),
+  ['create project', Project, loggedIn],
+  ['edit project', ProjectEdit, loggedIn],
 ];
 
 beforeEach(() => {
@@ -30,7 +40,7 @@ beforeEach(() => {
   });
 });
 
-describe.each(cases)('%s page', (_, Page, alt, auth) => {
+describe.each(illustrationCases)('%s page', (_, Page, alt, auth) => {
   it('shows the illustration inside the same soft frame as the home hero', () => {
     renderWithStore(<Page />, { auth });
     expect(screen.getByAltText(alt).parentElement).toHaveStyle({
@@ -56,7 +66,9 @@ describe.each(cases)('%s page', (_, Page, alt, auth) => {
     document.documentElement.dataset.theme = 'light';
     expect(getComputedStyle(frame).backgroundColor).toBe('var(--color-soft)');
   });
+});
 
+describe.each(pageCases)('%s page layout', (_, Page, auth) => {
   it('keeps the title calm, without a heavy bold weight', () => {
     renderWithStore(<Page />, { auth });
     expect(screen.getByRole('heading', { level: 1 })).toHaveStyle({
@@ -66,9 +78,9 @@ describe.each(cases)('%s page', (_, Page, alt, auth) => {
   });
 
   it('starts the content below the navbar', () => {
-    renderWithStore(<Page />, { auth });
+    const { container } = renderWithStore(<Page />, { auth });
     const desktop = getMediaRuleStyle(
-      screen.getByAltText(alt).closest('[data-page-body]') as Element,
+      container.querySelector('[data-page-body]') as Element,
       '(min-width: 1201px)',
     );
     expect(desktop?.getPropertyValue('padding-top')).toBe('4.8rem');

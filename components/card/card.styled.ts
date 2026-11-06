@@ -29,7 +29,7 @@ export const Image = styled(NextImage)`
   width: 100%;
   height: auto;
   aspect-ratio: 370 / 220;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 0.8rem;
   background-color: ${Colors.soft};
 `;

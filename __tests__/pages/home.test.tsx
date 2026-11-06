@@ -5,6 +5,7 @@ import Services from '../../services';
 import * as HomePage from '../../pages/index';
 import { setCachedHero } from '../../hooks/useHero';
 import { setCachedProfile } from '../../hooks/useProfile';
+import { setCachedExperiences } from '../../hooks/useExperiences';
 import { getMediaRuleStyle, renderWithStore } from '../test-utils';
 
 jest.mock('next/router', () => ({ useRouter: jest.fn() }));
@@ -14,6 +15,7 @@ jest.mock('../../services', () => ({
     getAllProjects: jest.fn(),
     getProfile: jest.fn(),
     getHero: jest.fn(),
+    getExperiences: jest.fn(),
   },
 }));
 
@@ -32,6 +34,11 @@ const push = jest.fn();
 beforeEach(() => {
   setCachedProfile(null);
   setCachedHero(null);
+  setCachedExperiences(null);
+  (Services.getExperiences as jest.Mock).mockReset();
+  (Services.getExperiences as jest.Mock).mockResolvedValue({
+    data: { results: [] },
+  });
   (Services.getHero as jest.Mock).mockReset();
   (Services.getHero as jest.Mock).mockResolvedValue({
     data: { results: hero },
@@ -190,4 +197,39 @@ it('keeps the hero picture on the dark frame in dark mode', async () => {
   expect(getComputedStyle(frame).backgroundColor).toBe('var(--color-soft)');
   document.documentElement.dataset.theme = 'light';
   await screen.findByText('Portfolio API');
+});
+
+it('hides the experience section while there is no experience', async () => {
+  renderWithStore(<Home />);
+  expect(await screen.findByText('Portfolio API')).toBeInTheDocument();
+  expect(Services.getExperiences).toHaveBeenCalled();
+  expect(
+    screen.queryByRole('region', { name: 'Experience' }),
+  ).not.toBeInTheDocument();
+});
+
+it('shows the experience section below the skills section', async () => {
+  (Services.getExperiences as jest.Mock).mockResolvedValue({
+    data: {
+      results: [
+        {
+          id: 1,
+          company: 'Nimbus Labs',
+          role: 'Mobile Developer',
+          startDate: '2024-03',
+          endDate: null,
+          description: ['Shipped the driver app.'],
+        },
+      ],
+    },
+  });
+  const { container } = renderWithStore(<Home />);
+  const section = await screen.findByRole('region', {
+    name: 'Experience',
+  });
+  expect(section.closest('section#experience')).toBeInTheDocument();
+  const ids = Array.from(container.querySelectorAll('section[id]')).map(
+    (element) => element.id,
+  );
+  expect(ids.indexOf('experience')).toBe(ids.indexOf('skills') + 1);
 });

@@ -5,6 +5,10 @@ interface IPreviewProps {
   $preview: boolean;
 }
 
+export const TILE_GAP = '1rem';
+
+export const COLUMN_OFFSET = '2.4rem';
+
 const desktop = (rules: ReturnType<typeof css>) => css<IPreviewProps>`
   @media (min-width: 1201px) {
     ${({ $preview }) => ($preview ? '' : rules)}
@@ -55,18 +59,19 @@ export const Description = styled.p`
 export const Panel = styled.div<IPreviewProps>`
   background-color: ${Colors.soft};
   border-radius: 1.25rem;
-  padding: 2rem 0.75rem 4.4rem;
+  padding: 2rem 0.75rem;
 
   ${desktop(css`
     width: 52%;
-    padding: 2.6rem 2rem 5.6rem;
+    padding: 2.6rem 2rem;
   `)}
 `;
 
 export const Columns = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
+  grid-template-columns: repeat(4, max-content);
+  justify-content: center;
+  gap: ${TILE_GAP};
   align-items: start;
 `;
 
@@ -75,17 +80,9 @@ export const Column = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.1rem;
+  gap: ${TILE_GAP};
 
   &:nth-child(even) {
-    transform: translateY(2.4rem);
-  }
-
-  @media (min-width: 1201px) {
-    gap: 1.4rem;
-
-    &:nth-child(even) {
-      transform: translateY(3rem);
-    }
+    padding-top: ${COLUMN_OFFSET};
   }
 `;

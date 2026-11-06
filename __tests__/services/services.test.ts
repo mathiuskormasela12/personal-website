@@ -70,4 +70,21 @@ describe('Services', () => {
     expect(mockDelete).toHaveBeenCalledWith('/project/3');
     expect(mockGet).toHaveBeenCalledWith('/project/5');
   });
+  it('reads, adds, changes and deletes experiences', () => {
+    const body = {
+      company: 'Nimbus Labs',
+      role: 'Mobile Developer',
+      startDate: '2024-03',
+      endDate: null,
+      description: ['Shipped the driver app.'],
+    };
+    Services.getExperiences();
+    expect(mockGet).toHaveBeenCalledWith('/experiences');
+    Services.createExperience(body);
+    expect(mockPost).toHaveBeenCalledWith('/experience', body);
+    Services.updateExperience(4, body);
+    expect(mockPatch).toHaveBeenCalledWith('/experience/4', body);
+    Services.deleteExperience(4);
+    expect(mockDelete).toHaveBeenCalledWith('/experience/4');
+  });
 });

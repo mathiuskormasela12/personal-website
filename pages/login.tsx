@@ -1,6 +1,6 @@
 // ========== Login
 // import all modules
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -20,6 +20,7 @@ import {
 } from '../components';
 import Services from '../services';
 import { IGlobalStates, ILoginBody } from '../interfaces';
+import { getErrorMessage } from '../helpers';
 import { setToken } from '../redux/actions';
 
 const Login: NextPage = () => {
@@ -39,6 +40,16 @@ const Login: NextPage = () => {
 
   const router = useRouter();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (router.isReady && router.query.expired === '1') {
+      Swal.fire({
+        title: 'Session expired',
+        text: 'Your session has expired. Please log in again.',
+        icon: 'info',
+      });
+    }
+  }, [router.isReady, router.query.expired]);
 
   if (accessToken !== '' && refreshToken !== '' && !state.loading) {
     router.push('/');
@@ -122,7 +133,7 @@ const Login: NextPage = () => {
           router.push('/');
         },
       });
-    } catch (err: any) {
+    } catch (err) {
       dispatch(setToken('', ''));
 
       setState((currentState) => ({
@@ -133,7 +144,7 @@ const Login: NextPage = () => {
       Swal.fire({
         title: 'Failed',
         icon: 'error',
-        text: err.message,
+        text: getErrorMessage(err),
       });
     }
   };
@@ -217,13 +228,14 @@ const Login: NextPage = () => {
                   </Styled.HeroCreateAuthControl>
                   <Styled.HeroCreateAuthControl>
                     <Button
+                      loading={state.loading}
                       type="submit"
                       size="md"
                       disabled={buttonDisabled}
                       fluid
                       onClick={handleLogin}
                     >
-                      {state.loading ? 'Loading...' : ' Sign In'}
+                      Sign In
                     </Button>
                   </Styled.HeroCreateAuthControl>
                 </Styled.HeroCreateAuthForm>

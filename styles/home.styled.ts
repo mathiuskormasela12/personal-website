@@ -76,6 +76,15 @@ export const HomeSkills = styled.section`
   }
 `;
 
+export const HomeExperience = styled.section`
+  ${sectionLine}
+  padding: 4.5rem 0;
+
+  @media (min-width: 1201px) {
+    padding: 6rem 0;
+  }
+`;
+
 export const HeroProject = styled.section`
   ${sectionLine}
   padding: 4.5rem 0;

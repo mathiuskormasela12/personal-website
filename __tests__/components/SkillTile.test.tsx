@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { SkillTile } from '../../components';
-import { renderWithStore } from '../test-utils';
+import { getMediaRuleStyle, renderWithStore } from '../test-utils';
 
 const renderTile = (name: string) =>
   renderWithStore(
@@ -38,4 +38,18 @@ it('brightens logos a little in dark mode so dim brand colors stay visible', () 
   expect(getComputedStyle(svg).filter).toBe('brightness(1.35)');
   document.documentElement.dataset.theme = 'light';
   expect(getComputedStyle(svg).filter).not.toBe('brightness(1.35)');
+});
+
+it('makes the tile and caption a little smaller on very small phones so the gap can stay the same', () => {
+  renderTile('Javascript');
+  const caption = screen.getByText('Javascript');
+  const tile = caption.previousElementSibling as Element;
+  const tileRule = getMediaRuleStyle(tile, '(max-width: 359px)');
+  expect(tileRule?.getPropertyValue('width')).toBe('3rem');
+  expect(tileRule?.getPropertyValue('height')).toBe('3rem');
+  expect(
+    getMediaRuleStyle(caption, '(max-width: 359px)')?.getPropertyValue(
+      'font-size',
+    ),
+  ).toBe('0.6rem');
 });

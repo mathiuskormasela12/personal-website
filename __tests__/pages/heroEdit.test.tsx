@@ -210,11 +210,12 @@ it('shows a generic message when the error has none', async () => {
   );
 });
 
-it('disables the button while saving', async () => {
+it('shows the spinner on the save button while saving', async () => {
   (Services.updateHero as jest.Mock).mockReturnValue(new Promise(() => {}));
   await renderPage();
   await userEvent.click(saveButton());
-  expect(screen.getByRole('button', { name: 'Saving...' })).toBeDisabled();
+  expect(saveButton()).toHaveAttribute('aria-busy', 'true');
+  expect(saveButton()).toBeDisabled();
 });
 
 describe('live preview', () => {

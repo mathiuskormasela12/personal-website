@@ -6,4 +6,5 @@ export interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
   rounded?: boolean;
   size: 'lg' | 'md' | 'sm';
   fluid?: boolean;
+  loading?: boolean;
 }

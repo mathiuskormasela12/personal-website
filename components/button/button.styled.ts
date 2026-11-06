@@ -44,4 +44,16 @@ export const Button = styled.button<IButtonProps>`
 
     return '';
   }}
+
+  &[aria-busy='true'] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    cursor: progress;
+  }
+
+  &[aria-busy='true'] span {
+    opacity: 0.7;
+  }
 `;

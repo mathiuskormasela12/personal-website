@@ -9,6 +9,7 @@ import {
   IRegisterBody,
   IProfile,
   IResetPasswordBody,
+  IExperienceBody,
 } from '../interfaces';
 
 const HERO_REQUEST_TIMEOUT_MS = 5000;
@@ -67,6 +68,22 @@ class Services {
 
   public static updateProject(id: number, data: FormData) {
     return http().patch(`/project/${id}`, data);
+  }
+
+  public static getExperiences() {
+    return http().get('/experiences');
+  }
+
+  public static createExperience(data: IExperienceBody) {
+    return http().post('/experience', data);
+  }
+
+  public static updateExperience(id: number, data: IExperienceBody) {
+    return http().patch(`/experience/${id}`, data);
+  }
+
+  public static deleteExperience(id: number) {
+    return http().delete(`/experience/${id}`);
   }
 }
 

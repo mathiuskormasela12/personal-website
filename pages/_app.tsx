@@ -7,6 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { StyleSheetManager } from 'styled-components';
 import persistedStore from '../redux/store';
 import { GlobalStyles } from '../styles';
+import { SessionGuard } from '../components/sessionguard/SessionGuard';
 import { shouldForwardProp } from '../styles/shouldForwardProp';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -22,6 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
+          <SessionGuard />
           <Component {...pageProps} />
           <GlobalStyles />
         </PersistGate>

@@ -218,8 +218,11 @@ export const NavSide = styled.div`
 `;
 
 export const HireSlot = styled.div`
-  @media (max-width: 1200px) {
-    display: none;
+  @media (max-width: 480px) {
+    button {
+      padding: 0.6em 1.2em;
+      font-size: 0.85rem;
+    }
   }
 `;
 

@@ -1,5 +1,11 @@
 // ========== NAV ITEMS
-import { FiEdit3, FiLogOut, FiPlusSquare, FiUser } from 'react-icons/fi';
+import {
+  FiBriefcase,
+  FiEdit3,
+  FiLogOut,
+  FiPlusSquare,
+  FiUser,
+} from 'react-icons/fi';
 import { INavDropdownItem } from '../interfaces';
 
 export const NAV_ITEMS = {
@@ -21,6 +27,11 @@ export const NAV_ITEMS = {
     },
     {
       id: 4,
+      text: 'Experience',
+      path: '#experience',
+    },
+    {
+      id: 5,
       text: 'Contact',
       path: '#footer',
     },
@@ -38,6 +49,11 @@ export const NAV_ITEMS = {
     },
     {
       id: 3,
+      text: 'Experience',
+      path: '#experience',
+    },
+    {
+      id: 4,
       text: 'Contact',
       path: '#footer',
     },
@@ -63,6 +79,12 @@ export const NAV_ITEMS = {
     },
     {
       id: 4,
+      text: 'Edit Experience',
+      path: '/experience-edit',
+      icon: FiBriefcase,
+    },
+    {
+      id: 5,
       text: 'Logout',
       path: '/logout',
       icon: FiLogOut,

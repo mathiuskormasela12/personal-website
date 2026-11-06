@@ -64,3 +64,21 @@ it('fills the current page and keeps the others outlined and round', () => {
     color: 'var(--color-light)',
   });
 });
+
+it('is hidden when there is only one page', () => {
+  const { container } = renderWithStore(
+    <Pagination totalPages={1} page={1} />,
+    { projects: projectsState({ nextPage: 0, previousPage: 0 }) },
+  );
+  expect(container).toBeEmptyDOMElement();
+});
+
+it('still shows on the last page, so the owner can go back', () => {
+  renderWithStore(<Pagination totalPages={2} page={2} />, {
+    projects: projectsState({ nextPage: 0, previousPage: 1 }),
+  });
+  expect(screen.getByLabelText('Previous page')).not.toHaveAttribute(
+    'disabled',
+  );
+  expect(screen.getByText('2')).toBeInTheDocument();
+});

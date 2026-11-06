@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { FiMenu, FiX } from 'react-icons/fi';
 import Swal from 'sweetalert2';
 import { NAV_ITEMS } from '../../constants';
+import { getErrorMessage } from '../../helpers';
 import { useProfile } from '../../hooks/useProfile';
 import { useTheme } from '../../hooks/useTheme';
 import { IGlobalStates } from '../../interfaces';
@@ -62,6 +63,16 @@ export const Navbar: NextPage = () => {
         if (result.isConfirmed) {
           router.push(`/project-edit/${String(id)}`);
         } else if (result.isDenied) {
+          Swal.fire({
+            title: 'Deleting...',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showConfirmButton: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
           try {
             const { data } = await Services.deleteProject(id);
             Swal.fire({
@@ -72,11 +83,11 @@ export const Navbar: NextPage = () => {
                 router.push('/');
               },
             });
-          } catch (err: any) {
+          } catch (err) {
             Swal.fire({
               title: 'Failed',
               icon: 'error',
-              text: err.message,
+              text: getErrorMessage(err),
             });
           }
         }

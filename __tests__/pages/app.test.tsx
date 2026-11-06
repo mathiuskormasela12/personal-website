@@ -2,6 +2,10 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import MyApp from '../../pages/_app';
 
+jest.mock('next/router', () => ({
+  useRouter: () => ({ pathname: '/', replace: jest.fn() }),
+}));
+
 jest.mock('next/head', () => ({
   __esModule: true,
   default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
